@@ -918,7 +918,7 @@
                     <li><a href="{% url 'blog_list' %}">Blog</a></li>
                     <li><a href="{% url 'about' %}">About</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
                         <li><a href="{% url 'logout' %}">Logout</a></li>
                     {% else %}
                         <li><a href="{% url 'login' %}">Login</a></li>
@@ -1030,20 +1030,8 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="phone">Whatsapp</label>
-                                <input type="tel" id="phone" name="phone" class="form-control" 
-                                       placeholder="+234 123 456 7890">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="organization">Organization</label>
-                                <input type="text" id="organization" name="organization" class="form-control" 
-                                       placeholder="Your company or institution">
-                            </div>
-                            
-                            <div class="form-group">
                                 <label for="questions">Questions for Speakers</label>
-                                <textarea id="questions" name="questions" class="form-control" 
+                                <textarea id="question" name="questions" class="form-control" 
                                           placeholder="Any specific questions you'd like the speakers to address?"></textarea>
                             </div>
                             
@@ -1090,14 +1078,14 @@
                                     </div>
                                     <div class="bank-detail-item">
                                         <span class="bank-detail-label">Amount:</span>
-                                        <span class="bank-detail-value">₦{{ naira_price|floatformat:2 }}</span>
+                                        <span class="bank-detail-value">₦{{ webinar.price|floatformat:2 }}</span>
                                     </div>
                                 </div>
                                 
                                 <div class="payment-instructions">
                                     <h4>Payment Instructions:</h4>
                                     <ol>
-                                        <li>Transfer the exact amount of <strong>₦{{ naira_price|floatformat:2 }}</strong> to the bank account above</li>
+                                        <li>Transfer the exact amount of <strong>₦{{ webinar.price|floatformat:2 }}</strong> to the bank account above</li>
                                         <li>Use <strong>{{ payment_reference }}</strong> as the payment reference</li>
                                         <li>Upload proof of payment below</li>
                                         <li>Your registration will be confirmed within 24 hours after payment verification</li>
@@ -1118,7 +1106,7 @@
                             
                             <div class="summary-total">
                                 <span>Total Amount:</span>
-                                <span>₦{{ naira_price|floatformat:2 }}</span>
+                                <span>₦{{ webinar.price|floatformat:2 }}</span>
                             </div>
                             {% endif %}
                             
@@ -1165,7 +1153,7 @@
                                 {% if not webinar.is_free %}
                                 <div class="summary-item">
                                     <span class="summary-label">Amount Paid:</span>
-                                    <span class="summary-value">₦{{ naira_price|floatformat:2 }}</span>
+                                    <span class="summary-value">₦{{ webinar.price|floatformat:2 }}</span>
                                 </div>
                                 <div class="summary-item">
                                     <span class="summary-label">Reference:</span>
@@ -1174,10 +1162,7 @@
                                 {% endif %}
                                 
                                 <div style="margin-top: 2rem;">
-                                    <a href="{% url 'webinar_detail' webinar.slug %}" class="btn btn-secondary">
-                                        <i class="fas fa-calendar"></i> Add to Calendar
-                                    </a>
-                                    <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                                    <a href="{% url 'profile' %}" class="btn btn-primary">
                                         View My Registrations <i class="fas fa-arrow-right"></i>
                                     </a>
                                 </div>
@@ -1210,8 +1195,12 @@
                         <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
                         <li><a href="{% url 'blog_list' %}">Blog</a></li>
                         <li><a href="{% url 'about' %}">About Us</a></li>
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                        <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'profile' %}">Profile</a></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{% url 'login' %}">Login</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="footer-links">

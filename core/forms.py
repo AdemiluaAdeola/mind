@@ -23,12 +23,6 @@ class BlogForm(forms.ModelForm):
         empty_label="Select category"
     )
     
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        required=False,
-        widget=forms.CheckboxSelectMultiple
-    )
-    
     publish_date = forms.DateTimeField(
         required=False,
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
@@ -38,7 +32,7 @@ class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
         fields = [
-            'title', 'category', 'tags', 'excerpt', 'content', 
+            'title', 'category', 'excerpt', 'content', 
             'featured_image', 'status', 'meta_title', 'meta_description',
             'allow_comments'
         ]

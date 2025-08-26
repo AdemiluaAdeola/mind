@@ -1054,14 +1054,6 @@
                     {{ blog.content|safe }}
                 </div>
                 
-                {% if blog.tags.all %}
-                <div class="blog-tags">
-                    {% for tag in blog.tags.all %}
-                    <span class="blog-tag">#{{ tag.name }}</span>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
                 <!-- Social Share -->
                 <div class="social-share">
                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="share-btn share-facebook">

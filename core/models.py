@@ -41,19 +41,6 @@ class Category(TimestampModel):
     def get_absolute_url(self):
         return reverse('blog_category', kwargs={'slug': self.slug})
 
-class Tag(TimestampModel):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=50, unique=True)
-    description = models.TextField(blank=True)
-    
-    def __str__(self):
-        return self.name
-    
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-
 class Blog(TimestampModel):
     STATUS_CHOICES = [
         ('Draft', 'Draft'),
@@ -70,7 +57,6 @@ class Blog(TimestampModel):
         null=True, 
         blank=True
     )
-    tags = models.ManyToManyField(Tag, blank=True, related_name='blogs')
     excerpt = models.TextField(
         blank=True, 
         help_text="Brief summary of the blog post (max 300 characters)"
@@ -299,50 +285,6 @@ class WebinarSpeaker(TimestampModel):
     class Meta:
         ordering = ['order']
         unique_together = ('webinar', 'speaker')
-
-# class WebinarRegistration(TimestampModel):
-#     STATUS_CHOICES = [
-#         ('pending', 'Pending'),
-#         ('confirmed', 'Confirmed'),
-#         ('cancelled', 'Cancelled'),
-#         ('attended', 'Attended'),
-#     ]
-
-#     webinar = models.ForeignKey(
-#         Webinar, 
-#         on_delete=models.CASCADE, 
-#         related_name='registrations'
-#     )
-#     full_name = models.CharField(
-#         max_length=2555555
-#     )
-#     email = models.EmailField()
-#     status = models.CharField(
-#         max_length=10, 
-#         choices=STATUS_CHOICES, 
-#         default='pending'
-#     )
-#     payment_reference = models.CharField(max_length=100, blank=True)
-#     attendance_confirmed = models.BooleanField(default=False)
-#     questions = models.TextField(
-#         blank=True, 
-#         verbose_name="Any questions for the speakers"
-#     )
-#     joined_at = models.DateTimeField(null=True, blank=True)
-#     left_at = models.DateTimeField(null=True, blank=True)
-    
-#     class Meta:
-#         unique_together = ('webinar', 'email')
-#         ordering = ['-created_at']
-
-#     def __str__(self):
-#         return f"{self.email} - {self.webinar.title}"
-    
-#     @property
-#     def attendance_duration(self):
-#         if self.joined_at and self.left_at:
-#             return (self.left_at - self.joined_at).total_seconds() / 60
-#         return 0
     
 class WebinarRegistration(TimestampModel):
     status_choices = (
@@ -355,7 +297,6 @@ class WebinarRegistration(TimestampModel):
     full_name = models.CharField(max_length=255)
     email = models.EmailField()
     status = models.CharField(max_length=255, choices=status_choices)
-    attendance_confirmed = models.BooleanField(default=False)
     question = models.TextField(verbose_name="Any questions for the speaker")
     joined_at = models.DateTimeField(null=True, blank=True)
     left_at = models.DateTimeField(null=True, blank=True)
@@ -383,22 +324,10 @@ class WebinarResource(TimestampModel):
         ('other', 'Other'),
     ]
     
-    webinar = models.ForeignKey(
-        Webinar, 
-        on_delete=models.CASCADE, 
-        related_name='resources'
-    )
+    webinar = models.ForeignKey(Webinar, on_delete=models.CASCADE, related_name='resources')
     title = models.CharField(max_length=200)
-    resource_type = models.CharField(
-        max_length=10, 
-        choices=RESOURCE_TYPES, 
-        default='document'
-    )
-    file = models.FileField(
-        upload_to='webinar_resources/%Y/%m/%d/', 
-        blank=True, 
-        null=True
-    )
+    resource_type = models.CharField(max_length=10, choices=RESOURCE_TYPES, default='document')
+    file = models.FileField(upload_to='webinar_resources/%Y/%m/%d/', blank=True, null=True)
     url = models.URLField(blank=True)
     is_preview = models.BooleanField(
         default=False,

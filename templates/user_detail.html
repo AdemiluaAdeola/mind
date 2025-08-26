@@ -1,0 +1,193 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>User Details: {{ user.username }}</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="{% url 'admin_user_management' %}">Users</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>{{ user.username }}</span>
+            </div>
+        </div>
+        <div>
+            <a href="{% url 'admin_user_edit' user.pk %}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit User
+            </a>
+        </div>
+    </div>
+    
+    <div class="form-grid">
+        <!-- User Info Card -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title">Basic Information</h2>
+            </div>
+            <div class="card-body">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="{{ user.username }}" class="user-avatar" style="width: 80px; height: 80px;">
+                    {% else %}
+                    <div class="user-avatar" style="width: 80px; height: 80px; background: #{{ user.username|slice:':6' }}; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 2rem;">
+                        {{ user.username|first|upper }}
+                    </div>
+                    {% endif %}
+                    <div>
+                        <h3>{{ user.get_full_name|default:user.username }}</h3>
+                        <p>@{{ user.username }}</p>
+                        <div>
+                            {% if user.is_active %}
+                            <span class="status-badge status-published">Active</span>
+                            {% else %}
+                            <span class="status-badge status-draft">Inactive</span>
+                            {% endif %}
+                            {% if user.is_staff %}
+                            <span class="badge badge-success">Staff</span>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                            <span class="badge badge-warning">Superuser</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <p>{{ user.email }}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Joined Date</label>
+                        <p>{{ user.date_joined|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Roles</label>
+                    <div>
+                        {% for group in user.groups.all %}
+                        <span class="badge">{{ group.name }}</span>
+                        {% empty %}
+                        <span class="badge">No roles assigned</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile Info Card -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title">Profile Information</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <p>{{ profile.gender|default:"Not specified" }}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Date of Birth</label>
+                        <p>{{ profile.dob|date:"M d, Y"|default:"Not specified" }}</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Country</label>
+                    <p>{{ profile.country.name|default:"Not specified" }}</p>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <p>{{ profile.address|default:"Not specified"|linebreaks }}</p>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Bio</label>
+                    <p>{{ profile.bio|default:"No bio provided"|linebreaks }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Social Media & Stats -->
+    <div class="form-grid">
+        <!-- Social Media Card -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title">Social Media</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">WhatsApp</label>
+                        <p>{{ profile.whatsapp|default:"Not provided" }}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Instagram</label>
+                        <p>{% if profile.instagram %}<a href="{{ profile.instagram }}" target="_blank">{{ profile.instagram }}</a>{% else %}Not provided{% endif %}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Twitter</label>
+                        <p>{% if profile.twitter %}<a href="{{ profile.twitter }}" target="_blank">{{ profile.twitter }}</a>{% else %}Not provided{% endif %}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">LinkedIn</label>
+                        <p>{% if profile.linkedin %}<a href="{{ profile.linkedin }}" target="_blank">{{ profile.linkedin }}</a>{% else %}Not provided{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Activity Stats Card -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title">Activity Statistics</h2>
+            </div>
+            <div class="card-body">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon posts">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-number">{{ blog_count }}</div>
+                            <div class="stat-label">Blog Posts</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon published">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-number">{{ webinar_registrations }}</div>
+                            <div class="stat-label">Webinar Registrations</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon draft">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-number">{{ comments_count }}</div>
+                            <div class="stat-label">Comments</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

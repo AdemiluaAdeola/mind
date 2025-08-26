@@ -1,0 +1,51 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="page-header">
+        <h1>Registrations: {{ webinar.title }}</h1>
+        <a href="{% url 'admin_webinar_detail' webinar.pk %}" class="btn btn-secondary">Back to Webinar</a>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Attendee List ({{ registrations.count }})</h2>
+            <a href="?export=csv" class="btn btn-sm">Export CSV</a>
+        </div>
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Registered</th>
+                            <th>Attendance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registration in registrations %}
+                        <tr>
+                            <td>{{ registration.user.get_full_name|default:registration.user.username }}</td>
+                            <td>{{ registration.user.email }}</td>
+                            <td><span class="status-badge status-{{ registration.status }}">{{ registration.status|title }}</span></td>
+                            <td>{{ registration.created_at|date:"M d, Y" }}</td>
+                            <td>{% if registration.attendance_confirmed %}Yes{% else %}No{% endif %}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{% url 'admin_user_detail' registration.user.pk %}" class="btn btn-sm">View</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

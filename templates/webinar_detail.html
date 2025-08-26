@@ -1,0 +1,1502 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ webinar.description|truncatewords:20 }}">
+    <title>{{ webinar.title }} | MindCraft ThinkSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS Variables ===== */
+        :root {
+            --primary: #1a3a1f; /* Dark green */
+            --primary-light: #2c5e3a;
+            --primary-dark: #0f2614;
+            --secondary: #e67e22; /* Orange */
+            --secondary-light: #f39c12;
+            --secondary-dark: #d35400;
+            --accent: #f1c40f;
+            --dark: #2c3e50;
+            --darker: #1a252f;
+            --light: #ecf0f1;
+            --lighter: #f9f9f9;
+            --text: #333;
+            --text-light: #777;
+            --white: #fff;
+            --black: #000;
+            --gray: #e0e0e0;
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --radius: 12px;
+            --radius-sm: 6px;
+        }
+
+        /* ===== Base Styles ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--lighter);
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        /* ===== Typography ===== */
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 1.2rem;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        }
+
+        h3 {
+            font-size: clamp(1.3rem, 2vw, 1.6rem);
+        }
+
+        p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== Buttons ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary);
+            color: var(--white);
+            border-color: var(--secondary);
+        }
+
+        .btn-large {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* ===== Header ===== */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus,
+        .nav-links a.active {
+            color: var(--secondary);
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+            z-index: 1001;
+        }
+
+        /* ===== Webinar Detail Hero ===== */
+        .webinar-detail-hero {
+            background: linear-gradient(135deg, rgba(26, 58, 31, 0.8), rgba(26, 58, 31, 0.7));
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .webinar-detail-hero.with-image {
+            background: linear-gradient(135deg, rgba(26, 58, 31, 0.8), rgba(26, 58, 31, 0.7)), 
+                        center/cover no-repeat;
+        }
+
+        .webinar-hero-content {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .webinar-detail-hero h1 {
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .webinar-detail-hero p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .webinar-meta-large {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .webinar-meta-large span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .webinar-meta-large i {
+            color: var(--secondary);
+        }
+
+        /* Registration Panel */
+        .registration-panel {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .webinar-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .webinar-price.free {
+            color: var(--secondary);
+        }
+
+        .webinar-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-upcoming {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+        }
+
+        .status-live {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            animation: pulse 2s infinite;
+        }
+
+        .status-completed {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+
+        .registration-info {
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: between;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--dark);
+            flex: 1;
+        }
+
+        .info-value {
+            flex: 1;
+            text-align: right;
+        }
+
+        .seats-remaining {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .seats-low {
+            color: #e74c3c;
+        }
+
+        /* Webinar Content */
+        .webinar-content-section {
+            padding: 4rem 0;
+        }
+
+        .webinar-content-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+
+        .webinar-main-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .webinar-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .webinar-description h2 {
+            color: var(--primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .webinar-description h3 {
+            color: var(--primary-light);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* What You'll Learn */
+        .learning-points {
+            margin: 2.5rem 0;
+        }
+
+        .learning-points h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .point-list {
+            list-style: none;
+        }
+
+        .point-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .point-item i {
+            color: var(--secondary);
+            margin-top: 0.2rem;
+        }
+
+        /* Speakers Section */
+        .speakers-section {
+            margin: 3rem 0;
+        }
+
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .speaker-card {
+            text-align: center;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .speaker-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .speaker-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            border: 4px solid var(--secondary-light);
+        }
+
+        .speaker-name {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .speaker-title {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .speaker-bio {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .speaker-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .speaker-social a {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .speaker-social a:hover {
+            color: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Sidebar */
+        .webinar-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-card h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-light);
+        }
+
+        /* Share Webinar */
+        .social-share {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .share-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--lighter);
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .share-facebook:hover {
+            background: #3b5998;
+            color: white;
+        }
+
+        .share-twitter:hover {
+            background: #1da1f2;
+            color: white;
+        }
+
+        .share-linkedin:hover {
+            background: #0077b5;
+            color: white;
+        }
+
+        .share-link:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Resources */
+        .resource-list {
+            list-style: none;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+
+        .resource-icon {
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .resource-link {
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .resource-link:hover {
+            color: var(--secondary);
+        }
+
+        /* Related Webinars */
+        .related-webinars {
+            background-color: #f5f9f5;
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-header h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .webinar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .webinar-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .webinar-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .webinar-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .webinar-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .webinar-card:hover .webinar-image img {
+            transform: scale(1.1);
+        }
+
+        .webinar-content {
+            padding: 1.8rem;
+        }
+
+        .webinar-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .webinar-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .webinar-meta i {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .webinar-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .webinar-card p {
+            margin-bottom: 1.8rem;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .read-more:hover {
+            color: var(--secondary-dark);
+            gap: 0.8rem;
+        }
+
+        /* ===== Newsletter CTA ===== */
+        .newsletter-cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+            margin: 5rem 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .newsletter-cta::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .newsletter-cta::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .newsletter-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .newsletter-cta h2 {
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .newsletter-cta p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            gap: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-size: 1rem;
+        }
+
+        .newsletter-form .btn {
+            border-radius: var(--radius-sm);
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            background: var(--darker);
+            color: var(--white);
+            padding: 5rem 0 2rem;
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .footer-logo h2 {
+            font-size: 1.8rem;
+            color: var(--white);
+            margin-bottom: 0;
+        }
+
+        .footer-logo h2 span {
+            color: var(--secondary);
+        }
+
+        .footer-logo p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-links h3, 
+        .footer-social h3, 
+        .footer-newsletter h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.8rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-links h3::after,
+        .footer-social h3::after,
+        .footer-newsletter h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background: var(--secondary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .footer-newsletter input {
+            width: 100%;
+            padding: 0.9rem;
+            margin-bottom: 1rem;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .footer-newsletter input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+            }
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 1024px) {
+            .webinar-hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .webinar-content-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .webinar-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                gap: 0;
+                padding: 6rem 2rem;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                transition: right 0.4s ease;
+            }
+
+            .nav-links li {
+                width: 100%;
+                margin: 0;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                width: 100%;
+            }
+
+            .nav-links a::after {
+                display: none;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .webinar-detail-hero {
+                min-height: auto;
+                padding: 100px 0 2rem;
+            }
+
+            .webinar-main-content {
+                padding: 2rem;
+            }
+
+            .registration-panel {
+                padding: 2rem;
+            }
+
+            .webinar-meta-large {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .speakers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                width: 95%;
+            }
+
+            section {
+                padding: 3.5rem 0;
+            }
+
+            .webinar-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .webinar-image {
+                height: 180px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2.5rem;
+            }
+
+            .footer-links h3::after,
+            .footer-social h3::after,
+            .footer-newsletter h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+
+            .social-share {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="{% url 'home' %}" class="logo">
+                    <div class="logo-img">M</div>
+                    <div class="logo-text">
+                        <h1>MindCraft</h1>
+                        <p>THINKSPACE</p>
+                    </div>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}" class="active">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Webinar Detail Hero -->
+    <section class="webinar-detail-hero {% if webinar.featured_image %}with-image{% endif %}" {% if webinar.featured_image %}style="background-image: url('{{ webinar.featured_image.url }}')"{% endif %}>
+        <div class="container">
+            <div class="webinar-hero-content">
+                <div class="webinar-info">
+                    <span class="webinar-status status-{{ webinar.status }}">
+                        <i class="fas fa-circle"></i>
+                        {{ webinar.status|title }}
+                    </span>
+                    <h1>{{ webinar.title }}</h1>
+                    <p>{{ webinar.description|truncatewords:30 }}</p>
+                    
+                    <div class="webinar-meta-large">
+                        <span><i class="far fa-calendar-alt"></i> {{ webinar.start_datetime|date:"F j, Y" }}</span>
+                        <span><i class="far fa-clock"></i> {{ webinar.start_datetime|time }} ({{ webinar.duration }} minutes)</span>
+                        <span><i class="fas fa-users"></i> {{ webinar.capacity }} seats total</span>
+                        {% if webinar.is_free %}
+                        <span><i class="fas fa-tag"></i> Free Webinar</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="registration-panel">
+                    <div class="webinar-price {% if webinar.is_free %}free{% endif %}">
+                        {% if webinar.is_free %}
+                            Free
+                        {% else %}
+                            ${{ webinar.price }}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="registration-info">
+                        <div class="info-item">
+                            <span class="info-label">Seats Available:</span>
+                            <span class="info-value seats-remaining {% if webinar.seats_remaining < 10 %}seats-low{% endif %}">
+                                {{ webinar.seats_remaining }} of {{ webinar.capacity }}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Date & Time:</span>
+                            <span class="info-value">{{ webinar.start_datetime|date:"M j, Y" }} at {{ webinar.start_datetime|time }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Duration:</span>
+                            <span class="info-value">{{ webinar.duration }} minutes</span>
+                        </div>
+                    </div>
+                    
+                    {% if webinar.status == 'upcoming' %}
+                        {% if user.is_authenticated %}
+                            {% if user_registration %}
+                                <div class="registered-badge">
+                                    <i class="fas fa-check-circle"></i> You are registered for this webinar
+                                </div>
+                                <a href="#" class="btn btn-secondary btn-large" style="margin-top: 1rem;">
+                                    <i class="fas fa-calendar-plus"></i> Add to Calendar
+                                </a>
+                            {% else %}
+                                <a href="{% url 'webinar_register' webinar.slug %}" class="btn btn-primary btn-large">
+                                    Register Now <i class="fas fa-arrow-right"></i>
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{% url 'login' %}?next={% url 'webinar_register' webinar.slug %}" class="btn btn-primary btn-large">
+                                Login to Register <i class="fas fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    {% elif webinar.status == 'live' %}
+                        <a href="{{ webinar.meeting_url }}" class="btn btn-primary btn-large" target="_blank">
+                            Join Live Session <i class="fas fa-video"></i>
+                        </a>
+                    {% elif webinar.status == 'completed' %}
+                        {% if webinar.recording_url %}
+                            <a href="{{ webinar.recording_url }}" class="btn btn-primary btn-large" target="_blank">
+                                Watch Recording <i class="fas fa-play-circle"></i>
+                            </a>
+                        {% else %}
+                            <p>Recording will be available soon</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Webinar Content -->
+    <section class="webinar-content-section">
+        <div class="container">
+            <div class="webinar-content-container">
+                <div class="webinar-main-content">
+                    <div class="webinar-description">
+                        {{ webinar.description|linebreaks }}
+                    </div>
+                    
+                    <!-- What You'll Learn -->
+                    <div class="learning-points">
+                        <h3>What You'll Learn</h3>
+                        <ul class="point-list">
+                            <li class="point-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Understanding traditional African knowledge systems and their relevance today</span>
+                            </li>
+                            <li class="point-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Practical applications of African wisdom in modern contexts</span>
+                            </li>
+                            <li class="point-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Strategies for integrating ancestral knowledge with contemporary practices</span>
+                            </li>
+                            <li class="point-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Tools for personal and community transformation</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Speakers Section -->
+                    <div class="speakers-section">
+                        <h3>Featured Speakers</h3>
+                        <div class="speakers-grid">
+                            {% for speaker in webinar.speakers.all %}
+                            <div class="speaker-card">
+                                {% if speaker.photo %}
+                                <img src="{{ speaker.photo.url }}" alt="{{ speaker.name }}" class="speaker-image">
+                                {% else %}
+                                <div class="speaker-image" style="background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold;">
+                                    {{ speaker.name|first|upper }}
+                                </div>
+                                {% endif %}
+                                <h4 class="speaker-name">{{ speaker.name }}</h4>
+                                <p class="speaker-title">Expert in African Wisdom Traditions</p>
+                                <p class="speaker-bio">{{ speaker.bio|truncatewords:20 }}</p>
+                                <div class="speaker-social">
+                                    {% if speaker.twitter %}
+                                    <a href="{{ speaker.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                                    {% endif %}
+                                    {% if speaker.linkedin %}
+                                    <a href="{{ speaker.linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                    {% endif %}
+                                    {% if speaker.website %}
+                                    <a href="{{ speaker.website }}" target="_blank"><i class="fas fa-globe"></i></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="webinar-sidebar">
+                    <!-- Share Webinar -->
+                    <div class="sidebar-card">
+                        <h3>Share This Webinar</h3>
+                        <div class="social-share">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="share-btn share-facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?text={{ webinar.title }}&url={{ request.build_absolute_uri }}" target="_blank" class="share-btn share-twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ webinar.title }}&summary={{ webinar.description }}" target="_blank" class="share-btn share-linkedin">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <button onclick="copyToClipboard('{{ request.build_absolute_uri }}')" class="share-btn share-link">
+                                <i class="fas fa-link"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Resources -->
+                    <div class="sidebar-card">
+                        <h3>Resources</h3>
+                        <ul class="resource-list">
+                            {% for resource in webinar.resources.all %}
+                            <li class="resource-item">
+                                <i class="fas fa-file-{% if resource.resource_type == 'slide' %}powerpoint{% elif resource.resource_type == 'video' %}video{% else %}download{% endif %} resource-icon"></i>
+                                <a href="{% if resource.file %}{{ resource.file.url }}{% else %}{{ resource.url }}{% endif %}" class="resource-link" target="_blank">
+                                    {{ resource.title }}
+                                </a>
+                            </li>
+                            {% empty %}
+                            <li class="resource-item">
+                                <i class="fas fa-info-circle resource-icon"></i>
+                                <span>Resources will be available after the webinar</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <!-- Host Info -->
+                    <div class="sidebar-card">
+                        <h3>Hosted By</h3>
+                        <div class="host-info">
+                            <p><strong>MindCraft ThinkSpace</strong></p>
+                            <p>Dedicated to bringing African wisdom to modern minds through transformative learning experiences.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Webinars -->
+    {% if related_webinars %}
+    <section class="related-webinars">
+        <div class="container">
+            <div class="section-header">
+                <h2>Related <span>Webinars</span></h2>
+                <p>You might also be interested in these webinars</p>
+            </div>
+            
+            <div class="webinar-grid">
+                {% for related_webinar in related_webinars %}
+                <article class="webinar-card">
+                    <div class="webinar-image">
+                        <img src="{{ related_webinar.featured_image.url }}" alt="{{ related_webinar.title }}" loading="lazy">
+                    </div>
+                    <div class="webinar-content">
+                        <div class="webinar-meta">
+                            <span><i class="far fa-calendar-alt"></i> {{ related_webinar.start_datetime|date:"M d, Y" }}</span>
+                            <span><i class="far fa-clock"></i> {{ related_webinar.start_datetime|time }}</span>
+                        </div>
+                        <h3>{{ related_webinar.title }}</h3>
+                        <p>{{ related_webinar.description|truncatewords:15 }}</p>
+                        <a href="{% url 'webinar_detail' related_webinar.slug %}" class="read-more">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Newsletter CTA -->
+    <section class="newsletter-cta">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Never Miss a Webinar</h2>
+                <p>Subscribe to our newsletter to receive updates on upcoming webinars, exclusive content, and early registration opportunities.</p>
+                <form class="newsletter-form" method="post" action="{% url 'newsletter_subscribe' %}">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Enter your email address" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><span>MindCraft</span> ThinkSpace</h2>
+                    <p>...it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'home' %}">Home</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'blog_list' %}">Blog</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'about' %}">About Us</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'login' %}">Login</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Webinar Topics</h3>
+                    <ul>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'webinar_list' %}?topic=leadership">Leadership</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'webinar_list' %}?topic=technology">Technology</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'webinar_list' %}?topic=education">Education</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'webinar_list' %}?topic=culture">Culture</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'webinar_list' %}?topic=business">Business</a></li>
+                        <li><i class="fas fa-arrow-right"></i><a href="{% url 'webinar_list' %}">All Topics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria </p>
+                    <p><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.africa</p>
+                    <p><i class="fas fa-phone-alt"></i> +234 123 456 789</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MindCraft ThinkSpace. All Rights Reserved. | Designed with African Wisdom</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const header = document.getElementById('header');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenu.classList.toggle('fa-times');
+            mobileMenu.classList.toggle('fa-bars');
+        });
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Copy to Clipboard Function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // Countdown Timer (for upcoming webinars)
+        {% if webinar.status == 'upcoming' %}
+        function updateCountdown() {
+            const webinarDate = new Date("{{ webinar.start_datetime|date:'Y-m-d H:i:s' }}");
+            const now = new Date();
+            const diff = webinarDate - now;
+            
+            if (diff <= 0) {
+                document.getElementById('countdown').innerHTML = 'Webinar has started!';
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown').innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+        {% endif %}
+
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        mobileMenu.classList.toggle('fa-times');
+                        mobileMenu.classList.toggle('fa-bars');
+                    }
+                }
+            });
+        });
+
+        // Animation on Scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.speaker-card, .webinar-card');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+        
+        // Initialize elements for animation
+        document.querySelectorAll('.speaker-card, .webinar-card').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        });
+        
+        // Run once on page load
+        window.addEventListener('load', animateOnScroll);
+        
+        // Run on scroll
+        window.addEventListener('scroll', animateOnScroll);
+    </script>
+</body>
+</html>

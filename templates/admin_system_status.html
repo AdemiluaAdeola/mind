@@ -1,0 +1,118 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="page-header">
+        <h1>System Status</h1>
+    </div>
+
+    <div class="form-grid">
+        <!-- Database Status -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title">Database</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <span class="status-badge status-published">Online</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Size</label>
+                        <span>{{ system_status.database.size }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tables</label>
+                        <span>{{ system_status.database.tables }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Storage Status -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title">Storage</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Used</label>
+                        <span>{{ system_status.storage.used }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Total</label>
+                        <span>{{ system_status.storage.total }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Usage</label>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ system_status.storage.percent_used }}%;">
+                                {{ system_status.storage.percent_used }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Metrics -->
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Performance Metrics</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Response Time</label>
+                    <span>{{ system_status.performance.response_time }}</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Uptime</label>
+                    <span>{{ system_status.performance.uptime }}</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Load Average</label>
+                    <span>{{ system_status.performance.load_average }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Status -->
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Backup Status</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Last Backup</label>
+                    <span>{{ system_status.backups.last_backup|date:"M d, Y H:i" }}</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Backup Size</label>
+                    <span>{{ system_status.backups.backup_size }}</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Auto Backup</label>
+                    <span class="status-badge {% if system_status.backups.auto_backup %}status-published{% else %}status-draft{% endif %}">
+                        {% if system_status.backups.auto_backup %}Enabled{% else %}Disabled{% endif %}
+                    </span>
+                </div>
+            </div>
+            <div class="action-buttons" style="margin-top: 1.5rem;">
+                <button class="btn btn-primary">
+                    <i class="fas fa-download"></i> Backup Now
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-cog"></i> Configure Backups
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

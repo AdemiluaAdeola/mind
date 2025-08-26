@@ -1,0 +1,399 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn about MindCraft ThinkSpace - Our mission to transform mindsets, nurture creativity and drive innovation across Africa and beyond">
+    <title>MindCraft ThinkSpace - About Us</title>
+    
+    <!-- Preload resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" as="style">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="/" class="logo">
+                    <div class="logo-img">M</div>
+                    <div class="logo-text">
+                        <h1>MindCraft</h1>
+                        <p>THINKSPACE</p>
+                    </div>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/webinars/">Webinars</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/about/" class="active">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <button class="mobile-menu" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <h1>About MindCraft ThinkSpace</h1>
+                <p>Engineering mindset transformation, nurturing creativity, and driving meaningful innovation</p>
+                <div class="hero-breadcrumbs">
+                    <a href="/">Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>About Us</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="about-mission">
+        <div class="container">
+            <div class="mission-grid">
+                <div class="mission-content">
+                    <h2>Our Evolution</h2>
+                    <p>Founded in 2020 as MindCraft Africa, we've grown into a global human capital development brand while maintaining our African roots. Our journey began with a simple belief: "If the mind is winning, the nature will deliver the trophies." This philosophy continues to guide us as we expand our impact.</p>
+                    <p>From our origins in Nairobi, we've built a platform that reaches thinkers, creators, and innovators across Africa and regions with low Human Development Index (HDI). Our community now spans continents, united by a shared commitment to mindset transformation and creative problem-solving.</p>
+                    <div class="mission-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">15K+</div>
+                            <div class="stat-label">Transformed Minds</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">200+</div>
+                            <div class="stat-label">Innovation Projects</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">Countries Reached</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mission-image">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Our global team collaborating" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision & Mission Section -->
+    <section class="about-values" style="background-color: var(--white);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our <span>Purpose</span></h2>
+                <p>The driving force behind everything we do at MindCraft ThinkSpace</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card" style="background-color: var(--primary); color: var(--white);">
+                    <div class="value-icon" style="background-color: var(--accent);">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 style="color: var(--white);">Vision</h3>
+                    <p style="color: rgba(255,255,255,0.9);">To see the rebirth of innovative ideologies, inspiring global impact through mindset transformation, creative development, and human capital empowerment from Africa to the world.</p>
+                </div>
+                
+                <div class="value-card" style="background-color: var(--secondary); color: var(--white);">
+                    <div class="value-icon" style="background-color: var(--accent);">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 style="color: var(--white);">Mission</h3>
+                    <p style="color: rgba(255,255,255,0.9);">To provide a dynamic space where we engineer mindset transformation, nurture creativity and empower individuals with the tools and platforms to think differently, create meaningfully, and drive innovations that shape lives, communities and the world.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section class="about-methodology">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our <span>Methodology</span></h2>
+                <p>The transformative cycle that drives personal and professional growth</p>
+            </div>
+            
+            <div class="methodology-steps">
+                <div class="methodology-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Think</h3>
+                        <p>We provoke deep thinking by challenging limiting beliefs, expanding perspectives, and nurturing clarity. We teach individuals how to rewire their thinking for progress and purpose.</p>
+                        <p class="step-quote">"Mindset is the birthplace of every transformation."</p>
+                    </div>
+                </div>
+                
+                <div class="methodology-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Create</h3>
+                        <p>We foster creativity by encouraging experimentation, expression, and design thinking. We provide tools, mentorship, and safe spaces for ideas to emerge and evolve.</p>
+                        <p class="step-quote">"True creativity is the organized application of thought."</p>
+                    </div>
+                </div>
+                
+                <div class="methodology-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Innovate</h3>
+                        <p>We translate ideas into impact. Through coaching, community, and real-world application, we guide individuals to develop solutions that are relevant, sustainable, and scalable.</p>
+                        <p class="step-quote">"Innovation is where relevance meets reinvention."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Focus Areas Section -->
+    <section class="about-focus">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our <span>Focus Areas</span></h2>
+                <p>Key domains where we apply our transformative methodology</p>
+            </div>
+            
+            <div class="focus-grid">
+                <div class="focus-card">
+                    <div class="focus-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Mindset Engineering</h3>
+                    <p>Reshaping how people think, perceive, and approach challenges to unlock their full potential.</p>
+                </div>
+                
+                <div class="focus-card">
+                    <div class="focus-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Creative Capacity Development</h3>
+                    <p>Cultivating the confidence and competence to turn ideas into action and solutions.</p>
+                </div>
+                
+                <div class="focus-card">
+                    <div class="focus-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Innovation Activation</h3>
+                    <p>Turning raw potential into tangible solutions that drive personal, social, and global change.</p>
+                </div>
+                
+                <div class="focus-card">
+                    <div class="focus-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Human Capital Empowerment</h3>
+                    <p>Strengthening individuals to lead, influence, and deliver impact in diverse environments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="about-team">
+        <div class="container">
+            <div class="section-header">
+                <h2>Meet Our <span>Leadership</span></h2>
+                <p>The passionate team driving MindCraft ThinkSpace forward</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{% static 'images/olanipekun.jpg' %}" alt="Olanipekun Opeoluwa" loading="lazy">
+                        <div class="social-links">
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Olanipekun Opeoluwa</h3>
+                        <p class="title">Founder & Lead Strategist</p>
+                        <p class="bio">A Personal Development and Mindset Coach, and dynamic Public Speaker who believes real success begins with the mind. Convener of "Winning From The Mind," a continent-wide movement focused on unlocking human potential.</p>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{% static 'images/joy.jpg' %}" alt="Joy Salami" loading="lazy">
+                        <div class="social-links">
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Joy Salami</h3>
+                        <p class="title">Chief Operating Officer</p>
+                        <p class="bio">Dynamic leader and prolific writer known as "Me2U" and "Pregnant Writer." Passionate about purpose discovery and author of "The Path." Brings construction industry experience and commitment to SDGs 4 & 5.</p>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="{% static 'images/samuel.jpg' %}" alt="Samuel O. Akanbi" loading="lazy">
+                        <div class="social-links">
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3>Samuel O. Akanbi</h3>
+                        <p class="title">Chief Strategy & Innovation Officer</p>
+                        <p class="bio">Licensed Pharmacist and supply chain expert with Distinction in MSc Logistics. Specializes in optimizing systems for efficiency and measurable impact. Grounded in systems thinking and forward-looking strategies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="about-community">
+        <div class="container">
+            <div class="community-grid">
+                <div class="community-content">
+                    <h2>Join Our Global Movement</h2>
+                    <p>MindCraft ThinkSpace is more than a platform - it's a worldwide community of professionals committed to mindset transformation, creative development, and meaningful innovation.</p>
+                    
+                    <ul class="community-benefits">
+                        <li><i class="fas fa-check"></i> Access to mindset engineering workshops</li>
+                        <li><i class="fas fa-check"></i> Creative capacity building programs</li>
+                        <li><i class="fas fa-check"></i> Innovation labs and hackathons</li>
+                        <li><i class="fas fa-check"></i> Global networking opportunities</li>
+                        <li><i class="fas fa-check"></i> Mentorship from industry leaders</li>
+                    </ul>
+                    
+                    <div class="community-cta">
+                        <a href="{% url 'webinar_list' %}" class="btn btn-primary">
+                            Explore Webinars <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="{% url 'blog_list' %}" class="btn btn-secondary">
+                            Read Our Posts <i class="fas fa-user-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="community-image">
+                    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80" alt="Global community event" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><span>MindCraft</span> ThinkSpace</h2>
+                    <p>...it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="webinar.html">Webinars</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="about.html" class="active">About</a></li>
+                        <li><a href="admin.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Mindset Tools</a></li>
+                        <li><a href="#">Innovation Kits</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.com</li>
+                        <li><i class="fas fa-phone"></i> +254 700 123456</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya (HQ)</li>
+                        <li><i class="fas fa-globe"></i> Global Presence</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2024</span> MindCraft ThinkSpace. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="/privacy/">Privacy Policy</a>
+                    <a href="/terms/">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                this.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+            });
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+            
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Animate elements on scroll
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.value-card, .team-member, .methodology-step, .focus-card');
+                const windowHeight = window.innerHeight;
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const animationPoint = windowHeight - 100;
+                    
+                    if (elementPosition < animationPoint) {
+                        element.classList.add('animate');
+                    }
+                });
+            };
+            
+            // Run on load and scroll
+            window.addEventListener('load', animateOnScroll);
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>

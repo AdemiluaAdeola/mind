@@ -1,0 +1,306 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>Webinar Details: {{ webinar.title }}</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="{% url 'admin_webinar_management' %}">Webinars</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>{{ webinar.title|truncatewords:3 }}</span>
+            </div>
+        </div>
+        <div>
+            <a href="{% url 'admin_webinar_edit' webinar.pk %}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit Webinar
+            </a>
+        </div>
+    </div>
+
+    <div class="form-grid">
+        <!-- Webinar Info Card -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title">Webinar Information</h2>
+            </div>
+            <div class="card-body">
+                {% if webinar.featured_image %}
+                <div style="margin-bottom: 1.5rem; text-align: center;">
+                    <img src="{{ webinar.featured_image.url }}" alt="{{ webinar.title }}" style="max-width: 100%; height: auto; border-radius: var(--radius);">
+                </div>
+                {% endif %}
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <p>{{ webinar.title }}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <span class="status-badge status-{{ webinar.status }}">{{ webinar.status|title }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <p>{{ webinar.description|linebreaks }}</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Start Date & Time</label>
+                        <p>{{ webinar.start_datetime|date:"M d, Y H:i" }}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Duration</label>
+                        <p>{{ webinar.duration }} minutes</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Host</label>
+                        <p>{{ webinar.host.get_full_name|default:webinar.host.username }}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Price</label>
+                        <p>{% if webinar.is_free %}Free{% else %}₦{{ webinar.price }}{% endif %}</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Capacity</label>
+                        <p>{{ webinar.capacity }} attendees</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Seats Remaining</label>
+                        <p>{{ seats_remaining }} seats</p>
+                    </div>
+                </div>
+
+                {% if webinar.meeting_url %}
+                <div class="form-group">
+                    <label class="form-label">Meeting URL</label>
+                    <p><a href="{{ webinar.meeting_url }}" target="_blank">{{ webinar.meeting_url|truncatechars:40 }}</a></p>
+                </div>
+                {% endif %}
+
+                {% if webinar.recording_url %}
+                <div class="form-group">
+                    <label class="form-label">Recording URL</label>
+                    <p><a href="{{ webinar.recording_url }}" target="_blank">{{ webinar.recording_url|truncatechars:40 }}</a></p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Statistics Card -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title">Registration Statistics</h2>
+            </div>
+            <div class="card-body">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon posts">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-number">{{ confirmed_registrations }}</div>
+                            <div class="stat-label">Confirmed Registrations</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon published">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-number">{{ attended_registrations }}</div>
+                            <div class="stat-label">Attended</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Registration Status</label>
+                    <div class="progress" style="height: 20px; margin-bottom: 1rem; border-radius: var(--radius);">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: {% widthratio confirmed_registrations webinar.capacity 100 %}%;"
+                             aria-valuenow="{{ confirmed_registrations }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="{{ webinar.capacity }}">
+                            {% widthratio confirmed_registrations webinar.capacity 100 %}%
+                        </div>
+                    </div>
+                    <small>{{ confirmed_registrations }} of {{ webinar.capacity }} seats filled</small>
+                </div>
+
+                <div class="action-buttons" style="margin-top: 1.5rem;">
+                    <a href="{% url 'admin_webinar_registrations' webinar.pk %}" class="btn btn-primary">
+                        <i class="fas fa-list"></i> View Registrations
+                    </a>
+                    <a href="{% url 'admin_webinar_resources' webinar.pk %}" class="btn btn-secondary">
+                        <i class="fas fa-file"></i> Manage Resources
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Speakers Section -->
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Speakers</h2>
+        </div>
+        <div class="card-body">
+            {% if speakers %}
+            <div class="speakers-grid">
+                {% for speaker in speakers %}
+                <div class="speaker-card">
+                    {% if speaker.photo %}
+                    <img src="{{ speaker.photo.url }}" alt="{{ speaker.name }}" class="speaker-photo">
+                    {% else %}
+                    <div class="speaker-photo placeholder">
+                        {{ speaker.name|first|upper }}
+                    </div>
+                    {% endif %}
+                    <div class="speaker-info">
+                        <h4>{{ speaker.name }}</h4>
+                        <p>{{ speaker.bio|truncatewords:20 }}</p>
+                        {% if speaker.website or speaker.twitter or speaker.linkedin %}
+                        <div class="speaker-social">
+                            {% if speaker.website %}
+                            <a href="{{ speaker.website }}" target="_blank"><i class="fas fa-globe"></i></a>
+                            {% endif %}
+                            {% if speaker.twitter %}
+                            <a href="https://twitter.com/{{ speaker.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                            {% endif %}
+                            {% if speaker.linkedin %}
+                            <a href="{{ speaker.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-center">No speakers assigned to this webinar.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Quick Actions</h2>
+        </div>
+        <div class="card-body">
+            <div class="action-buttons">
+                <form method="POST" action="{% url 'update_webinar_status' webinar.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="{% if webinar.status == 'live' %}completed{% else %}live{% endif %}">
+                    <button type="submit" class="btn {% if webinar.status == 'live' %}btn-warning{% else %}btn-success{% endif %}">
+                        <i class="fas {% if webinar.status == 'live' %}fa-stop{% else %}fa-play{% endif %}"></i>
+                        {% if webinar.status == 'live' %}End Webinar{% else %}Start Webinar{% endif %}
+                    </button>
+                </form>
+                
+                <a href="mailto:?subject=Webinar: {{ webinar.title }}&body=Join our webinar: {{ webinar.title }}%0D%0A%0D%0ADate: {{ webinar.start_datetime|date:'M d, Y H:i' }}%0D%0A%0D%0ARegister here: {{ request.build_absolute_uri }}}" class="btn btn-info">
+                    <i class="fas fa-envelope"></i> Email Invite
+                </a>
+                
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-download"></i> Export Registrations
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.speakers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.speaker-card {
+    background: var(--lighter);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.speaker-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+}
+
+.speaker-photo.placeholder {
+    background: var(--secondary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.speaker-info h4 {
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.speaker-info p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.speaker-social {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.speaker-social a {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.speaker-social a:hover {
+    color: var(--secondary);
+}
+
+.progress {
+    background: var(--light);
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: var(--success);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,37 @@
+# Core Django
+Django==4.2.7
+python-dotenv==1.0.0  # For environment variables
+
+# Database
+psycopg2-binary==2.9.9  # PostgreSQL adapter (or use mysqlclient for MySQL)
+
+# Blog-specific packages
+django-ckeditor==6.7.0  # Rich text editor
+django-taggit==4.0.0  # Tagging functionality
+django-summernote==0.8.20.0  # Alternative rich text editor
+Pillow==10.0.1  # Image processing
+
+# User authentication & authorization
+django-allauth==0.58.1  # Social authentication
+django-crispy-forms==2.1  # Form rendering
+crispy-bootstrap5==2023.10  # Bootstrap 5 templates
+
+# SEO & optimization
+#django-seo-js==2.1.0  # SEO tools
+django-compressor==4.1  # Static file compression
+#django-sitemaps==3.0.0  # Sitemap generation
+
+# Production
+gunicorn==21.2.0  # WSGI server
+whitenoise==6.6.0  # Static files
+django-storages==1.14.0  # For S3/cloud storage
+boto3==1.28.57  # AWS SDK
+
+# Development tools
+django-debug-toolbar==4.1.0  # Debugging
+django-extensions==3.2.3  # Useful extensions
+ipython==8.14.0  # Enhanced shell
+
+# Country support
+django-countries==7.5
+

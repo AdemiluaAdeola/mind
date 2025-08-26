@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<meta name="description" content="Login to your MindCraft ThinkSpace account to access exclusive content and webinars">
+{% endblock %}
+
+{% block title %}Login | MindCraft ThinkSpace{% endblock %}
+
+{% block styles %}
+<!-- Preload critical resources -->
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+</noscript>
+
+<style>
+    /* ===== Login Section Styles ===== */
+    .login-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 4rem 0;
+    }
+
+    .login-container {
+        max-width: 500px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .login-card {
+        background: var(--white);
+        border-radius: var(--radius);
+        padding: 3rem 2.5rem;
+        box-shadow: var(--shadow-md);
+        text-align: center;
+    }
+
+    .login-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .login-header h1 {
+        color: var(--primary);
+        margin-bottom: 1rem;
+    }
+
+    .login-header p {
+        color: var(--text-light);
+    }
+
+    .login-form .form-group {
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+
+    .login-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--dark);
+    }
+
+    .login-form input {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        border: 1px solid var(--gray);
+        border-radius: var(--radius-sm);
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    .login-form input:focus {
+        border-color: var(--secondary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2);
+    }
+
+    .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .remember-me input {
+        width: auto;
+    }
+
+    .forgot-password {
+        color: var(--secondary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: var(--transition);
+    }
+
+    .forgot-password:hover {
+        text-decoration: underline;
+    }
+
+    /* ===== Buttons ===== */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        border-radius: var(--radius);
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+        width: 100%;
+    }
+
+    .btn-primary {
+        background: var(--secondary);
+        color: var(--white);
+        box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+    }
+
+    .btn-primary:hover {
+        background: var(--secondary-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
+    }
+
+    .btn-google {
+        background: var(--white);
+        color: var(--text);
+        border: 1px solid var(--gray);
+        margin-bottom: 1rem;
+    }
+
+    .btn-google:hover {
+        background: var(--lighter);
+        border-color: var(--text-light);
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 1.5rem 0;
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid var(--gray);
+    }
+
+    .divider::before {
+        margin-right: 1rem;
+    }
+
+    .divider::after {
+        margin-left: 1rem;
+    }
+
+    .register-link {
+        margin-top: 1.5rem;
+        color: var(--text-light);
+        font-size: 0.95rem;
+    }
+
+    .register-link a {
+        color: var(--secondary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* ===== Responsive Design ===== */
+    @media (max-width: 768px) {
+        .login-card {
+            padding: 2.5rem 1.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .login-section {
+            padding: 2rem 0;
+        }
+
+        .remember-forgot {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Login Section -->
+<section class="login-section">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>Welcome Back</h1>
+                <p>Login to access your account and continue your learning journey</p>
+            </div>
+
+            <form class="login-form" method="POST">
+                {% csrf_token %}
+                
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required minlength="8">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+
+                <p class="register-link">
+                    Don't have an account? <a href="{% url 'register' %}">Register here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Login form specific scripts if needed
+    document.addEventListener('DOMContentLoaded', function() {
+        // Any login-specific JavaScript can go here
+    });
+</script>
+{% endblock %}

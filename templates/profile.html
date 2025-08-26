@@ -1,0 +1,817 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MindCraft ThinkSpace - User Profile">
+    <title>My Profile - MindCraft ThinkSpace</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" as="style">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* Profile-specific styles */
+        .profile-section {
+            padding: 3rem 0;
+            background-color: var(--lighter);
+        }
+        
+        .profile-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+        
+        .profile-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        
+        .profile-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-image {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-light);
+        }
+        
+        .profile-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: grid;
+            place-items: center;
+            color: var(--white);
+            font-size: 3rem;
+            border: 4px solid var(--primary-light);
+        }
+        
+        .edit-profile-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            background: var(--secondary);
+            color: var(--white);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .edit-profile-btn:hover {
+            background: var(--secondary-dark);
+            transform: scale(1.1);
+        }
+        
+        .profile-info h2 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-size: 1.5rem;
+        }
+        
+        .profile-email {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .profile-bio {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: var(--text);
+            font-style: italic;
+            padding: 0 1rem;
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--light);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .profile-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .profile-tabs {
+            margin-top: 0;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--light);
+            margin-bottom: 2rem;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .nav-item {
+            margin-bottom: -2px;
+        }
+        
+        .nav-link {
+            border: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-light);
+            position: relative;
+            background: transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+        }
+        
+        .nav-link.active {
+            color: var(--secondary);
+            background: transparent;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--secondary);
+        }
+        
+        .nav-link:hover:not(.active) {
+            color: var(--primary);
+            background: rgba(13, 46, 20, 0.05);
+        }
+        
+        .tab-content {
+            width: 100%;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .webinar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+            gap: 1.5rem;
+        }
+        
+        .webinar-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            border: 1px solid var(--light);
+        }
+
+        .webinar-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .webinar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .webinar-card-img {
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .webinar-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .webinar-card:hover .webinar-card-img img {
+            transform: scale(1.05);
+        }
+
+        .webinar-date {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--secondary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .webinar-status-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+        
+        .webinar-status-badge:not(.past) {
+            background: var(--secondary);
+            color: var(--white);
+        }
+        
+        .webinar-status-badge.past {
+            background: var(--text-light);
+            color: var(--white);
+        }
+        
+        .webinar-card-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .webinar-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+        
+        .webinar-card-meta i {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        .webinar-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+            flex: 1;
+            font-size: 1.2rem;
+        }
+        
+        .webinar-card p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        .registration-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .registration-status.confirmed {
+            background: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+        }
+        
+        .webinar-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 1rem;
+            gap: 1rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-light);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--gray);
+            opacity: 0.7;
+        }
+        
+        .empty-state h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state p {
+            margin-bottom: 2rem;
+        }
+        
+        /* Responsive Profile */
+        @media (max-width: 992px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-sidebar {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+                border-bottom: none;
+            }
+            
+            .nav-link {
+                border-radius: var(--radius-sm);
+                margin-bottom: 0.5rem;
+                border: 1px solid var(--light);
+            }
+            
+            .nav-link.active {
+                border-color: var(--secondary);
+            }
+            
+            .nav-link.active::after {
+                display: none;
+            }
+            
+            .webinar-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .registration-status {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .profile-card {
+                padding: 1.5rem;
+            }
+            
+            .profile-stats {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .webinar-card {
+                flex-direction: column;
+            }
+            
+            .webinar-card .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="{% url 'home' %}" class="logo">
+                    <div class="logo-img">M</div>
+                    <div class="logo-text">
+                        <h1>MindCraft</h1>
+                        <p>THINKSPACE</p>
+                    </div>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}" class="active">Profile</a></li>
+                        {% if user.is_staff %}
+                            <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                        {% endif %}  
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <button class="mobile-menu" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>My Profile</h1>
+            <p>Manage your account, webinars, and learning journey</p>
+            <div class="hero-breadcrumbs">
+                <a href="{% url 'home' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Profile</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-container">
+                <!-- Profile Sidebar -->
+                <div class="profile-sidebar">
+                    <div class="profile-card">
+                        <div class="profile-image">
+                            {% if profile.profile_picture %}
+                                <img src="{{ profile.profile_picture.url }}" alt="{{ user.get_full_name|default:user.username }}">
+                            {% else %}
+                                <div class="profile-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            {% endif %}
+                            <a href="{% url 'edit_profile' %}" class="edit-profile-btn">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                        <div class="profile-info">
+                            <h2>{{ user.get_full_name|default:user.username }}</h2>
+                            <p class="profile-email">{{ user.email }}</p>
+                            <p class="profile-bio">
+                                {% if profile.bio %}
+                                    {{ profile.bio }}
+                                {% else %}
+                                    No bio added yet. <a href="{% url 'edit_profile' %}">Add one now</a>.
+                                {% endif %}
+                            </p>
+                            <div class="profile-stats">
+                                <div class="stat">
+                                    <span class="stat-number">{{ registered_webinars.count }}</span>
+                                    <span class="stat-label">Registered</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-number">{{ attended_webinars.count }}</span>
+                                    <span class="stat-label">Attended</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-number">{{ user.date_joined|timesince }}</span>
+                                    <span class="stat-label">Member</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <a href="{% url 'edit_profile' %}" class="btn btn-primary btn-full">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-secondary btn-full">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Profile Content -->
+                <div class="profile-content">
+                    <!-- Webinar Tabs -->
+                    <div class="profile-tabs">
+                        <ul class="nav-tabs" id="profileTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="registered-tab" data-target="#registered" type="button" role="tab" aria-controls="registered" aria-selected="true">
+                                    Registered Webinars ({{ registered_webinars.count }})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="attended-tab" data-target="#attended" type="button" role="tab" aria-controls="attended" aria-selected="false">
+                                    Attended Webinars ({{ attended_webinars.count }})
+                                </button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content" id="profileTabsContent">
+                            <!-- Registered Webinars -->
+                            <div class="tab-pane active" id="registered" role="tabpanel" aria-labelledby="registered-tab">
+                                {% if registered_webinars %}
+                                    <div class="webinar-grid">
+                                        {% for registration in registered_webinars %}
+                                            <div class="webinar-card">
+                                                <div class="webinar-card-img">
+                                                    {% if registration.webinar.featured_image %}
+                                                        <img src="{{ registration.webinar.featured_image.url }}" alt="{{ registration.webinar.title }}" loading="lazy">
+                                                    {% else %}
+                                                        <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="{{ registration.webinar.title }}" loading="lazy">
+                                                    {% endif %}
+                                                    <div class="webinar-date">
+                                                        <i class="far fa-calendar-alt"></i>
+                                                        {{ registration.webinar.start_datetime|date:"M d, Y" }}
+                                                    </div>
+                                                    <div class="webinar-status-badge {% if registration.webinar.status == 'completed' %}past{% endif %}">
+                                                        {{ registration.webinar.status|title }}
+                                                    </div>
+                                                </div>
+                                                <div class="webinar-card-content">
+                                                    <div class="webinar-card-meta">
+                                                        <span><i class="far fa-clock"></i> {{ registration.webinar.duration }} mins</span>
+                                                        <span><i class="fas fa-users"></i> {{ registration.webinar.registrations.count }} registered</span>
+                                                    </div>
+                                                    <h3>{{ registration.webinar.title }}</h3>
+                                                    <p>{{ registration.webinar.description|truncatewords:20 }}</p>
+                                                    <div class="webinar-actions">
+                                                        {% if registration.webinar.status == 'upcoming' %}
+                                                            <a href="{% url 'webinar_detail' registration.webinar.slug %}" class="btn btn-primary">
+                                                                View Details
+                                                            </a>
+                                                            <span class="registration-status confirmed">
+                                                                <i class="fas fa-check-circle"></i> Confirmed
+                                                            </span>
+                                                        {% elif registration.webinar.status == 'completed' %}
+                                                            <a href="{% url 'webinar_detail' registration.webinar.slug %}" class="btn btn-secondary">
+                                                                View Recording
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ registration.webinar.meeting_url }}" target="_blank" class="btn btn-primary">
+                                                                Join Now
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="empty-state">
+                                        <i class="fas fa-video-slash"></i>
+                                        <h3>No Webinars Registered</h3>
+                                        <p>You haven't registered for any webinars yet. Browse our upcoming events to get started.</p>
+                                        <a href="{% url 'webinar_list' %}" class="btn btn-primary">
+                                            Browse Webinars
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Attended Webinars -->
+                            <div class="tab-pane" id="attended" role="tabpanel" aria-labelledby="attended-tab">
+                                {% if attended_webinars %}
+                                    <div class="webinar-grid">
+                                        {% for webinar in attended_webinars %}
+                                            <div class="webinar-card">
+                                                <div class="webinar-card-img">
+                                                    {% if webinar.featured_image %}
+                                                        <img src="{{ webinar.featured_image.url }}" alt="{{ webinar.title }}" loading="lazy">
+                                                    {% else %}
+                                                        <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="{{ webinar.title }}" loading="lazy">
+                                                    {% endif %}
+                                                    <div class="webinar-date">
+                                                        <i class="far fa-calendar-alt"></i>
+                                                        {{ webinar.start_datetime|date:"M d, Y" }}
+                                                    </div>
+                                                    <div class="webinar-status-badge past">
+                                                        Completed
+                                                    </div>
+                                                </div>
+                                                <div class="webinar-card-content">
+                                                    <div class="webinar-card-meta">
+                                                        <span><i class="far fa-clock"></i> {{ webinar.duration }} mins</span>
+                                                        <span><i class="fas fa-user-check"></i> Attended</span>
+                                                    </div>
+                                                    <h3>{{ webinar.title }}</h3>
+                                                    <p>{{ webinar.description|truncatewords:20 }}</p>
+                                                    <div class="webinar-actions">
+                                                        <a href="{% url 'webinar_detail' webinar.slug %}" class="btn btn-secondary">
+                                                            View Resources
+                                                        </a>
+                                                        {% if webinar.recording_url %}
+                                                            <a href="{{ webinar.recording_url }}" target="_blank" class="btn btn-primary">
+                                                                Watch Recording
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="empty-state">
+                                        <i class="fas fa-user-clock"></i>
+                                        <h3>No Webinars Attended Yet</h3>
+                                        <p>Your attended webinars will appear here after you join and complete webinar sessions.</p>
+                                        <a href="{% url 'webinar_list' %}" class="btn btn-primary">
+                                            Browse Webinars
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><span>MindCraft</span> ThinkSpace</h2>
+                    <p>...it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                        <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'profile' %}">Profile</a></li>
+                            {% if user.is_staff %}
+                                <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li><a href="{% url 'login' %}">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Webinar Topics</h3>
+                    <ul>
+                        <li><a href="{% url 'webinar_list' %}?topic=leadership">Leadership</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=technology">Technology</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=education">Education</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=culture">Culture</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=business">Business</a></li>
+                        <li><a href="{% url 'webinar_list' %}">All Topics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria </li>
+                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.africa</li>
+                        <li><i class="fas fa-phone-alt"></i> +234 123 456 789</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2024</span> MindCraft ThinkSpace. All Rights Reserved. | Designed with African Wisdom</p>
+                <div class="footer-legal">
+                    <a href="/privacy/">Privacy Policy</a>
+                    <a href="/terms/">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                this.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+            });
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+            
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Simple tab functionality
+            const tabButtons = document.querySelectorAll('.nav-link');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons and panes
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Show corresponding pane
+                    const targetPane = document.querySelector(this.getAttribute('data-target'));
+                    targetPane.classList.add('active');
+                });
+            });
+            
+            // Animate elements on scroll
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.webinar-card');
+                const windowHeight = window.innerHeight;
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const animationPoint = windowHeight - 100;
+                    
+                    if (elementPosition < animationPoint) {
+                        element.classList.add('animate');
+                    }
+                });
+            };
+            
+            // Run on load and scroll
+            window.addEventListener('load', animateOnScroll);
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>

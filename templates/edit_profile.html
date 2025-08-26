@@ -1,0 +1,527 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MindCraft ThinkSpace - Edit Profile">
+    <title>Edit Profile - MindCraft ThinkSpace</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" as="style">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* Edit Profile Specific Styles */
+        .edit-profile-section {
+            padding: 3rem 0;
+            background-color: var(--lighter);
+            min-height: calc(100vh - 300px);
+        }
+        
+        .edit-profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .edit-profile-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .edit-profile-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .edit-profile-header h1 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .edit-profile-header p {
+            color: var(--text-light);
+        }
+        
+        .profile-image-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-image-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-image-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .profile-image-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: grid;
+            place-items: center;
+            color: var(--white);
+            font-size: 3.5rem;
+            border: 4px solid var(--primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .image-upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            color: var(--white);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            border: none;
+        }
+        
+        .image-upload-btn:hover {
+            background: var(--secondary-dark);
+            transform: scale(1.1);
+        }
+        
+        .image-upload-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--gray);
+            border-radius: var(--radius-sm);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(212, 106, 26, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-input-file {
+            display: none;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light);
+        }
+        
+        .btn-cancel {
+            background: var(--light);
+            color: var(--text);
+        }
+        
+        .btn-cancel:hover {
+            background: #d1d9e0;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .success-message {
+            background: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .edit-profile-card {
+                padding: 1.5rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .edit-profile-section {
+                padding: 2rem 0;
+            }
+            
+            .profile-image-preview,
+            .profile-image-placeholder {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="{% url 'home' %}" class="logo">
+                    <div class="logo-img">M</div>
+                    <div class="logo-text">
+                        <h1>MindCraft</h1>
+                        <p>THINKSPACE</p>
+                    </div>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        {% if user.is_staff %}
+                            <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                        {% endif %}  
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <button class="mobile-menu" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Edit Profile</h1>
+            <p>Update your personal information and preferences</p>
+            <div class="hero-breadcrumbs">
+                <a href="{% url 'home' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="{% url 'profile' %}">Profile</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Edit Profile</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Profile Section -->
+    <section class="edit-profile-section">
+        <div class="container">
+            <div class="edit-profile-container">
+                <div class="edit-profile-card">
+                    <div class="edit-profile-header">
+                        <h1>Update Your Profile</h1>
+                        <p>Keep your information current to get the most out of MindCraft ThinkSpace</p>
+                    </div>
+
+                    <!-- Display Messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="success-message">
+                                <i class="fas fa-check-circle"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Profile Image Section -->
+                        <div class="profile-image-section">
+                            <div class="profile-image-container">
+                                {% if profile.profile_picture %}
+                                    <img id="profile-image-preview" src="{{ profile.profile_picture.url }}" alt="Profile Preview" class="profile-image-preview">
+                                {% else %}
+                                    <div id="profile-image-placeholder" class="profile-image-placeholder">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                {% endif %}
+                                <button type="button" class="image-upload-btn" onclick="document.getElementById('id_profile_picture').click()">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <input type="file" name="profile_picture" id="id_profile_picture" class="form-input-file" accept="image/*">
+                            </div>
+                            <p class="image-upload-text">Click the camera icon to upload a new photo</p>
+                        </div>
+
+                        <!-- Form Fields -->
+                        <div class="form-grid">
+                            <!-- First Name -->
+                            <div class="form-group">
+                                <label for="id_first_name" class="form-label">First Name</label>
+                                <input type="text" name="first_name" id="id_first_name" class="form-input" value="{{ user.first_name }}" required>
+                                {% if form.first_name.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ form.first_name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="form-group">
+                                <label for="id_last_name" class="form-label">Last Name</label>
+                                <input type="text" name="last_name" id="id_last_name" class="form-input" value="{{ user.last_name }}" required>
+                                {% if form.last_name.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ form.last_name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Email -->
+                            <div class="form-group full-width">
+                                <label for="id_email" class="form-label">Email Address</label>
+                                <input type="email" name="email" id="id_email" class="form-input" value="{{ user.email }}" required>
+                                {% if form.email.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ form.email.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Bio -->
+                            <div class="form-group full-width">
+                                <label for="id_bio" class="form-label">Bio</label>
+                                <textarea name="bio" id="id_bio" class="form-textarea" placeholder="Tell us a bit about yourself...">{{ profile.bio }}</textarea>
+                                {% if form.bio.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ form.bio.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Location -->
+                            <div class="form-group">
+                                <label for="id_location" class="form-label">Location</label>
+                                <input type="text" name="location" id="id_location" class="form-input" value="{{ profile.location }}" placeholder="e.g. Lagos, Nigeria">
+                                {% if form.location.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ form.location.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <a href="{% url 'profile' %}" class="btn btn-cancel">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><span>MindCraft</span> ThinkSpace</h2>
+                    <p>...it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                        <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'profile' %}">Profile</a></li>
+                            {% if user.is_staff %}
+                                <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li><a href="{% url 'login' %}">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Webinar Topics</h3>
+                    <ul>
+                        <li><a href="{% url 'webinar_list' %}?topic=leadership">Leadership</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=technology">Technology</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=education">Education</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=culture">Culture</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=business">Business</a></li>
+                        <li><a href="{% url 'webinar_list' %}">All Topics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria </li>
+                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.africa</li>
+                        <li><i class="fas fa-phone-alt"></i> +234 123 456 789</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2024</span> MindCraft ThinkSpace. All Rights Reserved. | Designed with African Wisdom</p>
+                <div class="footer-legal">
+                    <a href="/privacy/">Privacy Policy</a>
+                    <a href="/terms/">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                this.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+            });
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+            
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Profile image preview
+            const profileImageInput = document.getElementById('id_profile_picture');
+            const profileImagePreview = document.getElementById('profile-image-preview');
+            const profileImagePlaceholder = document.getElementById('profile-image-placeholder');
+            
+            if (profileImageInput) {
+                profileImageInput.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            if (profileImagePreview) {
+                                profileImagePreview.src = e.target.result;
+                            } else {
+                                // Create image preview if it doesn't exist
+                                const newPreview = document.createElement('img');
+                                newPreview.id = 'profile-image-preview';
+                                newPreview.className = 'profile-image-preview';
+                                newPreview.src = e.target.result;
+                                newPreview.alt = 'Profile Preview';
+                                
+                                // Replace placeholder with image
+                                profileImagePlaceholder.parentNode.replaceChild(newPreview, profileImagePlaceholder);
+                            }
+                        }
+                        
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Auto-dismiss success messages after 5 seconds
+            const successMessages = document.querySelectorAll('.success-message');
+            successMessages.forEach(message => {
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    message.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        message.remove();
+                    }, 500);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

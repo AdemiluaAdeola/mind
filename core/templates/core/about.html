@@ -1,0 +1,546 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="Learn about MindCraft ThinkSpace - Our mission to transform mindsets, nurture creativity and drive innovation across Africa and beyond">
+    <meta name="keywords"
+          content="African innovation, mindset transformation, creativity, innovation, thought leadership">
+    <meta name="author" content="MindCraft ThinkSpace">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="MindCraft ThinkSpace - About Us">
+    <meta property="og:description"
+          content="Engineering mindset transformation, nurturing creativity, and driving meaningful innovation">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mindcraftthinkspace.africa/about/">
+
+    <title>MindCraft ThinkSpace - About Us</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preload"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          as="style" crossorigin>
+    <link rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap"
+          as="style">
+    <link rel="preload"
+          href="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+          as="image">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap"
+          rel="stylesheet">
+
+    <!-- ==== SAME :root VARIABLES & GLOBAL STYLES AS INDEX ==== -->
+    <style>
+        :root{--primary:#0d2e14;--primary-light:#1e4d2a;--primary-dark:#071d0c;--secondary:#d46a1a;--secondary-light:#e67e22;--secondary-dark:#b35716;--accent:#e8b417;--dark:#1e2b38;--darker:#0f161e;--light:#e0e6eb;--lighter:#f0f2f5;--text:#2d3436;--text-light:#636e72;--white:#fff;--black:#000;--gray:#bdc3c7;--african-red:#9a1f1a;--african-yellow:#d4a017;--african-blue:#1a3a8f;--african-brown:#5d3a1a;--shadow-sm:0 2px 12px rgba(0,0,0,.1);--shadow-md:0 4px 20px rgba(0,0,0,.15);--shadow-lg:0 8px 30px rgba(0,0,0,.2);--transition:all .3s cubic-bezier(.25,.8,.25,1);--radius:12px;--radius-sm:6px}
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth;font-size:16px}
+        body{font-family:'Poppins',system-ui,sans-serif;line-height:1.7;color:var(--text);background-color:var(--lighter);margin:0;padding-top:90px;overflow-x:hidden;background-image:linear-gradient(135deg,rgba(240,242,245,.8),rgba(224,230,235,.9)),url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M20 20l60 60M80 20L20 80" stroke="%23e0e6eb" stroke-width="0.5" stroke-opacity="0.3"/></svg>');background-size:100px 100px}
+        img{max-width:100%;height:auto;display:block}
+        .container{width:min(92%,1280px);margin:0 auto;padding:0 1rem}
+        section{padding:5rem 0;position:relative}
+        h1,h2,h3,h4{font-family:'Montserrat',system-ui,sans-serif;font-weight:700;line-height:1.3;margin:0 0 1.2rem}
+        h1{font-size:clamp(2.2rem,5vw,3.5rem)}h2{font-size:clamp(1.8rem,3.5vw,2.8rem)}h3{font-size:clamp(1.3rem,2vw,1.6rem)}
+        p{color:var(--text-light);margin:0 0 1.5rem}
+        a{text-decoration:none;color:inherit;transition:var(--transition)}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 2rem;border-radius:var(--radius);font-weight:600;cursor:pointer;transition:var(--transition);border:none;position:relative;overflow:hidden}
+        .btn-primary{background:linear-gradient(135deg,var(--secondary),var(--secondary-dark));color:var(--white);box-shadow:0 4px 15px rgba(230,126,34,.3)}
+        .btn-primary:hover{background:linear-gradient(135deg,var(--secondary-dark),var(--secondary));transform:translateY(-3px);box-shadow:0 8px 25px rgba(230,126,34,.4)}
+        .btn-secondary{background:transparent;color:var(--white);border:2px solid var(--white)}
+        .btn-secondary:hover{background:rgba(255,255,255,.1);border-color:var(--white)}
+        header{position:fixed;top:0;left:0;width:100%;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);box-shadow:var(--shadow-sm);z-index:1000;transition:var(--transition)}
+        header.scrolled{box-shadow:var(--shadow-md)}
+        nav{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 0}
+        .logo{display:flex;align-items:center;gap:.5rem;text-decoration:none}
+        .logo-img{width:150px;height:70px;object-fit:contain;border-radius:12px;flex-shrink:0;box-shadow:var(--shadow-sm);transition:var(--transition)}
+        header.scrolled .logo-img{width:55px;height:55px}
+        @media(max-width:768px){.logo-img{width:55px;height:55px}}
+        @media(max-width:480px){.logo-img{width:50px;height:50px}}
+        .nav-links{display:flex;gap:1.5rem;list-style:none;margin:0;padding:0}
+        .nav-links a{position:relative;color:var(--dark);font-weight:500;transition:var(--transition)}
+        .nav-links a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:2px;background:var(--secondary);transition:var(--transition)}
+        .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+        .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+        .mobile-menu{display:none;background:none;border:none;cursor:pointer;padding:.5rem;z-index:1001;color:var(--dark);font-size:1.5rem}
+        .section-header{text-align:center;margin-bottom:3.5rem}
+        .section-header h2{position:relative;display:inline-block;padding-bottom:1rem;color:var(--primary)}
+        .section-header h2::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:80px;height:4px;background:var(--secondary);border-radius:2px}
+        .section-header p{max-width:700px;margin:0 auto}
+        .section-header span{color:var(--secondary)}
+
+        /* ---------- PAGE-SPECIFIC STYLES ---------- */
+        .page-hero{background:linear-gradient(135deg,rgba(13,46,20,.9),rgba(7,29,12,.8)),url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80') center/cover;min-height:55vh;display:flex;align-items:center;color:var(--white);position:relative}
+        .page-hero::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:120px;background:linear-gradient(to top,var(--lighter),transparent);z-index:1}
+        .page-hero-content{position:relative;z-index:2;max-width:800px;margin:0 auto;padding:2rem 1rem;text-align:center}
+        .hero-breadcrumbs a{color:rgba(255,255,255,.8);font-size:.95rem}
+        .hero-breadcrumbs i{margin:0 .5rem;color:var(--accent)}
+        .hero-breadcrumbs span{color:var(--white);font-weight:600}
+
+        .mission-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,350px),1fr));gap:3rem;align-items:center}
+        .mission-content h2{font-size:2.2rem;margin-bottom:1rem}
+        .mission-stats{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap}
+        .stat-item{text-align:center}
+        .stat-number{font-size:2rem;font-weight:700;color:var(--secondary)}
+        .stat-label{font-size:.9rem;color:var(--text-light)}
+
+        .values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:2rem}
+        .value-card{padding:2.5rem;border-radius:var(--radius);box-shadow:var(--shadow-sm);transition:var(--transition);opacity:0;transform:translateY(20px)}
+        .value-card.animate{opacity:1;transform:translateY(0)}
+        .value-icon{width:70px;height:70px;background:var(--accent);color:var(--dark);border-radius:50%;display:grid;place-items:center;font-size:1.8rem;margin-bottom:1rem}
+
+        .methodology-steps{max-width:900px;margin:0 auto}
+        .methodology-step{display:flex;gap:1.5rem;margin-bottom:3rem;align-items:flex-start;opacity:0;transform:translateY(20px)}
+        .methodology-step.animate{opacity:1;transform:translateY(0);transition:opacity .6s ease,transform .6s ease}
+        .step-number{width:50px;height:50px;background:var(--secondary);color:var(--white);border-radius:50%;display:grid;place-items:center;font-size:1.4rem;font-weight:700;flex-shrink:0}
+        .step-content h3{margin-bottom:.5rem}
+        .step-quote{font-style:italic;color:var(--secondary);margin-top:1rem;font-size:.95rem}
+
+        .focus-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:2rem}
+        .focus-card{background:var(--white);padding:2rem;border-radius:var(--radius);box-shadow:var(--shadow-sm);text-align:center;transition:var(--transition);opacity:0;transform:translateY(20px)}
+        .focus-card.animate{opacity:1;transform:translateY(0)}
+        .focus-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+        .focus-icon{width:60px;height:60px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:var(--white);border-radius:50%;display:grid;place-items:center;font-size:1.6rem;margin:0 auto 1rem}
+
+        .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:2.5rem}
+        .team-member{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);transition:var(--transition);opacity:0;transform:translateY(20px)}
+        .team-member.animate{opacity:1;transform:translateY(0)}
+        .team-member:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+        .member-image{position:relative;overflow:hidden}
+        .member-image img{width:100%;height:300px;object-fit:cover;transition:transform .5s ease}
+        .team-member:hover .member-image img{transform:scale(1.05)}
+        .social-links{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;opacity:0;transition:opacity .3s}
+        .team-member:hover .social-links{opacity:1}
+        .social-links a{width:36px;height:36px;background:rgba(0,0,0,.6);color:var(--white);border-radius:50%;display:grid;place-items:center;font-size:.9rem}
+        .member-info{padding:1.5rem}
+        .member-info .title{font-size:.95rem;color:var(--secondary);margin-bottom:.5rem}
+
+        .community-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,350px),1fr));gap:3rem;align-items:center}
+        .community-benefits{list-style:none;padding:0;margin:1.5rem 0}
+        .community-benefits li{display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;color:var(--text-light)}
+        .community-benefits i{color:var(--secondary)}
+        .community-cta{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem}
+        .community-cta .btn{flex:1;min-width:200px;text-align:center}
+
+        footer{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--white);padding:5rem 0 2rem}
+        .footer-content{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:3rem;margin-bottom:4rem}
+        .footer-logo h2{font-size:1.5rem;color:var(--white);margin-bottom:1rem}
+        .footer-logo h2 span{color:var(--secondary)}
+        .footer-links h3{font-size:1.2rem;margin-bottom:1.5rem;color:var(--white);position:relative;padding-bottom:.75rem}
+        .footer-links h3::after{content:'';position:absolute;bottom:0;left:0;width:40px;height:3px;background:var(--secondary)}
+        .footer-links ul{list-style:none}
+=key
+        .footer-links li{margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+        .footer-links a{color:rgba(255,255,255,.7);transition:var(--transition);font-size:.9rem}
+        .footer-links a:hover{color:var(--secondary);transform:translateX(3px)}
+        .footer-links i{width:20px;color:var(--secondary)}
+        .social-icons{display:flex;gap:1rem;margin-bottom:1.5rem}
+        .social-icons a{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;background:rgba(255,255,255,.1);color:var(--white);border-radius:50%;font-size:1.1rem;transition:var(--transition)}
+        .social-icons a:hover{background:var(--secondary);transform:translateY(-3px)}
+        .footer-bottom{text-align:center;padding-top:2rem;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:.9rem}
+        .footer-legal{display:flex;justify-content:center;gap:1.5rem;margin-top:1rem}
+        .footer-legal a{color:rgba(255,255,255,.7);transition:var(--transition);font-size:.8rem}
+        .footer-legal a:hover{color:var(--secondary)}
+
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @media(max-width:768px){body{padding-top:80px}
+            .nav-links{position:fixed;top:0;right:-100%;width:280px;height:100vh;background:var(--white);flex-direction:column;align-items:flex-start;padding:5rem 2rem;transition:right .3s ease}
+            .nav-links.active{right:0}
+            .mobile-menu{display:block}
+            .hero{min-height:70vh}
+            .hero-buttons{flex-direction:column;align-items:center}
+        }
+        @media(max-width:576px){section{padding:3.5rem 0}
+            .hero{min-height:60vh}
+            .hero h1{font-size:2rem}
+            .footer-content{grid-template-columns:1fr;text-align:center;gap:2.5rem}
+            .footer-links h3::after{left:50%;transform:translateX(-50%)}
+            .social-icons{justify-content:center}
+            .footer-legal{flex-direction:column;gap:.5rem}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header id="header">
+    <div class="container">
+        <nav>
+            <a href="{% url 'index' %}" class="logo">
+                <img src="{% static 'images/logo.png' %}" alt="MindCraft ThinkSpace Logo"
+                     loading="eager" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                <li><a href="{% url 'about' %}" class="active">About</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+            <button class="mobile-menu" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </div>
+</header>
+
+<!-- ==================== PAGE HERO ==================== -->
+<section class="page-hero">
+    <div class="container">
+        <div class="page-hero-content">
+            <h1>About MindCraft ThinkSpace</h1>
+            <p>Engineering mindset transformation, nurturing creativity, and driving meaningful innovation</p>
+            <div class="hero-breadcrumbs">
+                <a href="{% url 'index' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>About Us</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== MISSION / EVOLUTION ==================== -->
+<section class="about-mission">
+    <div class="container">
+        <div class="mission-grid">
+            <div class="mission-content">
+                <h2>Our Evolution</h2>
+                <p>Founded in 2020 as MindCraft Africa, we've grown into a global human capital development brand while maintaining our African roots. Our journey began with a simple belief: <strong>“If the mind is winning, the nature will deliver the trophies.”</strong></p>
+                <p>From our origins in Nairobi, we’ve built a platform that reaches thinkers, creators, and innovators across Africa and regions with low Human Development Index (HDI). Our community now spans continents, united by a shared commitment to mindset transformation and creative problem-solving.</p>
+
+                <div class="mission-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">15K+</div>
+                        <div class="stat-label">Transformed Minds</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">200+</div>
+                        <div class="stat-label">Innovation Projects</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">Countries Reached</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mission-image">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+                     alt="Our global team collaborating" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== VISION & MISSION ==================== -->
+<section class="about-values" style="background-color:var(--white);">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our <span>Purpose</span></h2>
+            <p>The driving force behind everything we do at MindCraft ThinkSpace</p>
+        </div>
+
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-eye"></i></div>
+                <h3>Vision</h3>
+                <p>To see the rebirth of innovative ideologies, inspiring global impact through mindset transformation, creative development, and human capital empowerment from Africa to the world.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-bullseye"></i></div>
+                <h3>Mission</h3>
+                <p>To provide a dynamic space where we engineer mindset transformation, nurture creativity and empower individuals with the tools and platforms to think differently, create meaningfully, and drive innovations that shape lives, communities and the world.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== METHODOLOGY ==================== -->
+<section class="about-methodology">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our <span>Methodology</span></h2>
+            <p>The transformative cycle that drives personal and professional growth</p>
+        </div>
+
+        <div class="methodology-steps">
+            <div class="methodology-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Think</h3>
+                    <p>We provoke deep thinking by challenging limiting beliefs, expanding perspectives, and nurturing clarity. We teach individuals how to rewire their thinking for progress and purpose.</p>
+                    <p class="step-quote">“Mindset is the birthplace of every transformation.”</p>
+                </div>
+            </div>
+
+            <div class="methodology-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Create</h3>
+                    <p>We foster creativity by encouraging experimentation, expression, and design thinking. We provide tools, mentorship, and safe spaces for ideas to emerge and evolve.</p>
+                    <p class="step-quote">“True creativity is the organized application of thought.”</p>
+                </div>
+            </div>
+
+            <div class="methodology-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Innovate</h3>
+                    <p>We translate ideas into impact. Through coaching, community, and real-world application, we guide individuals to develop solutions that are relevant, sustainable, and scalable.</p>
+                    <p class="step-quote">“Innovation is where relevance meets reinvention.”</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FOCUS AREAS ==================== -->
+<section class="about-focus">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our <span>Focus Areas</span></h2>
+            <p>Key domains where we apply our transformative methodology</p>
+        </div>
+
+        <div class="focus-grid">
+            <div class="focus-card">
+                <div class="focus-icon"><i class="fas fa-brain"></i></div>
+                <h3>Mindset Engineering</h3>
+                <p>Reshaping how people think, perceive, and approach challenges to unlock their full potential.</p>
+            </div>
+            <div class="focus-card">
+                <div class="focus-icon"><i class="fas fa-lightbulb"></i></div>
+                <h3>Creative Capacity Development</h3>
+                <p>Cultivating the confidence and competence to turn ideas into action and solutions.</p>
+            </div>
+            <div class="focus-card">
+                <div class="focus-icon"><i class="fas fa-rocket"></i></div>
+                <h3>Innovation Activation</h3>
+                <p>Turning raw potential into tangible solutions that drive personal, social, and global change.</p>
+            </div>
+            <div class="focus-card">
+                <div class="focus-icon"><i class="fas fa-users"></i></div>
+                <h3>Human Capital Empowerment</h3>
+                <p>Strengthening individuals to lead, influence, and deliver impact in diverse environments.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== LEADERSHIP TEAM ==================== -->
+<section class="about-team">
+    <div class="container">
+        <div class="section-header">
+            <h2>Meet Our <span>Leadership</span></h2>
+            <p>The passionate team driving MindCraft ThinkSpace forward</p>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="{% static 'images/olanipekun.jpg' %}" alt="Olanipekun Opeoluwa" loading="lazy">
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="member-info">
+                    <h3>Olanipekun Opeoluwa</h3>
+                    <p class="title">Founder & Lead Strategist</p>
+                    <p class="bio">A Personal Development and Mindset Coach, and dynamic Public Speaker who believes real success begins with the mind. Convener of “Winning From The Mind,” a continent-wide movement focused on unlocking human potential.</p>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="{% static 'images/joy.jpg' %}" alt="Joy Salami" loading="lazy">
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="member-info">
+                    <h3>Joy Salami</h3>
+                    <p class="title">Chief Operating Officer</p>
+                    <p class="bio">Dynamic leader and prolific writer known as “Me2U” and “Pregnant Writer.” Passionate about purpose discovery and author of “The Path.” Brings construction industry experience and commitment to SDGs 4 & 5.</p>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="{% static 'images/samuel.jpg' %}" alt="Samuel O. Akanbi" loading="lazy">
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="member-info">
+                    <h3>Samuel O. Akanbi</h3>
+                    <p class="title">Chief Strategy & Innovation Officer</p>
+                    <p class="bio">Licensed Pharmacist and supply chain expert with Distinction in MSc Logistics. Specializes in optimizing systems for efficiency and measurable impact. Grounded in systems thinking and forward-looking strategies.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== COMMUNITY CTA ==================== -->
+<section class="about-community">
+    <div class="container">
+        <div class="community-grid">
+            <div class="community-content">
+                <h2>Join Our Global Movement</h2>
+                <p>MindCraft ThinkSpace is more than a platform – it's a worldwide community of professionals committed to mindset transformation, creative development, and meaningful innovation.</p>
+
+                <ul class="community-benefits">
+                    <li><i class="fas fa-check"></i> Access to mindset engineering workshops</li>
+                    <li><i class="fas fa-check"></i> Creative capacity building programs</li>
+                    <li><i class="fas fa-check"></i> Innovation labs and hackathons</li>
+                    <li><i class="fas fa-check"></i> Global networking opportunities</li>
+                    <li><i class="fas fa-check"></i> Mentorship from industry leaders</li>
+                </ul>
+
+                <div class="community-cta">
+                    <a href="{% url 'webinar_list' %}" class="btn btn-primary">
+                        Explore Webinars <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'blog_list' %}" class="btn btn-secondary">
+                        Read Our Posts <i class="fas fa-book-open"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="community-image">
+                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80"
+                     alt="Global community event" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer id="contact">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2><span>MindCraft</span> ThinkSpace</h2>
+                <p>...it all begins in the mind</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Webinar Topics</h3>
+                <ul>
+                    <li><a href="{% url 'webinar_list' %}?topic=leadership">Leadership</a></li>
+                    <li><a href="{% url 'webinar_list' %}?topic=technology">Technology</a></li>
+                    <li><a href="{% url 'webinar_list' %}?topic=education">Education</a></li>
+                    <li><a href="{% url 'webinar_list' %}?topic=culture">Culture</a></li>
+                    <li><a href="{% url 'webinar_list' %}?topic=business">Business</a></li>
+                    <li><a href="{% url 'webinar_list' %}">All Topics</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</li>
+                    <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.africa</li>
+                    <li><i class="fas fa-phone-alt"></i> +234 123 456 789</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© <span id="current-year">2024</span> MindCraft ThinkSpace. All Rights Reserved. | Designed with African Wisdom</p>
+            <div class="footer-legal">
+                <a href="/privacy/">Privacy Policy</a>
+                <a href="/terms/">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ==================== JS (same as index) ==================== -->
+<script src="{% static 'js/main.js' %}" defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // ---------- Mobile menu ----------
+        const mobileMenuBtn = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        if (mobileMenuBtn && navLinks) {
+            mobileMenuBtn.addEventListener('click', function () {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') ?
+                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                this.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+            });
+        }
+
+        // ---------- Header scroll ----------
+        window.addEventListener('scroll', function () {
+            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ---------- Current year ----------
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // ---------- On-scroll animation ----------
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.value-card, .methodology-step, .focus-card, .team-member');
+            const windowHeight = window.innerHeight;
+            elements.forEach(el => {
+                if (el.getBoundingClientRect().top < windowHeight - 100) {
+                    el.classList.add('animate');
+                }
+            });
+        };
+        let ticking = false;
+        const requestTick = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => { animateOnScroll(); ticking = false; });
+                ticking = true;
+            }
+        };
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', requestTick);
+    });
+</script>
+</body>
+</html>

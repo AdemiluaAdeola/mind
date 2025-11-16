@@ -1,0 +1,664 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ webinar.title }} | MindCraft ThinkSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        .webinar-hero {
+            background: linear-gradient(135deg, rgba(13, 46, 20, 0.9), rgba(13, 46, 20, 0.8)), 
+                        url('{% if webinar.featured_image %}{{ webinar.featured_image.url }}{% else %}https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80{% endif %}');
+            background-size: cover;
+            background-position: center;
+            padding: 6rem 0 3rem;
+            color: var(--white);
+            position: relative;
+        }
+
+        .webinar-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .webinar-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-upcoming {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+
+        .status-live {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .status-completed {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .webinar-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+        }
+
+        .meta-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .meta-content h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .meta-content p {
+            margin-bottom: 0;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .webinar-content-section {
+            padding: 4rem 0;
+        }
+
+        .webinar-description {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .speaker-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .speaker-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .speaker-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .speaker-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .speaker-info {
+            padding: 1.5rem;
+        }
+
+        .speaker-name {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .speaker-bio {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .speaker-social {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .speaker-social a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--lighter);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .speaker-social a:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .registration-section {
+            background: var(--lighter);
+            padding: 4rem 0;
+        }
+
+        .registration-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .price-tag {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .price-tag.free {
+            color: var(--primary);
+        }
+
+        .registration-features {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .registration-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .registration-features i {
+            color: var(--secondary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--gray);
+            border-radius: var(--radius-sm);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .already-registered {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .already-registered i {
+            font-size: 2.5rem;
+            color: #2ecc71;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+            }
+        }
+
+        /* Countdown timer */
+        .countdown {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 1rem;
+            min-width: 80px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .webinar-meta-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+            }
+            
+            .countdown-item {
+                flex: 1;
+                min-width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="{% url 'index' %}" class="logo">
+                    <div class="logo-img">M</div>
+                    <div class="logo-text">
+                        <h1>MindCraft</h1>
+                        <p>THINKSPACE</p>
+                    </div>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}" class="active">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Webinar Hero Section -->
+    <section class="webinar-hero">
+        <div class="container">
+            <div class="webinar-hero-content">
+                <span class="webinar-status-badge status-{{ webinar.status }}">
+                    <i class="fas fa-circle"></i>
+                    {{ webinar.status|title }}
+                </span>
+                <h1>{{ webinar.title }}</h1>
+                <p class="lead">{{ webinar.description }}</p>
+                
+                {% if webinar.status == 'upcoming' %}
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="days">00</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="seconds">00</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="webinar-meta-grid">
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="far fa-calendar-alt"></i>
+                        </div>
+                        <div class="meta-content">
+                            <h4>Date</h4>
+                            <p>{{ webinar.start_datetime|date:"F j, Y" }}</p>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="far fa-clock"></i>
+                        </div>
+                        <div class="meta-content">
+                            <h4>Time</h4>
+                            <p>{{ webinar.start_datetime|time }} ({{ webinar.duration }} mins)</p>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <div class="meta-content">
+                            <h4>Price</h4>
+                            <p>{% if webinar.is_free %}Free{% else %}₦{{ webinar.price }}{% endif %}</p>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="meta-content">
+                            <h4>Seats</h4>
+                            <p>{{ webinar.registrations.count }} registered</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Webinar Content Section -->
+    <section class="webinar-content-section">
+        <div class="container">
+            <div class="webinar-description">
+                {{ webinar.description|linebreaks }}
+            </div>
+            
+            {% if webinar.speakers.all %}
+            <div class="section-header">
+                <h2>Meet Your <span>Speakers</span></h2>
+                <p>Learn from industry experts and thought leaders</p>
+            </div>
+            
+            <div class="speakers-grid">
+                {% for speaker in webinar.speakers.all %}
+                <div class="speaker-card">
+                    <div class="speaker-image">
+                        <img src="{% if speaker.photo %}{{ speaker.photo.url }}{% else %}https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80{% endif %}" alt="{{ speaker.name }}">
+                    </div>
+                    <div class="speaker-info">
+                        <h3 class="speaker-name">{{ speaker.name }}</h3>
+                        <p class="speaker-bio">{{ speaker.bio }}</p>
+                        <div class="speaker-social">
+                            {% if speaker.twitter %}
+                            <a href="https://twitter.com/{{ speaker.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                            {% endif %}
+                            {% if speaker.linkedin %}
+                            <a href="{{ speaker.linkedin }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            {% endif %}
+                            {% if speaker.website %}
+                            <a href="{{ speaker.website }}" target="_blank"><i class="fas fa-globe"></i></a>
+                            {% endif %}
+                            {% if speaker.email %}
+                            <a href="mailto:{{ speaker.email }}"><i class="far fa-envelope"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section class="registration-section" id="register">
+        <div class="container">
+            <div class="section-header">
+                <h2>Register for this <span>Webinar</span></h2>
+                <p>Secure your spot for this transformative learning experience</p>
+            </div>
+            
+            <div class="registration-card">
+                {% if is_registered %}
+                <div class="already-registered">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>You're Registered!</h3>
+                    <p>Please come back on {{ webinar.start_datetime|date:"F j, Y" }} {{ webinar.start_datetime|time }} to attend the webinar </p>
+                    {% if webinar.status == 'live' and webinar.meeting_url %}
+                    <a href="{{ webinar.meeting_url }}" class="btn btn-primary" target="_blank">
+                        Join Webinar Now <i class="fas fa-video"></i>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <div class="price-tag {% if webinar.is_free %}free{% endif %}">
+                    {% if webinar.is_free %}Free{% else %}₦{{ webinar.price }}{% endif %}
+                </div>
+                
+                <ul class="registration-features">
+                    <li><i class="fas fa-check-circle"></i> Live interactive session with Q&A</li>
+                    <li><i class="fas fa-check-circle"></i> Access to recording after the webinar</li>
+                    <li><i class="fas fa-check-circle"></i> Downloadable resources and materials</li>
+                    <li><i class="fas fa-check-circle"></i> Certificate of participation</li>
+                </ul>
+                
+                {% if not is_registered %}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label" for="id_question">Questions for the Speaker (Optional)</label>
+                        {{ form.question }}
+                        {{ form.question.errors }}
+                    </div>
+                    
+                    {% if not webinar.is_free %}
+                    <div class="form-group">
+                        <label class="form-label" for="id_payment_reference">Proof of Payment</label>
+                        {{ form.payment_reference }}
+                        <small style="display: block; margin-top: 0.5rem; color: var(--text-light);">
+                            Please upload a screenshot or document showing your payment confirmation.
+                        </small>
+                        {{ form.payment_reference.errors }}
+                    </div>
+                    {% endif %}
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Complete Registration
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><span>MindCraft</span> ThinkSpace</h2>
+                    <p>...it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                        <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria </p>
+                    <p><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.africa</p>
+                    <p><i class="fas fa-phone-alt"></i> +234 123 456 789</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MindCraft ThinkSpace. All Rights Reserved. | Designed with African Wisdom</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const header = document.getElementById('header');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenu.classList.toggle('fa-times');
+            mobileMenu.classList.toggle('fa-bars');
+        });
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Countdown Timer
+        {% if webinar.status == 'upcoming' %}
+        function updateCountdown() {
+            const webinarDate = new Date("{{ webinar.start_datetime|date:'Y-m-d H:i:s' }}");
+            const now = new Date();
+            const difference = webinarDate - now;
+            
+            if (difference <= 0) {
+                document.getElementById('countdown').innerHTML = '<div class="countdown-ended">The webinar is starting soon!</div>';
+                return;
+            }
+            
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+        
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        {% endif %}
+
+        // Form validation enhancements
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const inputs = this.querySelectorAll('input[required], textarea[required]');
+                let valid = true;
+                
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        input.style.borderColor = '#e74c3c';
+                        valid = false;
+                    } else {
+                        input.style.borderColor = '';
+                    }
+                });
+                
+                if (!valid) {
+                    e.preventDefault();
+                    alert('Please fill in all required fields.');
+                }
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        mobileMenu.classList.toggle('fa-times');
+                        mobileMenu.classList.toggle('fa-bars');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

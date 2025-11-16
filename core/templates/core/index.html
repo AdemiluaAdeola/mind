@@ -1,0 +1,902 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MindCraft ThinkSpace – African wisdom meets cognitive science. Join live webinars, read transformative blogs, and grow.">
+    <meta name="author" content="MindCraft ThinkSpace">
+    <meta name="theme-color" content="#0d2e14">
+    <meta name="keywords" content="African wisdom, cognitive science, webinars, personal growth, neuroscience">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="MindCraft ThinkSpace – It All Begins in the Mind">
+    <meta property="og:description" content="Blending African philosophy with modern neuroscience for personal and collective growth.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mindcraftthinkspace.africa/">
+    <meta property="og:image" content="{% static 'images/og-home.jpg' %}">
+
+    <title>MindCraft ThinkSpace – It All Begins in the Mind</title>
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{% static 'images/hero-mindcraft.jpg' %}" as="image">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- CSS -->
+    <style>
+        :root {
+            --primary: #0d2e14;
+            --primary-light: #1a4d2e;
+            --primary-dark: #071d0c;
+            --secondary: #e67e22;
+            --secondary-light: #f39c12;
+            --secondary-dark: #d35400;
+            --accent: #f1c40f;
+            --gray: #95a5a6;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --radius: 16px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-md: 0 8px 25px rgba(0,0,0,0.12);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--light);
+            margin: 0;
+            padding-top: 90px;
+            overflow-x: hidden;
+        }
+
+        /* Focus styles for accessibility */
+        :focus {
+            outline: 2px solid var(--secondary);
+            outline-offset: 2px;
+        }
+
+        button:focus, a:focus {
+            outline: 2px solid var(--secondary);
+            outline-offset: 3px;
+        }
+
+        /* Skip to main content for screen readers */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--secondary);
+            color: white;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 1001;
+            transition: var(--transition);
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            display: block; 
+        }
+        
+        /* Lazy loading for images */
+        img[data-src] {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        img.lazy-loaded {
+            opacity: 1;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        .container { width: min(92%, 1280px); margin: 0 auto; padding: 0 1rem; }
+
+        /* Loading animation */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
+        .logo img { height: 60px; transition: var(--transition); }
+        header.scrolled .logo img { height: 50px; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            font-weight: 500; color: var(--text); position: relative;
+            padding: 0.5rem 0;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 2px; background: var(--secondary);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--secondary); }
+
+        .mobile-menu {
+            display: none; background: none; border: none;
+            font-size: 1.5rem; color: var(--text); cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .mobile-menu:hover, .mobile-menu:focus {
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(13,46,20,0.96), rgba(7,29,12,0.94)),
+                        url('https://images.unsplash.com/photo-1519389950470-14a6a9a5e8c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            background-attachment: fixed;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 15% 70%, rgba(230,126,34,0.35), transparent 60%),
+                        radial-gradient(circle at 85% 30%, rgba(241,196,15,0.25), transparent 60%);
+            z-index: 1;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 200px;
+            background: linear-gradient(transparent, var(--light));
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 900px;
+            padding: 2rem;
+            animation: fadeInUp 1.4s ease-out;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1.2rem;
+            line-height: 1.1;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            letter-spacing: -0.5px;
+        }
+
+        .hero h1 span {
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: -10px; left: 0;
+            width: 100%; height: 7px;
+            background: var(--secondary);
+            border-radius: 4px;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: underlineGrow 1.6s ease-out forwards 0.9s;
+        }
+
+        /* HERO IMAGE */
+        .hero-image-wrapper {
+            margin: 2.5rem auto;
+            max-width: 420px;
+            animation: fadeInUp 1.4s ease-out 0.5s backwards;
+        }
+
+        .hero-image {
+            width: 100%;
+            border-radius: var(--radius);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            border: 6px solid rgba(255,255,255,0.15);
+            transition: var(--transition);
+            transform: perspective(1000px) rotateX(5deg);
+        }
+
+        .hero-image:hover {
+            transform: perspective(1000px) rotateX(0deg) translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.35rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1.4s ease-out 0.3s backwards;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--secondary);
+            color: white;
+            padding: 1.2rem 2.8rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(230,126,34,0.5);
+            transition: var(--transition);
+            animation: fadeInUp 1.4s ease-out 0.7s backwards;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hero-cta:hover, .hero-cta:focus {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(230,126,34,0.6);
+            background: var(--secondary-dark);
+        }
+
+        .hero-stats {
+            display: flex; justify-content: center; gap: 2.5rem; margin-top: 3rem;
+            animation: fadeInUp 1.4s ease-out 1s backwards;
+        }
+
+        .stat {
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes underlineGrow {
+            to { transform: scaleX(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(1.5deg); }
+        }
+
+        /* Section */
+        section { padding: 6rem 0; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 {
+            font-size: 2.8rem; color: var(--primary);
+            position: relative; display: inline-block;
+            padding-bottom: 1rem;
+        }
+        .section-header h2::after {
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%); width: 100px; height: 6px;
+            background: var(--secondary); border-radius: 3px;
+        }
+        .section-header p { max-width: 700px; margin: 1.5rem auto 0; color: var(--text-light); font-size: 1.1rem; }
+
+        /* Features */
+        .features {
+            background: white;
+        }
+        .feature-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+        .feature-card {
+            background: white; padding: 2.5rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); text-align: center;
+            transition: var(--transition); opacity: 0; transform: translateY(30px);
+        }
+        .feature-card.visible { opacity: 1; transform: translateY(0); }
+        .feature-card:hover, .feature-card:focus-within { transform: translateY(-10px); box-shadow: var(--shadow-md); }
+        .feature-icon {
+            width: 80px; height: 80px; margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 2rem;
+            box-shadow: 0 8px 20px rgba(230,126,34,0.3);
+        }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary); }
+        .feature-card p { color: var(--text-light); font-size: 1rem; }
+
+        /* Upcoming Webinars */
+        .upcoming-webinars {
+            background: linear-gradient(135deg, #f8f9fa, #eef2f3);
+        }
+        .webinar-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+        .webinar-card {
+            background: white; border-radius: var(--radius);
+            overflow: hidden; box-shadow: var(--shadow-sm);
+            transition: var(--transition); opacity: 0; transform: translateY(20px);
+        }
+        .webinar-card.visible { opacity: 1; transform: translateY(0); }
+        .webinar-card:hover, .webinar-card:focus-within { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+        .webinar-image { height: 200px; overflow: hidden; position: relative; }
+        .webinar-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        .webinar-card:hover .webinar-image img, .webinar-card:focus-within .webinar-image img { transform: scale(1.08); }
+        .webinar-badge {
+            position: absolute; top: 1rem; right: 1rem;
+            padding: 0.35rem 1rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600; color: white;
+        }
+        .webinar-badge.free { background: var(--primary); }
+        .webinar-badge.live { background: #e74c3c; animation: pulse 2s infinite; }
+        .webinar-content { padding: 1.8rem; }
+        .webinar-status {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.35rem 0.9rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 500; margin-bottom: 1rem;
+        }
+        .status-upcoming { background: rgba(52,152,219,0.1); color: #3498db; }
+        .status-live { background: rgba(231,76,60,0.1); color: #e74c3c; }
+        .webinar-meta { display: flex; gap: 1rem; margin-bottom: 1rem; color: var(--text-light); font-size: 0.9rem; }
+        .webinar-meta i { color: var(--secondary); }
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.8rem 1.8rem; border-radius: var(--radius-sm);
+            font-weight: 600; cursor: pointer; transition: var(--transition);
+            margin-top: 1rem;
+            border: none;
+            text-align: center;
+            justify-content: center;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white; box-shadow: 0 4px 15px rgba(230,126,34,0.3);
+        }
+        .btn-primary:hover, .btn-primary:focus { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(230,126,34,0.4); }
+
+        /* Blog Section */
+        .blog-section {
+            background: white;
+        }
+        .blog-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+        .blog-card {
+            background: white; border-radius: var(--radius);
+            overflow: hidden; box-shadow: var(--shadow-sm);
+            transition: var(--transition); opacity: 0; transform: translateY(20px);
+        }
+        .blog-card.visible { opacity: 1; transform: translateY(0); }
+        .blog-card:hover, .blog-card:focus-within { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+        .blog-image { height: 200px; overflow: hidden; }
+        .blog-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        .blog-card:hover .blog-image img, .blog-card:focus-within .blog-image img { transform: scale(1.08); }
+        .blog-content { padding: 1.8rem; }
+        .blog-meta {
+            display: flex; gap: 1rem; margin-bottom: 1rem;
+            color: var(--text-light); font-size: 0.9rem;
+        }
+        .blog-meta i { color: var(--secondary); }
+        .blog-card h3 {
+            font-size: 1.35rem; margin-bottom: 0.8rem; color: var(--primary);
+            line-height: 1.4;
+        }
+        .blog-card p { color: var(--text-light); margin-bottom: 1.2rem; }
+        .btn-secondary {
+            color: var(--secondary); font-weight: 600;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .btn-secondary:hover, .btn-secondary:focus { color: var(--secondary-dark); }
+
+        /* CTA */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; text-align: center;
+        }
+        .cta-section h2 {
+            font-size: 2.8rem; margin-bottom: 1.5rem;
+        }
+        .cta-section h2::after {
+            content: ''; display: block; width: 80px; height: 5px;
+            background: var(--secondary); margin: 1rem auto 0; border-radius: 3px;
+        }
+        .cta-section p { max-width: 700px; margin: 0 auto 2.5rem; font-size: 1.2rem; opacity: 0.9; }
+        .cta-button {
+            background: white; color: var(--primary);
+            padding: 1.2rem 3rem; border-radius: 60px;
+            font-weight: 700; font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .cta-button:hover, .cta-button:focus { background: var(--accent); color: var(--primary-dark); transform: translateY(-4px); }
+
+        /* Footer */
+        .site-footer {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; padding: 5rem 0 2rem; margin-top: 0;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 3rem; margin-bottom: 3rem;
+        }
+        .footer-col h3 {
+            font-size: 1.2rem; margin-bottom: 1.2rem;
+            position: relative; padding-bottom: 0.6rem;
+        }
+        .footer-col h3::after {
+            content: ''; position: absolute; left: 0; bottom: 0;
+            width: 40px; height: 3px; background: var(--secondary);
+            border-radius: 2px;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.7rem; }
+        .footer-col a { color: rgba(255,255,255,0.85); transition: var(--transition); }
+        .footer-col a:hover, .footer-col a:focus { color: var(--secondary); }
+        .social-icons {
+            display: flex; gap: 0.8rem; margin-top: 1rem;
+        }
+        .social-icons a {
+            width: 40px; height: 40px; background: rgba(255,255,255,0.1);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; transition: var(--transition);
+        }
+        .social-icons a:hover, .social-icons a:focus { background: var(--secondary); transform: translateY(-3px); }
+        .newsletter-form h4 { margin-bottom: 0.8rem; font-size: 1rem; }
+        .input-group { display: flex; border-radius: var(--radius-sm); overflow: hidden; }
+        .input-group input {
+            flex: 1; padding: 0.8rem 1rem; border: none;
+            font-size: 0.95rem; background: rgba(255,255,255,0.9);
+        }
+        .input-group button {
+            background: var(--secondary); color: white;
+            border: none; padding: 0 1.3rem; cursor: pointer;
+            transition: var(--transition);
+        }
+        .input-group button:hover, .input-group button:focus { background: var(--secondary-dark); }
+
+        .footer-bottom {
+            display: flex; flex-wrap: wrap; justify-content: space-between;
+            align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.15);
+            font-size: 0.9rem; color: rgba(255,255,255,0.7);
+        }
+        .footer-bottom a { color: inherit; margin: 0 0.5rem; }
+        .footer-bottom a:hover, .footer-bottom a:focus { color: var(--secondary); }
+
+        /* Back to Top */
+        .back-top {
+            position: fixed; right: 2rem; bottom: 2rem;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: var(--secondary); color: white;
+            border: none; font-size: 1.3rem; cursor: pointer;
+            box-shadow: var(--shadow-md); opacity: 0; visibility: hidden;
+            transition: var(--transition); z-index: 99;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .back-top.show { opacity: 1; visibility: visible; }
+        .back-top:hover, .back-top:focus { background: var(--secondary-dark); transform: translateY(-3px); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { 
+                position: fixed; 
+                top: 0; 
+                right: -100%; 
+                width: 80%; 
+                height: 100vh;
+                background: white; 
+                flex-direction: column; 
+                padding: 5rem 2rem;
+                transition: 0.3s; 
+                box-shadow: -10px 0 30px rgba(0,0,0,0.1); 
+            }
+            .nav-links.active { right: 0; }
+            .mobile-menu { display: block; }
+            .hero h1 { font-size: 2.8rem; }
+            .hero-image { max-width: 300px; }
+            .hero-stats { flex-direction: column; gap: 1.5rem; }
+            .webinar-grid, .blog-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content { padding: 1rem; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1.1rem; }
+            .section-header h2 { font-size: 2.2rem; }
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231,76,60,0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(231,76,60,0); }
+            100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="{% url 'index' %}" class="logo">
+                    <img src="{% static 'images/logo.png' %}" alt="MindCraft ThinkSpace">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'index' %}" class="active">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <button class="mobile-menu" aria-label="Menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="main-content">
+        <div class="container">
+            <div class="hero-content">
+                <h1>It All Begins in the <span>Mind</span></h1>
+
+                <!-- HERO IMAGE -->
+                <div class="hero-image-wrapper">
+                    <img src="{% static 'images/hero-mindcraft.jpg' %}" 
+                         alt="African wisdom meets cognitive science" 
+                         class="hero-image"
+                         loading="lazy">
+                </div>
+
+                <p>Blending African ancestral wisdom with modern cognitive science to unlock human potential.</p>
+                <a href="{% url 'webinar_list' %}" class="hero-cta">
+                    Start Learning <i class="fas fa-arrow-right"></i>
+                </a>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">500+</span>
+                        <span>Webinars Delivered</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">50K+</span>
+                        <span>Learners Reached</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">4.9</span>
+                        <span>Average Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose Us</h2>
+                <p>Interactive, culturally grounded learning experiences designed for real transformation.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Cognitive Science</h3>
+                    <p>Evidence-based methods to rewire thinking patterns and boost mental performance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-globe-africa"></i></div>
+                    <h3>African Wisdom</h3>
+                    <p>Ancient philosophies from Ubuntu to Ifá, applied to modern leadership and growth.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>Expert Facilitators</h3>
+                    <p>Learn from African thought leaders, neuroscientists, and global innovators.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Webinars -->
+    <section class="upcoming-webinars">
+        <div class="container">
+            <div class="section-header">
+                <h2>Upcoming <span style="color:var(--secondary)">Webinars</span></h2>
+                <p>Join live sessions with leading thinkers</p>
+            </div>
+            <div class="webinar-grid">
+                {% for webinar in upcoming_webinars %}
+                <article class="webinar-card">
+                    <div class="webinar-image">
+                        <img src="{{ webinar.featured_image.url }}" alt="{{ webinar.title }}" loading="lazy">
+                        {% if webinar.is_free %}<span class="webinar-badge free">Free</span>{% endif %}
+                        {% if webinar.status == 'live' %}<span class="webinar-badge live">Live</span>{% endif %}
+                    </div>
+                    <div class="webinar-content">
+                        <span class="webinar-status status-{{ webinar.status }}">
+                            <i class="fas fa-circle"></i> {{ webinar.get_status_display }}
+                        </span>
+                        <div class="webinar-meta">
+                            <span><i class="far fa-calendar-alt"></i> {{ webinar.start_datetime|date:"M d" }}</span>
+                            <span><i class="far fa-clock"></i> {{ webinar.start_datetime|time }}</span>
+                        </div>
+                        <h3>{{ webinar.title|truncatewords:8 }}</h3>
+                        <a href="{% url 'webinar_detail' webinar.id %}" class="btn btn-primary">
+                            {% if webinar.status == 'live' %}Join Live{% else %}Register{% endif %}
+                        </a>
+                    </div>
+                </article>
+                {% empty %}
+                <p style="grid-column:1/-1; text-align:center; color:var(--text-light);">
+                    No upcoming webinars. <a href="{% url 'webinar_list' %}" style="color:var(--secondary);">View all →</a>
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest <span style="color:var(--secondary)">Insights</span></h2>
+                <p>Deep dives into mind, culture, and innovation</p>
+            </div>
+            <div class="blog-grid">
+                {% for post in latest_posts %}
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> {{ post.published_date|date:"M d, Y" }}</span>
+                            <span><i class="far fa-clock"></i> {{ post.read_time }} min</span>
+                        </div>
+                        <h3>{{ post.title|truncatewords:10 }}</h3>
+                        <p>{{ post.excerpt|truncatewords:20 }}</p>
+                        <a href="{% url 'blog_detail' post.slug %}" class="btn-secondary">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+                {% empty %}
+                <p style="grid-column:1/-1; text-align:center; color:var(--text-light);">
+                    No posts yet. <a href="{% url 'blog_list' %}" style="color:var(--secondary);">Explore Blog →</a>
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your Mind?</h2>
+            <p>Join thousands of learners already growing with MindCraft ThinkSpace.</p>
+            <a href="{% url 'webinar_list' %}" class="btn cta-button">
+                Explore All Webinars <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h2 style="font-size:1.8rem; margin-bottom:0.5rem;"><span style="color:var(--secondary)">MindCraft</span> ThinkSpace</h2>
+                    <p style="opacity:0.9;">…it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                        <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Topics</h3>
+                    <ul>
+                        <li><a href="{% url 'webinar_list' %}?topic=leadership">Leadership</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=technology">Technology</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=education">Education</a></li>
+                        <li><a href="{% url 'webinar_list' %}?topic=culture">Culture</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul style="margin-bottom:1.5rem;">
+                        <li><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</li>
+                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.africa</li>
+                        <li><i class="fas fa-phone-alt"></i> +234 123 456 789</li>
+                    </ul>
+                    <form class="newsletter-form">
+                        <h4>Stay Updated</h4>
+                        <div class="input-group">
+                            <input type="email" placeholder="Your email" required aria-label="Your email for newsletter">
+                            <button type="submit" aria-label="Subscribe to newsletter"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="year"></span> MindCraft ThinkSpace. All Rights Reserved.</p>
+                <div>
+                    <a href="/privacy/">Privacy</a> |
+                    <a href="/terms/">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="backTop" class="back-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Year
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Mobile Menu
+            const mobileBtn = document.querySelector('.mobile-menu');
+            const nav = document.querySelector('.nav-links');
+            mobileBtn.addEventListener('click', () => {
+                const isExpanded = mobileBtn.getAttribute('aria-expanded') === 'true';
+                mobileBtn.setAttribute('aria-expanded', !isExpanded);
+                nav.classList.toggle('active');
+                mobileBtn.innerHTML = nav.classList.contains('active')
+                    ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                    mobileBtn.setAttribute('aria-expanded', 'false');
+                    mobileBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+
+            // Header Scroll
+            window.addEventListener('scroll', () => {
+                document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            // Back to Top
+            const backTop = document.getElementById('backTop');
+            window.addEventListener('scroll', () => {
+                backTop.classList.toggle('show', window.scrollY > 500);
+            });
+            backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            // Animation on Scroll
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.feature-card, .webinar-card, .blog-card').forEach(el => observer.observe(el));
+
+            // Lazy loading for images
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            img.classList.add('lazy-loaded');
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
+            }
+        });
+    </script>
+</body>
+</html>

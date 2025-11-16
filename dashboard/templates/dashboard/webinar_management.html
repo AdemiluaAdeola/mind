@@ -1,0 +1,803 @@
+{% extends 'dashboard/admin_base.html' %}
+{% load static %}
+
+{% block title %}MindCraft ThinkSpace - Webinar Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Webinar management specific styles */
+    .webinar-filters {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+        border: var(--border);
+    }
+    
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .webinar-card {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 1.5rem;
+        border: var(--border);
+        transition: var(--transition);
+    }
+    
+    .webinar-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .webinar-header {
+        padding: 1.25rem;
+        border-bottom: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        background: var(--lightest);
+    }
+    
+    .webinar-title {
+        font-size: 1.25rem;
+        color: var(--primary);
+        margin: 0 0 0.5rem 0;
+    }
+    
+    .webinar-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .webinar-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-light);
+    }
+    
+    .webinar-body {
+        padding: 1.5rem;
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 1.5rem;
+    }
+    
+    .webinar-image {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
+    }
+    
+    .webinar-description {
+        color: var(--text-light);
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .webinar-footer {
+        padding: 1.25rem;
+        border-top: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--lightest);
+    }
+    
+    .webinar-stats {
+        display: flex;
+        gap: 1.5rem;
+    }
+    
+    .webinar-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-light);
+    }
+    
+    .webinar-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .view-toggle {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding: 0.5rem;
+        background: var(--lightest);
+        border-radius: var(--radius);
+        width: fit-content;
+    }
+    
+    .view-btn {
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: transparent;
+        color: var(--text-light);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .view-btn.active {
+        background: var(--primary);
+        color: var(--white);
+    }
+    
+    /* Table view specific styles */
+    .webinar-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .webinar-table th,
+    .webinar-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: var(--border);
+    }
+    
+    .webinar-table th {
+        background: var(--lightest);
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .webinar-table tr:hover {
+        background: rgba(13, 46, 20, 0.02);
+    }
+    
+    .webinar-table-image {
+        width: 60px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
+    }
+    
+    /* Calendar view styles */
+    .calendar-view {
+        display: none;
+    }
+    
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .calendar-nav {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .calendar-day-header {
+        text-align: center;
+        font-weight: 600;
+        color: var(--primary);
+        padding: 0.5rem;
+    }
+    
+    .calendar-day {
+        background: var(--lightest);
+        border-radius: var(--radius-sm);
+        padding: 0.5rem;
+        min-height: 100px;
+        border: var(--border);
+    }
+    
+    .calendar-day.empty {
+        background: transparent;
+        border: none;
+    }
+    
+    .day-number {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text);
+    }
+    
+    .calendar-event {
+        background: var(--primary-light);
+        color: var(--white);
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.8rem;
+        margin-bottom: 0.25rem;
+        cursor: pointer;
+    }
+    
+    .calendar-event:hover {
+        opacity: 0.9;
+    }
+    
+    /* Status indicators */
+    .status-upcoming {
+        background: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+        border: 1px solid rgba(52, 152, 219, 0.2);
+    }
+    
+    .status-live {
+        background: rgba(46, 204, 113, 0.1);
+        color: #27ae60;
+        border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+    
+    .status-completed {
+        background: rgba(149, 165, 166, 0.1);
+        color: #95a5a6;
+        border: 1px solid rgba(149, 165, 166, 0.2);
+    }
+    
+    .status-cancelled {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+        border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .webinar-body {
+            grid-template-columns: 1fr;
+        }
+        
+        .webinar-image {
+            height: 160px;
+        }
+        
+        .webinar-footer {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .webinar-stats {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .webinar-actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
+        
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    /* Modal styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .modal {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        width: 90%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-20px);
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active .modal {
+        transform: translateY(0);
+    }
+    
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-title {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--primary);
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-light);
+        transition: var(--transition);
+    }
+    
+    .modal-close:hover {
+        color: var(--danger);
+        transform: rotate(90deg);
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: var(--border);
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>Webinar Management</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'dashboard' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Webinars</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="{% url 'webinar_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Schedule Webinar
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="webinar-filters">
+        <div class="filters-grid">
+            <div>
+                <label class="form-label">Status</label>
+                <select class="form-control form-select" id="statusFilter">
+                    <option value="">All Statuses</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="live">Live</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label">Date Range</label>
+                <select class="form-control form-select" id="dateFilter">
+                    <option value="">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="future">Upcoming</option>
+                    <option value="past">Past</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label">Host</label>
+                <select class="form-control form-select" id="hostFilter">
+                    <option value="">All Hosts</option>
+                    {% for host in hosts %}
+                    <option value="{{ host.id }}">{{ host.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label">Featured</label>
+                <select class="form-control form-select" id="featuredFilter">
+                    <option value="">All Webinars</option>
+                    <option value="true">Featured Only</option>
+                    <option value="false">Not Featured</option>
+                </select>
+            </div>
+        </div>
+        
+        <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center;">
+            <div style="flex: 1;">
+                <div class="search-container">
+                    <input type="text" class="form-control" placeholder="Search webinars..." id="webinarSearch">
+                </div>
+            </div>
+            <button class="btn btn-secondary" id="applyFilters">
+                <i class="fas fa-filter"></i> Apply Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- Card View -->
+    <div id="cardView" class="card-view">
+        {% for webinar in webinars %}
+        <div class="webinar-card" data-status="{{ webinar.status }}" data-date="{{ webinar.start_datetime|date:'Y-m-d' }}" data-host="{{ webinar.host.id }}" data-featured="{{ webinar.is_featured|lower }}">
+            <div class="webinar-header">
+                <div>
+                    <h3 class="webinar-title">{{ webinar.title }}</h3>
+                    <div class="webinar-meta">
+                        <div class="webinar-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            {{ webinar.start_datetime|date:"M d, Y" }}
+                        </div>
+                        <div class="webinar-meta-item">
+                            <i class="fas fa-clock"></i>
+                            {{ webinar.start_datetime|time }} ({{ webinar.duration }} mins)
+                        </div>
+                        <div class="webinar-meta-item">
+                            <i class="fas fa-user"></i>
+                            {{ webinar.host.get_full_name|default:webinar.host.username }}
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <span class="status-badge status-{{ webinar.status }}">{{ webinar.status|title }}</span>
+                    {% if webinar.is_featured %}
+                    <span class="status-badge status-published" style="margin-left: 0.5rem;">Featured</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="webinar-body">
+                {% if webinar.featured_image %}
+                <img src="{{ webinar.featured_image.url }}" alt="{{ webinar.title }}" class="webinar-image">
+                {% else %}
+                <div class="webinar-image" style="background: var(--light); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-video" style="color: var(--text-lighter); font-size: 1.5rem;"></i>
+                </div>
+                {% endif %}
+                
+                <div>
+                    <p class="webinar-description">{{ webinar.description|truncatewords:30 }}</p>
+                    
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        {% for speaker in webinar.speakers.all %}
+                        <span class="status-badge status-published">{{ speaker.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="webinar-footer">
+                <div class="webinar-stats">
+                    <div class="webinar-stat">
+                        <i class="fas fa-users"></i>
+                        {{ webinar.registrations.count }} Registered
+                    </div>
+                    <div class="webinar-stat">
+                        <i class="fas fa-money-bill-wave"></i>
+                        {% if webinar.is_free %}Free{% else %}Ksh {{ webinar.price }}{% endif %}
+                    </div>
+                </div>
+                
+                <div class="webinar-actions">
+                    <a href="{% url 'webinar_reg' webinar.id %}" class="btn btn-sm btn-secondary" title="View">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="{% url 'webinar_update' webinar.id %}" class="btn btn-sm btn-secondary" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="{% url 'webinar_reg' webinar.id %}" class="btn btn-sm btn-secondary" title="Registrations">
+                        <i class="fas fa-users"></i>
+                    </a>
+                    <button class="btn btn-sm btn-danger delete-webinar" data-id="{{ webinar.id }}" data-title="{{ webinar.title }}" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="content-card">
+            <div class="card-body text-center" style="padding: 3rem;">
+                <i class="fas fa-video-slash" style="font-size: 3rem; color: var(--text-lighter); margin-bottom: 1.5rem;"></i>
+                <h3>No Webinars Found</h3>
+                <p class="text-muted">There are no webinars matching your criteria.</p>
+                <a href="{% url 'webinar_create' %}" class="btn btn-primary">Schedule Your First Webinar</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Delete Webinar</h3>
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete the webinar "<strong id="deleteWebinarTitle"></strong>"? This action cannot be undone.</p>
+            <p class="text-muted" style="margin-top: 1rem;"><i class="fas fa-exclamation-triangle"></i> Note: This will also delete all registration records for this webinar.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+            <button class="btn btn-danger" id="confirmDelete">Delete Webinar</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // View toggle functionality
+        const viewButtons = document.querySelectorAll('.view-btn');
+        const cardView = document.getElementById('cardView');
+        const tableView = document.getElementById('tableView');
+        const calendarView = document.getElementById('calendarView');
+        
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const view = this.getAttribute('data-view');
+                
+                // Update active button
+                viewButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show selected view
+                cardView.style.display = view === 'card' ? 'block' : 'none';
+                tableView.style.display = view === 'table' ? 'block' : 'none';
+                calendarView.style.display = view === 'calendar' ? 'block' : 'none';
+            });
+        });
+        
+        // Filter functionality
+        const statusFilter = document.getElementById('statusFilter');
+        const dateFilter = document.getElementById('dateFilter');
+        const hostFilter = document.getElementById('hostFilter');
+        const featuredFilter = document.getElementById('featuredFilter');
+        const webinarSearch = document.getElementById('webinarSearch');
+        const applyFilters = document.getElementById('applyFilters');
+        
+        function filterWebinars() {
+            const statusValue = statusFilter.value;
+            const dateValue = dateFilter.value;
+            const hostValue = hostFilter.value;
+            const featuredValue = featuredFilter.value;
+            const searchValue = webinarSearch.value.toLowerCase();
+            
+            // Filter card view
+            const webinarCards = document.querySelectorAll('.webinar-card');
+            webinarCards.forEach(card => {
+                const status = card.getAttribute('data-status');
+                const date = card.getAttribute('data-date');
+                const host = card.getAttribute('data-host');
+                const featured = card.getAttribute('data-featured');
+                const title = card.querySelector('.webinar-title').textContent.toLowerCase();
+                const description = card.querySelector('.webinar-description').textContent.toLowerCase();
+                
+                const statusMatch = !statusValue || status === statusValue;
+                const dateMatch = !dateValue || checkDateMatch(date, dateValue);
+                const hostMatch = !hostValue || host === hostValue;
+                const featuredMatch = !featuredValue || featured === featuredValue;
+                const searchMatch = !searchValue || title.includes(searchValue) || description.includes(searchValue);
+                
+                if (statusMatch && dateMatch && hostMatch && featuredMatch && searchMatch) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Filter table view
+            const tableRows = document.querySelectorAll('.webinar-table tbody tr');
+            tableRows.forEach(row => {
+                const status = row.getAttribute('data-status');
+                const date = row.getAttribute('data-date');
+                const host = row.getAttribute('data-host');
+                const featured = row.getAttribute('data-featured');
+                const title = row.querySelector('td:first-child div:first-child').textContent.toLowerCase();
+                
+                const statusMatch = !statusValue || status === statusValue;
+                const dateMatch = !dateValue || checkDateMatch(date, dateValue);
+                const hostMatch = !hostValue || host === hostValue;
+                const featuredMatch = !featuredValue || featured === featuredValue;
+                const searchMatch = !searchValue || title.includes(searchValue);
+                
+                if (statusMatch && dateMatch && hostMatch && featuredMatch && searchMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function checkDateMatch(dateString, filterType) {
+            const date = new Date(dateString);
+            const today = new Date();
+            
+            switch(filterType) {
+                case 'today':
+                    return date.toDateString() === today.toDateString();
+                case 'week':
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - today.getDay());
+                    const endOfWeek = new Date(today);
+                    endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
+                    return date >= startOfWeek && date <= endOfWeek;
+                case 'month':
+                    return date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+                case 'future':
+                    return date > today;
+                case 'past':
+                    return date < today;
+                default:
+                    return true;
+            }
+        }
+        
+        if (applyFilters) {
+            applyFilters.addEventListener('click', filterWebinars);
+        }
+        
+        // Delete webinar functionality
+        const deleteButtons = document.querySelectorAll('.delete-webinar');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteWebinarTitle = document.getElementById('deleteWebinarTitle');
+        const closeModal = document.getElementById('closeModal');
+        const cancelDelete = document.getElementById('cancelDelete');
+        const confirmDelete = document.getElementById('confirmDelete');
+        
+        let webinarToDelete = null;
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const webinarId = this.getAttribute('data-id');
+                const webinarTitle = this.getAttribute('data-title');
+                
+                webinarToDelete = webinarId;
+                deleteWebinarTitle.textContent = webinarTitle;
+                deleteModal.classList.add('active');
+            });
+        });
+        
+        // Close modal functions
+        function closeDeleteModal() {
+            deleteModal.classList.remove('active');
+            webinarToDelete = null;
+        }
+        
+        if (closeModal) closeModal.addEventListener('click', closeDeleteModal);
+        if (cancelDelete) cancelDelete.addEventListener('click', closeDeleteModal);
+        
+        // Confirm delete
+        if (confirmDelete) {
+            confirmDelete.addEventListener('click', function() {
+                if (webinarToDelete) {
+                    // In a real application, this would be an AJAX call to the server
+                    console.log('Deleting webinar with ID:', webinarToDelete);
+                    
+                    // Simulate successful deletion
+                    const webinarCard = document.querySelector(`.delete-webinar[data-id="${webinarToDelete}"]`).closest('.webinar-card');
+                    const webinarRow = document.querySelector(`.delete-webinar[data-id="${webinarToDelete}"]`).closest('tr');
+                    
+                    if (webinarCard) webinarCard.style.opacity = '0.5';
+                    if (webinarRow) webinarRow.style.opacity = '0.5';
+                    
+                    // Show success message
+                    const messagesContainer = document.querySelector('.messages-container');
+                    if (messagesContainer) {
+                        messagesContainer.innerHTML = `
+                            <div class="alert alert-success">
+                                Webinar deleted successfully.
+                                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                    
+                    // Close modal
+                    closeDeleteModal();
+                    
+                    // Remove element after a delay
+                    setTimeout(() => {
+                        if (webinarCard) webinarCard.remove();
+                        if (webinarRow) webinarRow.remove();
+                        
+                        // Check if any webinars remain
+                        const remainingCards = document.querySelectorAll('.webinar-card');
+                        const remainingRows = document.querySelectorAll('.webinar-table tbody tr');
+                        
+                        if (remainingCards.length === 0 && remainingRows.length === 0) {
+                            cardView.innerHTML = `
+                                <div class="content-card">
+                                    <div class="card-body text-center" style="padding: 3rem;">
+                                        <i class="fas fa-video-slash" style="font-size: 3rem; color: var(--text-lighter); margin-bottom: 1.5rem;"></i>
+                                        <h3>No Webinars Found</h3>
+                                        <p class="text-muted">There are no webinars matching your criteria.</p>
+                                        <a href="{% url 'webinar_create' %}" class="btn btn-primary">Schedule Your First Webinar</a>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }, 1000);
+                }
+            });
+        }
+        
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+        
+        // Calendar navigation (simplified version)
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+        const calendarMonth = document.getElementById('calendarMonth');
+        
+        if (prevMonthBtn && nextMonthBtn) {
+            let currentMonth = 8; // September (0-indexed)
+            let currentYear = 2023;
+            
+            function updateCalendar() {
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                                    "July", "August", "September", "October", "November", "December"];
+                calendarMonth.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            }
+            
+            prevMonthBtn.addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                updateCalendar();
+            });
+            
+            nextMonthBtn.addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                updateCalendar();
+            });
+        }
+    });
+</script>
+{% endblock %}

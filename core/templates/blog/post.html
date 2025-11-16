@@ -1,0 +1,568 @@
+{% load crispy_forms_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{blog.title}} | MindCraft ThinkSpace</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --mindcraft-primary: #1a472a;
+            --mindcraft-secondary: #e67e22;
+            --mindcraft-accent: #f1c40f;
+            --mindcraft-light: #f9f9f9;
+        }
+        
+        .blog-post-hero {
+            background: linear-gradient(135deg, rgba(26, 71, 42, 0.9), rgba(26, 71, 42, 0.85)), 
+                        url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') no-repeat center/cover;
+            color: white;
+            padding: 7rem 0 4rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .blog-post-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .blog-post-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 3rem;
+        }
+        
+        .blog-header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+        
+        .blog-title {
+            color: var(--mindcraft-primary);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        
+        .blog-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+        
+        .blog-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .blog-meta-item i {
+            color: var(--mindcraft-secondary);
+        }
+        
+        .blog-author {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--mindcraft-secondary);
+        }
+        
+        .author-info h4 {
+            margin-bottom: 0.2rem;
+            color: var(--dark);
+        }
+        
+        .author-info p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .blog-image {
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 2.5rem 0;
+            max-height: 500px;
+        }
+        
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .blog-body {
+            line-height: 1.9;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+        
+        .blog-body h2 {
+            color: var(--mindcraft-primary);
+            margin: 2.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--mindcraft-accent);
+        }
+        
+        .blog-body h3 {
+            color: var(--mindcraft-primary);
+            margin: 2rem 0 1rem;
+        }
+        
+        .blog-body p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .blog-body blockquote {
+            border-left: 4px solid var(--mindcraft-secondary);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+        
+        .blog-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .blog-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+        
+        .tag {
+            background: var(--lighter);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+        
+        .tag:hover {
+            background: var(--mindcraft-secondary);
+            color: white;
+        }
+        
+        .comments-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .comments-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .comments-count {
+            background: var(--mindcraft-primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .comment-form {
+            background: var(--lighter);
+            padding: 2rem;
+            border-radius: var(--radius);
+            margin-bottom: 2.5rem;
+        }
+        
+        .comment-form h3 {
+            margin-bottom: 1.5rem;
+            color: var(--mindcraft-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .comment-form h3 i {
+            color: var(--mindcraft-secondary);
+        }
+        
+        .comment {
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            background: var(--lighter);
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        label{
+            display: block;
+            font-weight: bold;
+        }
+        
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .comment-author-info h4 {
+            margin-bottom: 0.2rem;
+            color: var(--dark);
+        }
+        
+        .comment-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        
+        .comment-body {
+            line-height: 1.7;
+            color: var(--text);
+        }
+        
+        .no-comments {
+            text-align: center;
+            padding: 2rem;
+            background: var(--lighter);
+            border-radius: var(--radius);
+            color: var(--text-light);
+        }
+        
+        .no-comments i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--mindcraft-secondary);
+        }
+        
+        .messages-container {
+            margin: 1.5rem 0;
+        }
+        
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .alert-success {
+            background-color: rgba(46, 204, 113, 0.15);
+            border-left: 4px solid #2ecc71;
+            color: #27ae60;
+        }
+        
+        .alert-error {
+            background-color: rgba(231, 76, 60, 0.15);
+            border-left: 4px solid #e74c3c;
+            color: #c0392b;
+        }
+        
+        .alert-warning {
+            background-color: rgba(241, 196, 15, 0.15);
+            border-left: 4px solid #f1c40f;
+            color: #d35400;
+        }
+        
+        .alert-info {
+            background-color: rgba(52, 152, 219, 0.15);
+            border-left: 4px solid #3498db;
+            color: #2980b9;
+        }
+        
+        .alert i {
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .blog-post-content {
+                padding: 2rem;
+            }
+            
+            .blog-meta {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .blog-actions {
+                flex-direction: column;
+            }
+            
+            .comments-section {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .blog-post-hero {
+                padding: 6rem 0 3rem;
+            }
+            
+            .blog-post-content {
+                padding: 1.5rem;
+            }
+            
+            .blog-title {
+                font-size: 1.8rem;
+            }
+            
+            .comment-form {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Animation for comments */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .comment {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="{% url 'index' %}" class="logo">
+                    <div class="logo-img">M</div>
+                    <div class="logo-text">
+                        <h1>MindCraft</h1>
+                        <p>THINKSPACE</p>
+                    </div>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}" class="active">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="blog-post-hero">
+        <div class="container">
+            <div class="blog-category" style="background: rgba(241, 196, 15, 0.2); color: #f1c40f; padding: 0.5rem 1.5rem; border-radius: 50px; display: inline-block; margin-bottom: 1rem;">
+                Mindset & Innovation
+            </div>
+            <h1>{{blog.title}}</h1>
+            <p>Exploring new ideas and perspectives</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="blog-post-container">
+        <article class="blog-post-content">
+            <div class="blog-header">
+                <h1 class="blog-title">{{blog.title}}</h1>
+                
+                <div class="blog-meta">
+                    <div class="blog-meta-item">
+                        <i class="far fa-calendar"></i>
+                        <span>{{blog.created_at}}</span>
+                    </div>
+                    <div class="blog-meta-item">
+                        <i class="far fa-clock"></i>
+                        <span>10 min read</span>
+                    </div>
+                    <div class="blog-meta-item">
+                        <i class="far fa-eye"></i>
+                        <span>1,245 views</span>
+                    </div>
+                </div>
+                
+                <div class="blog-author">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="author-avatar">
+                    <div class="author-info">
+                        <h4>{{blog.author.first_name}} {{blog.author.last_name}}</h4>
+                        <p>Content Creator at MindCraft ThinkSpace</p>
+                    </div>
+                </div>
+            </div>
+            
+            {% if blog.image %}
+            <div class="blog-image">
+                <img src="{{blog.image.url}}" alt="{{blog.title}}">
+            </div>
+            {% endif %}
+            
+            <div class="blog-body">
+                {{blog.body|safe}}
+            </div>
+            
+            {% if user.is_authenticated %}
+                {% if user.id == blog.author.id %}
+                <div class="blog-actions">
+                    <a href="{% url 'update' blog.id %}" class="btn btn-primary">
+                        <i class="fas fa-edit"></i> Edit Post
+                    </a>
+                    <a href="{% url 'delete' blog.id %}" class="btn" style="background: #e74c3c; color: white;">
+                        <i class="fas fa-trash"></i> Delete Post
+                    </a>
+                </div>
+                {% endif %}
+            {% endif %}
+        </article>
+        
+        <!-- Comments Section -->
+        <section class="comments-section">
+            <div class="comments-header">
+                <div class="comments-count">{{ blog.comments.count }}</div>
+                <h2>Comments</h2>
+            </div>
+            
+            <!-- Messages -->
+            <div class="messages-container">
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i>
+                            <div>{{ message }}</div>
+                        </div>
+                    {% elif message.tags == 'error' %}
+                        <div class="alert alert-error">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <div>{{ message }}</div>
+                        </div>
+                    {% elif message.tags == 'warning' %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>{{ message }}</div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <div>{{ message }}</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            <!-- Comment Form -->
+            <div class="comment-form">
+                <h3><i class="fas fa-comment"></i> Add Your Comment</h3>
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    {{form|crispy}} <br>
+                    <button type="submit" name="submit" value="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Post Comment
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Comments List -->
+            {% if not blog.comments.all %}
+                <div class="no-comments">
+                    <i class="far fa-comments"></i>
+                    <h3>No comments yet</h3>
+                    <p>Be the first to share your thoughts!</p>
+                </div>
+            {% else %}
+                {% for comment_post in blog.comments.all %}
+                <div class="comment">
+                    <div class="comment-header">
+                        <div class="comment-author">
+                            <div class="comment-author-info">
+                                <h4>{{comment_post.name}}</h4>
+                                <span class="comment-date">{{comment_post.created_at}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-body">
+                        <p>{{comment_post.body}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </section>
+    </main>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                document.querySelector('header').classList.add('scrolled');
+            } else {
+                document.querySelector('header').classList.remove('scrolled');
+            }
+        });
+        
+        // Auto-hide messages after 5 seconds
+        setTimeout(function() {
+            const messages = document.querySelectorAll('.alert');
+            messages.forEach(function(message) {
+                message.style.opacity = '0';
+                setTimeout(function() {
+                    message.style.display = 'none';
+                }, 500);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

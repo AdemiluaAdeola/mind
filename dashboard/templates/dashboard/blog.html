@@ -1,0 +1,522 @@
+{% extends 'dashboard/admin_base.html' %}
+{% load static %}
+
+{% block title %}MindCraft ThinkSpace - Blog Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Blog management specific styles */
+    .filters-container {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+        border: var(--border);
+    }
+    
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .table-actions {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+    }
+    
+    .status-filter {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .status-filter-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 100px;
+        border: var(--border);
+        background: var(--lightest);
+        color: var(--text-light);
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .status-filter-btn.active, .status-filter-btn:hover {
+        background: var(--primary);
+        color: var(--white);
+        border-color: var(--primary);
+    }
+    
+    .blog-cover {
+        width: 60px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
+    }
+    
+    .author-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 0.5rem;
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+    }
+    
+    .page-link {
+        padding: 0.5rem 1rem;
+        border: var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    
+    .page-link:hover, .page-link.active {
+        background: var(--primary);
+        color: var(--white);
+        border-color: var(--primary);
+    }
+    
+    .search-container {
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+    
+    .search-container i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-lighter);
+    }
+    
+    .search-container input {
+        padding-left: 2.5rem;
+        width: 100%;
+    }
+    
+    .bulk-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .select-all {
+        margin-right: 1rem;
+    }
+    
+    /* Modal styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .modal {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        width: 90%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-20px);
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active .modal {
+        transform: translateY(0);
+    }
+    
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-title {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--primary);
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-light);
+        transition: var(--transition);
+    }
+    
+    .modal-close:hover {
+        color: var(--danger);
+        transform: rotate(90deg);
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: var(--border);
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+    
+    /* Responsive table */
+    @media (max-width: 768px) {
+        .data-table th:nth-child(3),
+        .data-table td:nth-child(3),
+        .data-table th:nth-child(5),
+        .data-table td:nth-child(5) {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .data-table th:nth-child(4),
+        .data-table td:nth-child(4) {
+            display: none;
+        }
+        
+        .table-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>Blog Management</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'dashboard' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Blog Posts</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="{% url 'create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> New Blog Post
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="filters-container">
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search blog posts..." id="blogSearch">
+        </div>
+        
+        <div class="filters-grid">
+            <div>
+                <label class="form-label">Status</label>
+                <div class="status-filter">
+                    <button class="status-filter-btn active">All</button>
+                    <button class="status-filter-btn">Published</button>
+                    <button class="status-filter-btn">Draft</button>
+                    <button class="status-filter-btn">Archived</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Blog Posts Table -->
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Blog Posts ({{ blogs|length }})</h2>
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Categories</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for blog in blogs %}
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <img src="{{ blog.cover.url }}" alt="{{ blog.title }}" class="blog-cover">
+                                    <div>
+                                        <div style="font-weight: 600;">{{ blog.title|truncatewords:5 }}</div>
+                                        
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                         alt="{{ blog.author.username }}" 
+                                         class="author-avatar">
+                                    {{ blog.author.username }}
+                                </div>
+                            </td>
+                            <td>
+                                {% if blog.category %}
+                                <span class="status-badge status-published">{{ blog.category.name }}</span>
+                                {% else %}
+                                <span class="text-muted">Uncategorized</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ blog.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                {% if blog.status == 'Published' %}
+                                <span class="status-badge status-published">Published</span>
+                                {% elif blog.status == 'Draft' %}
+                                <span class="status-badge status-draft">Draft</span>
+                                {% else %}
+                                <span class="status-badge status-archived">Archived</span>
+                                {% endif %}
+                                
+                                {% if blog.is_verified %}
+                                <i class="fas fa-check-circle" style="color: var(--success); margin-left: 0.25rem;" title="Verified"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="{% url 'blogpost' blog.id %}" class="btn btn-sm btn-secondary" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'update' blog.id %}" class="btn btn-sm btn-secondary" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-sm btn-danger delete-blog" data-id="{{ blog.id }}" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center" style="padding: 2rem;">
+                                <i class="fas fa-inbox" style="font-size: 2rem; color: var(--text-lighter); margin-bottom: 1rem;"></i>
+                                <p>No blog posts found</p>
+                                <a href="{% url 'create' %}" class="btn btn-primary">Create Your First Post</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Delete Blog Post</h3>
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete "<strong id="deleteBlogTitle"></strong>"? This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+            <button class="btn btn-danger" id="confirmDelete">Delete</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Blog search functionality
+        const blogSearch = document.getElementById('blogSearch');
+        if (blogSearch) {
+            blogSearch.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('.data-table tbody tr');
+                
+                rows.forEach(row => {
+                    const title = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    const snippet = row.querySelector('td:nth-child(2) div:nth-child(2)').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || snippet.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        }
+        
+        // Status filter buttons
+        const statusFilterBtns = document.querySelectorAll('.status-filter-btn');
+        statusFilterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                statusFilterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter table by status
+                const status = this.textContent.toLowerCase();
+                const rows = document.querySelectorAll('.data-table tbody tr');
+                
+                rows.forEach(row => {
+                    if (status === 'all') {
+                        row.style.display = '';
+                    } else {
+                        const statusCell = row.querySelector('td:nth-child(6)');
+                        const rowStatus = statusCell.textContent.toLowerCase().trim();
+                        
+                        if (rowStatus === status) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Select all functionality
+        const selectAll = document.getElementById('selectAll');
+        const blogCheckboxes = document.querySelectorAll('.blog-checkbox');
+        
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                blogCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+        }
+        
+        // Delete blog functionality
+        const deleteButtons = document.querySelectorAll('.delete-blog');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteBlogTitle = document.getElementById('deleteBlogTitle');
+        const closeModal = document.getElementById('closeModal');
+        const cancelDelete = document.getElementById('cancelDelete');
+        const confirmDelete = document.getElementById('confirmDelete');
+        
+        let blogToDelete = null;
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const blogId = this.getAttribute('data-id');
+                const blogRow = this.closest('tr');
+                const blogTitle = blogRow.querySelector('td:nth-child(2) div:first-child').textContent;
+                
+                blogToDelete = blogId;
+                deleteBlogTitle.textContent = blogTitle;
+                deleteModal.classList.add('active');
+            });
+        });
+        
+        // Close modal functions
+        function closeDeleteModal() {
+            deleteModal.classList.remove('active');
+            blogToDelete = null;
+        }
+        
+        if (closeModal) closeModal.addEventListener('click', closeDeleteModal);
+        if (cancelDelete) cancelDelete.addEventListener('click', closeDeleteModal);
+        
+        // Confirm delete
+        if (confirmDelete) {
+            confirmDelete.addEventListener('click', function() {
+                if (blogToDelete) {
+                    // In a real application, this would be an AJAX call to the server
+                    console.log('Deleting blog with ID:', blogToDelete);
+                    
+                    // Simulate successful deletion
+                    const blogRow = document.querySelector(`.delete-blog[data-id="${blogToDelete}"]`).closest('tr');
+                    blogRow.style.opacity = '0.5';
+                    
+                    // Show success message
+                    const messagesContainer = document.querySelector('.messages-container');
+                    if (messagesContainer) {
+                        messagesContainer.innerHTML = `
+                            <div class="alert alert-success">
+                                Blog post deleted successfully.
+                                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                    
+                    // Close modal
+                    closeDeleteModal();
+                    
+                    // Remove row after a delay
+                    setTimeout(() => {
+                        blogRow.remove();
+                        
+                        // Check if table is empty
+                        const remainingRows = document.querySelectorAll('.data-table tbody tr');
+                        if (remainingRows.length === 0) {
+                            document.querySelector('.data-table tbody').innerHTML = `
+                                <tr>
+                                    <td colspan="7" class="text-center" style="padding: 2rem;">
+                                        <i class="fas fa-inbox" style="font-size: 2rem; color: var(--text-lighter); margin-bottom: 1rem;"></i>
+                                        <p>No blog posts found</p>
+                                        <a href="{% url 'create' %}" class="btn btn-primary">Create Your First Post</a>
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                    }, 1000);
+                }
+            });
+        }
+        
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+    });
+</script>
+{% endblock %}

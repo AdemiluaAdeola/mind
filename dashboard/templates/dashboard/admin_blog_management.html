@@ -1,0 +1,758 @@
+{% extends 'dashboard/admin_base.html' %}
+{% load static %}
+
+{% block title %}MindCraft ThinkSpace - Blog Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Blog management specific styles */
+    .blog-filters {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+        border: var(--border);
+    }
+    
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .blog-card {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 1.5rem;
+        border: var(--border);
+        transition: var(--transition);
+    }
+    
+    .blog-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .blog-header {
+        padding: 1.25rem;
+        border-bottom: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        background: var(--lightest);
+    }
+    
+    .blog-title {
+        font-size: 1.25rem;
+        color: var(--primary);
+        margin: 0 0 0.5rem 0;
+    }
+    
+    .blog-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .blog-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-light);
+    }
+    
+    .blog-body {
+        padding: 1.5rem;
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 1.5rem;
+    }
+    
+    .blog-image {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
+        border: var(--border);
+    }
+    
+    .blog-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .blog-snippet {
+        color: var(--text-light);
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .blog-footer {
+        padding: 1.25rem;
+        border-top: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--lightest);
+    }
+    
+    .blog-stats {
+        display: flex;
+        gap: 1.5rem;
+    }
+    
+    .blog-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-light);
+    }
+    
+    .blog-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    /* Status indicators */
+    .status-published {
+        background: rgba(46, 204, 113, 0.1);
+        color: #27ae60;
+        border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+    
+    .status-draft {
+        background: rgba(149, 165, 166, 0.1);
+        color: #95a5a6;
+        border: 1px solid rgba(149, 165, 166, 0.2);
+    }
+    
+    .status-archived {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+        border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+    
+    /* Table view specific styles */
+    .blog-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .blog-table th,
+    .blog-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: var(--border);
+    }
+    
+    .blog-table th {
+        background: var(--lightest);
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .blog-table tr:hover {
+        background: rgba(13, 46, 20, 0.02);
+    }
+    
+    .table-image {
+        width: 60px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
+        border: var(--border);
+    }
+    
+    /* View toggle */
+    .view-toggle {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding: 0.5rem;
+        background: var(--lightest);
+        border-radius: var(--radius);
+        width: fit-content;
+    }
+    
+    .view-btn {
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: transparent;
+        color: var(--text-light);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .view-btn.active {
+        background: var(--primary);
+        color: var(--white);
+    }
+    
+    /* Bulk actions */
+    .bulk-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .select-all {
+        margin-right: 1rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .blog-body {
+            grid-template-columns: 1fr;
+        }
+        
+        .blog-image {
+            height: 200px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .blog-header {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .blog-footer {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .blog-actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
+        
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .blog-table th:nth-child(4),
+        .blog-table td:nth-child(4),
+        .blog-table th:nth-child(5),
+        .blog-table td:nth-child(5) {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .blog-stats {
+            flex-wrap: wrap;
+        }
+        
+        .blog-table th:nth-child(3),
+        .blog-table td:nth-child(3) {
+            display: none;
+        }
+        
+        .blog-table th:nth-child(6),
+        .blog-table td:nth-child(6) {
+            display: none;
+        }
+    }
+    
+    /* Modal styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .modal {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        width: 90%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-20px);
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active .modal {
+        transform: translateY(0);
+    }
+    
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-title {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--primary);
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-light);
+        transition: var(--transition);
+    }
+    
+    .modal-close:hover {
+        color: var(--danger);
+        transform: rotate(90deg);
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: var(--border);
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>Blog Management</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'dashboard' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Blog Posts</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="{% url 'create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> New Blog Post
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="blog-filters">
+        <div class="filters-grid">
+            <div>
+                <label class="form-label">Status</label>
+                <select class="form-control form-select" id="statusFilter">
+                    <option value="">All Statuses</option>
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                    <option value="archived">Archived</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label">Category</label>
+                <select class="form-control form-select" id="categoryFilter">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label">Author</label>
+                <select class="form-control form-select" id="authorFilter">
+                    <option value="">All Authors</option>
+                    {% for author in authors %}
+                    <option value="{{ author.id }}">{{ author.get_full_name|default:author.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center;">
+            <div style="flex: 1;">
+                <div class="search-container">
+                    <input type="text" class="form-control" placeholder="Search blog posts..." id="blogSearch">
+                </div>
+            </div>
+            <button class="btn btn-secondary" id="applyFilters">
+                <i class="fas fa-filter"></i> Apply Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- View Toggle -->
+    <div class="view-toggle">
+        <button class="view-btn active" data-view="card">
+            <i class="fas fa-th-large"></i> Card View
+        </button>
+    </div>
+
+    <!-- Card View -->
+    <div id="cardView" class="card-view">
+        {% for blog in blogs %}
+        <div class="blog-card" data-status="{{ blog.status|lower }}" data-category="{% if blog.category %}{{ blog.category.id }}{% endif %}" data-author="{{ blog.author.id }}" data-date="{{ blog.created_at|date:'Y-m-d' }}">
+            <div class="blog-header">
+                <div>
+                    <h3 class="blog-title">{{ blog.title }}</h3>
+                    <div class="blog-meta">
+                        <div class="blog-meta-item">
+                            <i class="fas fa-user"></i>
+                            {{ blog.author.get_full_name|default:blog.author.username }}
+                        </div>
+                        <div class="blog-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            {{ blog.created_at|date:"M d, Y" }}
+                        </div>
+                        <div class="blog-meta-item">
+                            <i class="fas fa-folder"></i>
+                            {% if blog.category %}{{ blog.category.name }}{% else %}Uncategorized{% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <span class="status-badge status-{{ blog.status|lower }}">{{ blog.status }}</span>
+                    {% if blog.is_verified %}
+                    <span class="status-badge status-published" style="margin-left: 0.5rem;">Verified</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="blog-body">
+                <img src="{{ blog.cover.url }}" alt="{{ blog.title }}" class="blog-image">
+                
+                <div class="blog-content">
+                    <p class="blog-snippet">{{ blog.snippet }}</p>
+                    
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        {% for tag in blog.tags.all %}
+                        <span class="status-badge status-published">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="blog-footer">
+                <div class="blog-stats">
+                    <div class="blog-stat">
+                        <i class="fas fa-comment"></i>
+                        {{blog.comments.count}} Comments
+                    </div>
+                </div>
+                
+                <div class="blog-actions">
+                    <a href="{% url 'blogpost' blog.id %}" class="btn btn-sm btn-secondary" target="_blank" title="View">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="{% url 'update' blog.id %}" class="btn btn-sm btn-secondary" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button class="btn btn-sm btn-danger delete-blog" data-id="{{ blog.id }}" data-title="{{ blog.title }}" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="content-card">
+            <div class="card-body text-center" style="padding: 3rem;">
+                <i class="fas fa-blog" style="font-size: 3rem; color: var(--text-lighter); margin-bottom: 1.5rem;"></i>
+                <h3>No Blog Posts Found</h3>
+                <p class="text-muted">There are no blog posts matching your criteria.</p>
+                <a href="{% url 'create' %}" class="btn btn-primary">Create Your First Post</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Delete Blog Post</h3>
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete the blog post "<strong id="deleteBlogTitle"></strong>"? This action cannot be undone.</p>
+            <p class="text-muted" style="margin-top: 1rem;"><i class="fas fa-exclamation-triangle"></i> Note: This will permanently remove the blog post and all associated comments.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+            <button class="btn btn-danger" id="confirmDelete">Delete Post</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // View toggle functionality
+        const viewButtons = document.querySelectorAll('.view-btn');
+        const cardView = document.getElementById('cardView');
+        const tableView = document.getElementById('tableView');
+        
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const view = this.getAttribute('data-view');
+                
+                // Update active button
+                viewButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show selected view
+                if (view === 'card') {
+                    cardView.style.display = 'block';
+                    tableView.style.display = 'none';
+                } else if (view === 'table') {
+                    cardView.style.display = 'none';
+                    tableView.style.display = 'block';
+                }
+            });
+        });
+        
+        // Filter functionality
+        const statusFilter = document.getElementById('statusFilter');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const authorFilter = document.getElementById('authorFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const blogSearch = document.getElementById('blogSearch');
+        const applyFilters = document.getElementById('applyFilters');
+        
+        function filterBlogs() {
+            const statusValue = statusFilter.value;
+            const categoryValue = categoryFilter.value;
+            const authorValue = authorFilter.value;
+            const searchValue = blogSearch.value.toLowerCase();
+            
+            // Filter card view
+            const blogCards = document.querySelectorAll('.blog-card');
+            blogCards.forEach(card => {
+                const status = card.getAttribute('data-status');
+                const category = card.getAttribute('data-category');
+                const author = card.getAttribute('data-author');
+                const title = card.querySelector('.blog-title').textContent.toLowerCase();
+                const snippet = card.querySelector('.blog-snippet').textContent.toLowerCase();
+                
+                const statusMatch = !statusValue || status === statusValue;
+                const categoryMatch = !categoryValue || category === categoryValue;
+                const authorMatch = !authorValue || author === authorValue;
+                const searchMatch = !searchValue || title.includes(searchValue) || snippet.includes(searchValue);
+                
+                if (statusMatch && categoryMatch && authorMatch && searchMatch) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Filter table view
+            const tableRows = document.querySelectorAll('.blog-table tbody tr');
+            tableRows.forEach(row => {
+                const status = row.getAttribute('data-status');
+                const category = row.getAttribute('data-category');
+                const author = row.getAttribute('data-author');
+                const title = row.querySelector('td:nth-child(2) div:first-child').textContent.toLowerCase();
+                
+                const statusMatch = !statusValue || status === statusValue;
+                const categoryMatch = !categoryValue || category === categoryValue;
+                const authorMatch = !authorValue || author === authorValue;
+                const searchMatch = !searchValue || title.includes(searchValue);
+                
+                if (statusMatch && categoryMatch && authorMatch && searchMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        if (applyFilters) {
+            applyFilters.addEventListener('click', filterBlogs);
+        }
+        
+        // Select all functionality
+        const selectAll = document.getElementById('selectAll');
+        const blogCheckboxes = document.querySelectorAll('.blog-checkbox');
+        
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                blogCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+        }
+        
+        // Bulk actions
+        const bulkAction = document.getElementById('bulkAction');
+        const applyBulkAction = document.getElementById('applyBulkAction');
+        
+        if (applyBulkAction) {
+            applyBulkAction.addEventListener('click', function() {
+                const action = bulkAction.value;
+                if (!action) return;
+                
+                const selectedIds = [];
+                blogCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        selectedIds.push(checkbox.getAttribute('data-id'));
+                    }
+                });
+                
+                if (selectedIds.length === 0) {
+                    alert('Please select at least one blog post to perform bulk action.');
+                    return;
+                }
+                
+                // In a real application, this would be an AJAX call to the server
+                console.log(`Performing ${action} on blog posts:`, selectedIds);
+                
+                // Show success message
+                const messagesContainer = document.querySelector('.messages-container');
+                if (messagesContainer) {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-success">
+                            ${selectedIds.length} blog post(s) updated successfully.
+                            <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                // Reset selection
+                selectAll.checked = false;
+                blogCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            });
+        }
+        
+        // Delete blog functionality
+        const deleteButtons = document.querySelectorAll('.delete-blog');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteBlogTitle = document.getElementById('deleteBlogTitle');
+        const closeModal = document.getElementById('closeModal');
+        const cancelDelete = document.getElementById('cancelDelete');
+        const confirmDelete = document.getElementById('confirmDelete');
+        
+        let blogToDelete = null;
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const blogId = this.getAttribute('data-id');
+                const blogTitle = this.getAttribute('data-title');
+                
+                blogToDelete = blogId;
+                deleteBlogTitle.textContent = blogTitle;
+                deleteModal.classList.add('active');
+            });
+        });
+        
+        // Close modal functions
+        function closeDeleteModal() {
+            deleteModal.classList.remove('active');
+            blogToDelete = null;
+        }
+        
+        if (closeModal) closeModal.addEventListener('click', closeDeleteModal);
+        if (cancelDelete) cancelDelete.addEventListener('click', closeDeleteModal);
+        
+        // Confirm delete
+        if (confirmDelete) {
+            confirmDelete.addEventListener('click', function() {
+                if (blogToDelete) {
+                    // In a real application, this would be an AJAX call to the server
+                    console.log('Deleting blog with ID:', blogToDelete);
+                    
+                    // Simulate successful deletion
+                    const blogCard = document.querySelector(`.delete-blog[data-id="${blogToDelete}"]`).closest('.blog-card');
+                    const blogRow = document.querySelector(`.delete-blog[data-id="${blogToDelete}"]`).closest('tr');
+                    
+                    if (blogCard) blogCard.style.opacity = '0.5';
+                    if (blogRow) blogRow.style.opacity = '0.5';
+                    
+                    // Show success message
+                    const messagesContainer = document.querySelector('.messages-container');
+                    if (messagesContainer) {
+                        messagesContainer.innerHTML = `
+                            <div class="alert alert-success">
+                                Blog post deleted successfully.
+                                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                    
+                    // Close modal
+                    closeDeleteModal();
+                    
+                    // Remove element after a delay
+                    setTimeout(() => {
+                        if (blogCard) blogCard.remove();
+                        if (blogRow) blogRow.remove();
+                        
+                        // Check if any blogs remain
+                        const remainingCards = document.querySelectorAll('.blog-card');
+                        const remainingRows = document.querySelectorAll('.blog-table tbody tr');
+                        
+                        if (remainingCards.length === 0 && remainingRows.length === 0) {
+                            cardView.innerHTML = `
+                                <div class="content-card">
+                                    <div class="card-body text-center" style="padding: 3rem;">
+                                        <i class="fas fa-blog" style="font-size: 3rem; color: var(--text-lighter); margin-bottom: 1.5rem;"></i>
+                                        <h3>No Blog Posts Found</h3>
+                                        <p class="text-muted">There are no blog posts matching your criteria.</p>
+                                        <a href="{% url 'create' %}" class="btn btn-primary">Create Your First Post</a>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }, 1000);
+                }
+            });
+        }
+        
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+    });
+</script>
+{% endblock %}

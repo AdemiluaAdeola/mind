@@ -1,0 +1,273 @@
+{% extends 'dashboard/admin_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Edit Registration | MindCraft Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .registration-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: var(--border);
+    }
+    
+    .registration-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+        padding: 1.5rem;
+        background: var(--lightest);
+        border-radius: var(--radius-md);
+        border: var(--border);
+    }
+    
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .meta-label {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .meta-value {
+        font-weight: 600;
+        color: var(--text);
+        font-size: 1.1rem;
+    }
+    
+    .form-card {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+        padding: 2rem;
+        border: var(--border);
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: var(--border);
+    }
+    
+    /* Crispy forms customization */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-control-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+        border-radius: var(--radius-sm);
+        padding: 0.875rem 1rem;
+        border: var(--border);
+        transition: var(--transition);
+    }
+    
+    .form-control:focus {
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+    }
+    
+    .form-text {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        margin-top: 0.5rem;
+    }
+    
+    .select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23636e72' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 16px;
+    }
+    
+    .checkbox-input {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        border: var(--border);
+        margin-right: 0.75rem;
+    }
+    
+    .checkbox-label {
+        font-weight: 500;
+        color: var(--text);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="page-header">
+        <div>
+            <h1>Edit Registration</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="{% url 'webinar_management' %}">Webinars</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="">Webinar Details</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Edit Registration</span>
+            </div>
+        </div>
+        <a href="" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Webinar
+        </a>
+    </div>
+
+    <div class="form-container">
+        <!-- Registration Information -->
+        <div class="content-card">
+            <div class="card-header">
+                <h2 class="card-title">Registration Information</h2>
+                <div class="status-badge status-{{ registration.status|lower }}">
+                    <i class="fas fa-circle"></i> {{ registration.status }}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="registration-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Webinar</span>
+                        <span class="meta-value">{{ registration.webinar.title }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Registered On</span>
+                        <span class="meta-value">{{ registration.registration_date|date:"M j, Y g:i A" }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Last Updated</span>
+                        <span class="meta-value">{{ registration.updated_at|date:"M j, Y g:i A" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Form -->
+        <div class="form-card">
+            <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Update Registration Details</h3>
+            
+            {% if messages %}
+            <div class="alert alert-success">
+                {% for message in messages %}
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <span><i class="fas fa-check-circle"></i> {{ message }}</span>
+                    <button type="button" class="alert-close" onclick="this.parentElement.parentElement.style.display='none'">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-grid">
+                    {% for field in form %}
+                    <div class="form-group">
+                        <label class="form-control-label" for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            {% if field.field.required %}<span style="color: var(--danger);">*</span>{% endif %}
+                        </label>
+                        
+                        {% if field.field.widget.input_type == 'select' %}
+                        <select class="form-control select" name="{{ field.name }}" id="{{ field.id_for_label }}">
+                            {% for value, text in field.field.choices %}
+                            <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        {% elif field.field.widget.input_type == 'checkbox' %}
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <input type="checkbox" class="checkbox-input" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                                   {% if field.value %}checked{% endif %}>
+                            <label class="checkbox-label" for="{{ field.id_for_label }}">{{ field.help_text }}</label>
+                        </div>
+                        
+                        {% else %}
+                        <input type="{{ field.field.widget.input_type }}" 
+                               class="form-control" 
+                               name="{{ field.name }}" 
+                               id="{{ field.id_for_label }}" 
+                               value="{{ field.value|default:'' }}"
+                               placeholder="{{ field.field.widget.attrs.placeholder|default:'' }}">
+                        {% endif %}
+                        
+                        {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                        
+                        {% if field.errors %}
+                        <div style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">
+                            {% for error in field.errors %}
+                            <div><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-actions">
+                    <a href="" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update Registration
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-hide success messages after 5 seconds
+        const successAlerts = document.querySelectorAll('.alert-success');
+        successAlerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        });
+        
+        // Enhance form controls
+        const formControls = document.querySelectorAll('.form-control');
+        formControls.forEach(control => {
+            control.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            control.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+        });
+    });
+</script>
+{% endblock %}

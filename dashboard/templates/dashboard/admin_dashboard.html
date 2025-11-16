@@ -1,0 +1,379 @@
+{% extends 'dashboard/admin_base.html' %}
+{% load static %}
+
+{% block title %}MindCraft ThinkSpace - Admin Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Dashboard-specific styles */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .stat-card {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 2rem;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        transition: var(--transition);
+        border: var(--border);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--gradient-secondary);
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .stat-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+    }
+    
+    .stat-icon.posts {
+        background: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+    }
+    
+    .stat-icon.published {
+        background: rgba(46, 204, 113, 0.1);
+        color: #2ecc71;
+    }
+    
+    .stat-icon.draft {
+        background: rgba(149, 165, 166, 0.1);
+        color: #95a5a6;
+    }
+    
+    .stat-icon.views {
+        background: rgba(241, 196, 15, 0.1);
+        color: #f1c40f;
+    }
+    
+    .stat-icon.users {
+        background: rgba(155, 89, 182, 0.1);
+        color: #9b59b6;
+    }
+    
+    .stat-icon.webinars {
+        background: rgba(230, 126, 34, 0.1);
+        color: #e67e22;
+    }
+    
+    .stat-info {
+        flex: 1;
+    }
+    
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--dark);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stat-label {
+        font-size: 0.95rem;
+        color: var(--text-light);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-trend {
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-weight: 600;
+    }
+    
+    .trend-up {
+        color: var(--success);
+    }
+    
+    .trend-down {
+        color: var(--danger);
+    }
+    
+    .recent-activity {
+        margin-top: 2rem;
+    }
+    
+    .activity-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .activity-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.25rem;
+        border-bottom: var(--border);
+        transition: var(--transition);
+    }
+    
+    .activity-item:hover {
+        background: var(--lighter);
+    }
+    
+    .activity-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: var(--light);
+        color: var(--primary);
+    }
+    
+    .activity-content {
+        flex: 1;
+    }
+    
+    .activity-title {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--dark);
+    }
+    
+    .activity-time {
+        font-size: 0.85rem;
+        color: var(--text-light);
+    }
+    
+    .chart-container {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+        border: var(--border);
+    }
+    
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .chart-title {
+        font-size: 1.25rem;
+        color: var(--primary);
+        margin: 0;
+    }
+    
+    .chart-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .chart-placeholder {
+        height: 300px;
+        background: var(--lightest);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-light);
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>Dashboard Overview</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'dashboard' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Dashboard</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-primary">
+                <i class="fas fa-download"></i> Export Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon users">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">{{ total_users }}</div>
+                <div class="stat-label">Total Users</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 12% from last month
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon webinars">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">{{ total_webinars }}</div>
+                <div class="stat-label">Webinars</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon posts">
+                <i class="fas fa-blog"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">{{ total_blogs }}</div>
+                <div class="stat-label">Blog Posts</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon published">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-number">{{ published_blogs }}</div>
+                <div class="stat-label">Published Posts</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Recent Activity</h2>
+            <div class="card-actions">
+                <button class="btn btn-sm btn-secondary">View All</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <ul class="activity-list">
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">New user registered</div>
+                        <p class="activity-desc">John Doe joined the platform</p>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                </li>
+                
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-blog"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">New blog post published</div>
+                        <p class="activity-desc">"10 Tips for Mindfulness" was published</p>
+                        <div class="activity-time">5 hours ago</div>
+                    </div>
+                </li>
+                
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Webinar scheduled</div>
+                        <p class="activity-desc">"Meditation Techniques" webinar created</p>
+                        <div class="activity-time">Yesterday</div>
+                    </div>
+                </li>
+                
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">New comment</div>
+                        <p class="activity-desc">Sarah Johnson commented on "Stress Management"</p>
+                        <div class="activity-time">2 days ago</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Quick Actions</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-grid">
+                <a href="" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create New Blog Post
+                </a>
+                
+                <a href="" class="btn btn-primary">
+                    <i class="fas fa-video"></i> Schedule Webinar
+                </a>
+                
+                <a href="" class="btn btn-secondary">
+                    <i class="fas fa-user-cog"></i> Manage Users
+                </a>
+                
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-cog"></i> System Settings
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Dashboard-specific JavaScript can go here
+        
+        // Example: Initialize charts (would be implemented with a charting library)
+        console.log('Dashboard loaded. Charts would be initialized here.');
+        
+        // Example: Update stats with real-time data
+        setInterval(function() {
+            // This would fetch updated stats from the server in a real application
+            console.log('Updating dashboard stats...');
+        }, 30000); // Every 30 seconds
+    });
+</script>
+{% endblock %}

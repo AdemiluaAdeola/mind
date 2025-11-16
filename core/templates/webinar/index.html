@@ -1,0 +1,758 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Join transformative webinars blending African wisdom with modern cognitive science.">
+    <meta name="author" content="MindCraft ThinkSpace">
+    <meta name="theme-color" content="#0d2e14">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Webinars | MindCraft ThinkSpace">
+    <meta property="og:description" content="Interactive learning rooted in African philosophy and global expertise.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mindcraftthinkspace.africa/webinars/">
+    <meta property="og:image" content="{% static 'images/og-webinars.jpg' %}">
+
+    <title>Webinars | MindCraft ThinkSpace</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- CSS -->
+    <style>
+        :root {
+            --primary: #0d2e14;
+            --primary-light: #1a4d2e;
+            --primary-dark: #071d0c;
+            --secondary: #e67e22;
+            --secondary-light: #f39c12;
+            --secondary-dark: #d35400;
+            --accent: #f1c40f;
+            --gray: #95a5a6;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --radius: 16px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-md: 0 8px 25px rgba(0,0,0,0.12);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--light);
+            margin: 0;
+            padding-top: 90px;
+            overflow-x: hidden;
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+        a { text-decoration: none; color: inherit; }
+        .container { width: min(92%, 1280px); margin: 0 auto; padding: 0 1rem; }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
+        .logo img { height: 60px; transition: var(--transition); }
+        header.scrolled .logo img { height: 50px; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            font-weight: 500; color: var(--text); position: relative;
+            padding: 0.5rem 0;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 2px; background: var(--secondary);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--secondary); }
+
+        .mobile-menu {
+            display: none; background: none; border: none;
+            font-size: 1.5rem; color: var(--text); cursor: pointer;
+        }
+
+        /* HERO – EPIC DESIGN */
+        .page-hero {
+            position: relative;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(13,46,20,0.95), rgba(7,29,12,0.92)),
+                        url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            background-attachment: fixed;
+        }
+
+        .hero-bg-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(230,126,34,0.3), transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(241,196,15,0.2), transparent 50%);
+            z-index: 1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 180px;
+            background: linear-gradient(transparent, var(--light));
+            z-index: 2;
+        }
+
+        .page-hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 900px;
+            padding: 2rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .page-hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2.8rem, 7vw, 4.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            letter-spacing: -0.5px;
+        }
+
+        .page-hero h1 span {
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-hero h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; left: 0;
+            width: 100%; height: 6px;
+            background: var(--secondary);
+            border-radius: 3px;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: underlineGrow 1.5s ease-out forwards 0.8s;
+        }
+
+        .page-hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            max-width: 700px;
+            animation: fadeInUp 1.2s ease-out 0.3s backwards;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 2.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 8px 25px rgba(230,126,34,0.4);
+            transition: var(--transition);
+            animation: fadeInUp 1.2s ease-out 0.6s backwards;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(230,126,34,0.5);
+            background: var(--secondary-dark);
+        }
+
+        .hero-breadcrumbs {
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            animation: fadeInUp 1.2s ease-out 0.9s backwards;
+        }
+
+        .hero-breadcrumbs a {
+            color: rgba(255,255,255,0.8);
+            transition: var(--transition);
+        }
+
+        .hero-breadcrumbs a:hover { color: var(--accent); }
+        .hero-breadcrumbs i { margin: 0 0.6rem; color: var(--accent); font-size: 0.8rem; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes underlineGrow {
+            to { transform: scaleX(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        /* Section */
+        section { padding: 6rem 0; }
+        .section-header { text-align: center; margin-bottom: 3.5rem; }
+        .section-header h2 {
+            font-size: 2.6rem; color: var(--primary);
+            position: relative; display: inline-block;
+            padding-bottom: 0.8rem;
+        }
+        .section-header h2::after {
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%); width: 90px; height: 5px;
+            background: var(--secondary); border-radius: 3px;
+        }
+        .section-header p { max-width: 700px; margin: 1rem auto 0; color: var(--text-light); }
+
+        /* Filters */
+        .webinar-filters { margin-bottom: 3rem; }
+        .filter-container {
+            display: flex; flex-wrap: wrap; gap: 1.5rem;
+            justify-content: space-between; align-items: center;
+        }
+        .filter-list {
+            display: flex; gap: 0.8rem; background: white;
+            padding: 0.8rem; border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        .filter-btn {
+            padding: 0.6rem 1.5rem; background: white;
+            border: 1px solid var(--gray); border-radius: 50px;
+            font-size: 0.95rem; font-weight: 500; cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-btn:hover { border-color: var(--secondary); color: var(--secondary); }
+        .filter-btn.active {
+            background: var(--secondary); color: white;
+            border-color: var(--secondary); box-shadow: 0 4px 12px rgba(230,126,34,0.2);
+        }
+        .search-box { position: relative; }
+        .search-input {
+            padding: 0.8rem 1rem 0.8rem 3rem; width: 300px;
+            border: 1px solid var(--gray); border-radius: 50px;
+            font-size: 0.95rem; transition: var(--transition);
+        }
+        .search-input:focus {
+            outline: none; border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(230,126,34,0.1);
+        }
+        .search-icon {
+            position: absolute; left: 1rem; top: 50%;
+            transform: translateY(-50%); color: var(--text-light);
+        }
+        .view-toggle { display: flex; gap: 0.5rem; }
+        .view-btn {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: white; border: 1px solid var(--gray);
+            color: var(--text-light); cursor: pointer;
+            transition: var(--transition); display: flex;
+            align-items: center; justify-content: center;
+        }
+        .view-btn.active {
+            background: var(--secondary); color: white;
+            border-color: var(--secondary);
+        }
+
+        /* Webinar Grid */
+        .webinar-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem; margin-top: 1rem;
+        }
+        .webinar-card {
+            background: white; border-radius: var(--radius);
+            overflow: hidden; box-shadow: var(--shadow-sm);
+            transition: var(--transition); display: flex;
+            flex-direction: column; opacity: 0; transform: translateY(20px);
+        }
+        .webinar-card.visible { opacity: 1; transform: translateY(0); transition: all 0.6s ease; }
+        .webinar-card:hover {
+            transform: translateY(-8px); box-shadow: var(--shadow-md);
+        }
+        .webinar-image {
+            height: 220px; overflow: hidden; position: relative;
+        }
+        .webinar-image img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+        .webinar-card:hover .webinar-image img { transform: scale(1.08); }
+        .webinar-badge {
+            position: absolute; top: 1rem; right: 1rem;
+            padding: 0.35rem 1rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600; color: white;
+            z-index: 2;
+        }
+        .webinar-badge.free { background: var(--primary); }
+        .webinar-badge.live {
+            background: #e74c3c; animation: pulse 2s infinite;
+        }
+        .webinar-content { padding: 1.8rem; flex: 1; display: flex; flex-direction: column; }
+        .webinar-status {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.35rem 0.9rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 500; margin-bottom: 1rem;
+        }
+        .status-upcoming { background: rgba(52,152,219,0.1); color: #3498db; }
+        .status-live { background: rgba(231,76,60,0.1); color: #e74c3c; }
+        .status-completed { background: rgba(46,204,113,0.1); color: #2ecc71; }
+        .webinar-meta {
+            display: flex; gap: 1.2rem; margin-bottom: 1rem;
+            color: var(--text-light); font-size: 0.9rem;
+        }
+        .webinar-meta i { color: var(--secondary); }
+        .webinar-footer {
+            margin-top: auto; padding-top: 1.5rem;
+            display: flex; justify-content: space-between;
+            align-items: center;
+        }
+        .webinar-price { font-weight: 600; color: var(--primary); }
+        .webinar-price.free { color: var(--secondary); }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.8rem 1.8rem; border-radius: var(--radius-sm);
+            font-weight: 600; cursor: pointer; transition: var(--transition);
+            margin-top: 1rem; align-self: flex-start;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white; box-shadow: 0 4px 15px rgba(230,126,34,0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230,126,34,0.4);
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1; text-align: center; padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+        .empty-state i { font-size: 3.5rem; color: var(--gray); margin-bottom: 1rem; }
+        .empty-state h3 { margin-bottom: 0.5rem; color: var(--text); }
+
+        /* Pagination */
+        .pagination {
+            display: flex; justify-content: center; gap: 0.5rem;
+            margin: 3rem 0; flex-wrap: wrap;
+        }
+        .pagination a, .pagination span {
+            padding: 0.6rem 1rem; border-radius: var(--radius-sm);
+            background: white; color: var(--text); border: 1px solid var(--gray);
+            transition: var(--transition);
+        }
+        .pagination a:hover { background: var(--secondary); color: white; border-color: var(--secondary); }
+        .pagination .current { background: var(--secondary); color: white; border-color: var(--secondary); }
+
+        /* Footer */
+        .site-footer {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; padding: 5rem 0 2rem; margin-top: 6rem;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 3rem; margin-bottom: 3rem;
+        }
+        .footer-col h3 {
+            font-size: 1.2rem; margin-bottom: 1.2rem;
+            position: relative; padding-bottom: 0.6rem;
+        }
+        .footer-col h3::after {
+            content: ''; position: absolute; left: 0; bottom: 0;
+            width: 40px; height: 3px; background: var(--secondary);
+            border-radius: 2px;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.7rem; }
+        .footer-col a { color: rgba(255,255,255,0.85); transition: var(--transition); }
+        .footer-col a:hover { color: var(--secondary); }
+        .social-icons {
+            display: flex; gap: 0.8rem; margin-top: 1rem;
+        }
+        .social-icons a {
+            width: 40px; height: 40px; background: rgba(255,255,255,0.1);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; transition: var(--transition);
+        }
+        .social-icons a:hover {
+            background: var(--secondary); transform: translateY(-3px);
+        }
+        .newsletter-form h4 { margin-bottom: 0.8rem; font-size: 1rem; }
+        .input-group { display: flex; border-radius: var(--radius-sm); overflow: hidden; }
+        .input-group input {
+            flex: 1; padding: 0.8rem 1rem; border: none;
+            font-size: 0.95rem; background: rgba(255,255,255,0.9);
+        }
+        .input-group button {
+            background: var(--secondary); color: white;
+            border: none; padding: 0 1.3rem; cursor: pointer;
+            transition: var(--transition);
+        }
+        .input-group button:hover { background: var(--secondary-dark); }
+
+        .footer-bottom {
+            display: flex; flex-wrap: wrap; justify-content: space-between;
+            align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.15);
+            font-size: 0.9rem; color: rgba(255,255,255,0.7);
+        }
+        .footer-bottom a { color: inherit; margin: 0 0.5rem; }
+        .footer-bottom a:hover { color: var(--secondary); }
+
+        /* Back to Top */
+        .back-top {
+            position: fixed; right: 2rem; bottom: 2rem;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: var(--secondary); color: white;
+            border: none; font-size: 1.3rem; cursor: pointer;
+            box-shadow: var(--shadow-md); opacity: 0; visibility: hidden;
+            transition: var(--transition); z-index: 99;
+        }
+        .back-top.show { opacity: 1; visibility: visible; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .filter-container { flex-direction: column; align-items: stretch; }
+            .search-input { width: 100%; }
+            .view-toggle { margin-top: 1rem; justify-content: center; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { position: fixed; top: 0; right: -100%; width: 80%; height: 100vh;
+                background: white; flex-direction: column; padding: 5rem 2rem;
+                transition: 0.3s; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+            .nav-links.active { right: 0; }
+            .mobile-menu { display: block; }
+            .webinar-grid { grid-template-columns: 1fr; }
+            .page-hero h1 { font-size: 2.8rem; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231,76,60,0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(231,76,60,0); }
+            100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="{% url 'index' %}" class="logo">
+                    <img src="{% static 'images/logo.png' %}" alt="MindCraft ThinkSpace">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}" class="active">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <button class="mobile-menu" aria-label="Menu"><i class="fas fa-bars"></i></button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- EPIC HERO -->
+    <section class="page-hero">
+        <div class="hero-bg-overlay"></div>
+        <div class="container">
+            <div class="page-hero-content">
+                <h1>Transformative <span>Learning</span> Experiences</h1>
+                <p>Join interactive webinars that blend ancient African wisdom with cutting-edge cognitive science. Learn from thought leaders shaping tomorrow.</p>
+                <a href="#webinar-list" class="hero-cta">
+                    Explore Webinars <i class="fas fa-arrow-right"></i>
+                </a>
+                <div class="hero-breadcrumbs">
+                    <a href="{% url 'index' %}">Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Webinars</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Webinar List -->
+    <section class="webinar-list" id="webinar-list">
+        <div class="container">
+            <div class="section-header">
+                <h2>All <span style="color:var(--secondary)">Webinars</span></h2>
+                <p>Interactive sessions with leading African thinkers and global experts</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="webinar-filters">
+                <div class="filter-container">
+                    <div class="filter-list">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="free">Free</button>
+                        <button class="filter-btn" data-filter="featured">Featured</button>
+                        <button class="filter-btn" data-filter="live">Live Now</button>
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search webinars...">
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid"><i class="fas fa-th"></i></button>
+                        <button class="view-btn" data-view="calendar"><i class="fas fa-calendar-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid View -->
+            <div class="webinar-grid" id="gridView">
+                {% for webinar in page_obj %}
+                <article class="webinar-card" data-free="{{ webinar.is_free|yesno:'true,false' }}"
+                         data-featured="{{ webinar.is_featured|yesno:'true,false' }}"
+                         data-status="{{ webinar.status }}">
+                    <div class="webinar-image">
+                        <img src="{{ webinar.featured_image.url }}" alt="{{ webinar.title }}" loading="lazy">
+                        {% if webinar.is_free %}<span class="webinar-badge free">Free</span>{% endif %}
+                        {% if webinar.status == 'live' %}<span class="webinar-badge live">Live</span>{% endif %}
+                    </div>
+                    <div class="webinar-content">
+                        <span class="webinar-status status-{{ webinar.status }}">
+                            <i class="fas fa-circle"></i> {{ webinar.get_status_display }}
+                        </span>
+                        <div class="webinar-meta">
+                            <span><i class="far fa-calendar-alt"></i> {{ webinar.start_datetime|date:"M d, Y" }}</span>
+                            <span><i class="far fa-clock"></i> {{ webinar.start_datetime|time }}</span>
+                        </div>
+                        <h3>{{ webinar.title }}</h3>
+                        <p>{{ webinar.description|truncatewords:18 }}</p>
+                        <div class="webinar-footer">
+                            <div class="webinar-price {% if webinar.is_free %}free{% endif %}">
+                                {% if webinar.is_free %}Free{% else %}₦{{ webinar.price }}{% endif %}
+                            </div>
+                        </div>
+                        <a href="{% url 'webinar_detail' webinar.id %}" class="btn btn-primary">
+                            {% if webinar.status == 'live' %}Join Now <i class="fas fa-video"></i>
+                            {% else %}Register <i class="fas fa-arrow-right"></i>{% endif %}
+                        </a>
+                    </div>
+                </article>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-video-slash"></i>
+                    <h3>No webinars found</h3>
+                    <p>Try adjusting your filters or check back later.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Calendar View -->
+            <div id="calendarView" style="display:none; margin-top:2rem;">
+                <div class="empty-state">
+                    <i class="fas fa-calendar"></i>
+                    <h3>Calendar View Coming Soon</h3>
+                    <p>Visualize all webinars in an interactive calendar.</p>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">&laquo; Prev</a>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <span class="current">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h2 style="font-size:1.8rem; margin-bottom:0.5rem;"><span style="color:var(--secondary)">MindCraft</span> ThinkSpace</h2>
+                    <p style="opacity:0.9;">…it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                        <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Topics</h3>
+                    <ul>
+                        <li><a href="?topic=leadership">Leadership</a></li>
+                        <li><a href="?topic=technology">Technology</a></li>
+                        <li><a href="?topic=education">Education</a></li>
+                        <li><a href="?topic=culture">Culture</a></li>
+                        <li><a href="?topic=business">Business</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul style="margin-bottom:1.5rem;">
+                        <li><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</li>
+                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.africa</li>
+                        <li><i class="fas fa-phone-alt"></i> +234 123 456 789</li>
+                    </ul>
+                    <form class="newsletter-form">
+                        <h4>Stay Updated</h4>
+                        <div class="input-group">
+                            <input type="email" placeholder="Your email" required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="year"></span> MindCraft ThinkSpace. All Rights Reserved.</p>
+                <div>
+                    <a href="/privacy/">Privacy</a> |
+                    <a href="/terms/">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="backTop" class="back-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Year
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Mobile Menu
+            const mobileBtn = document.querySelector('.mobile-menu');
+            const nav = document.querySelector('.nav-links');
+            mobileBtn.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                mobileBtn.innerHTML = nav.classList.contains('active')
+                    ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+
+            // Header Scroll
+            window.addEventListener('scroll', () => {
+                document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            // Back to Top
+            const backTop = document.getElementById('backTop');
+            window.addEventListener('scroll', () => {
+                backTop.classList.toggle('show', window.scrollY > 500);
+            });
+            backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            // Filtering
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const searchInput = document.getElementById('searchInput');
+            const cards = document.querySelectorAll('.webinar-card');
+
+            const applyFilters = () => {
+                const filter = document.querySelector('.filter-btn.active').dataset.filter;
+                const query = searchInput.value.toLowerCase();
+
+                cards.forEach(card => {
+                    const matchesFilter = filter === 'all' ||
+                        (filter === 'free' && card.dataset.free === 'true') ||
+                        (filter === 'featured' && card.dataset.featured === 'true') ||
+                        (filter === 'live' && card.dataset.status === 'live');
+
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const desc = card.querySelector('p').textContent.toLowerCase();
+                    const matchesSearch = query === '' || title.includes(query) || desc.includes(query);
+
+                    card.style.display = matchesFilter && matchesSearch ? 'flex' : 'none';
+                });
+            };
+
+            filterBtns.forEach(btn => btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                applyFilters();
+            }));
+            searchInput.addEventListener('input', applyFilters);
+
+            // View Toggle
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById('gridView').style.display = btn.dataset.view === 'grid' ? 'grid' : 'none';
+                    document.getElementById('calendarView').style.display = btn.dataset.view === 'calendar' ? 'block' : 'none';
+                });
+            });
+
+            // Animation on Scroll
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.webinar-card').forEach(card => observer.observe(card));
+        });
+    </script>
+</body>
+</html>

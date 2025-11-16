@@ -1,0 +1,273 @@
+{% extends 'dashboard/admin_base.html' %}
+{% load static %}
+
+{% block title %}Webinar Details - {{ webinar.title }} | MindCraft Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .webinar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+    }
+    
+    .webinar-meta {
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        flex-wrap: wrap;
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        background: var(--lightest);
+        border-radius: var(--radius);
+        border: var(--border);
+    }
+    
+    .meta-item i {
+        color: var(--secondary);
+        font-size: 1.1rem;
+    }
+    
+    .registrations-list {
+        margin-top: 2rem;
+    }
+    
+    .registration-card {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: var(--shadow-sm);
+        border: var(--border);
+        transition: var(--transition);
+    }
+    
+    .registration-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+    
+    .registration-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .registration-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .registration-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .detail-label {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        font-weight: 500;
+    }
+    
+    .detail-value {
+        font-weight: 500;
+        color: var(--text);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: var(--lightest);
+        border-radius: var(--radius-md);
+        border: var(--border);
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        color: var(--text-lighter);
+        margin-bottom: 1rem;
+    }
+    
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 100px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .status-pending {
+        background: rgba(241, 196, 15, 0.1);
+        color: #f1c40f;
+        border: 1px solid rgba(241, 196, 15, 0.2);
+    }
+    
+    .status-approved {
+        background: rgba(46, 204, 113, 0.1);
+        color: #27ae60;
+        border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+    
+    .status-rejected {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+        border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <div class="page-header">
+        <div>
+            <h1>Webinar Details</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="{% url 'webinar_management' %}">Webinars</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>{{ webinar.title|truncatewords:5 }}</span>
+            </div>
+        </div>
+        <div class="card-actions">
+            <a href="{% url 'webinar_management' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Webinars
+            </a>
+            <a href="{% url 'webinar_update' webinar.id %}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit Webinar
+            </a>
+        </div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">{{ webinar.title }}</h2>
+            <div class="status-badge status-{{ webinar.status|lower }}">
+                <i class="fas fa-circle"></i> {{ webinar.status }}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="webinar-meta">
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>{{ webinar.date|date:"F j, Y" }}</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span>{{ webinar.time|time:"g:i A" }}</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-users"></i>
+                    <span>{{ registrations.count }} Registration{{ registrations.count|pluralize }}</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-link"></i>
+                    <span><a href="{{ webinar.meeting_url }}" target="_blank">Join Link</a></span>
+                </div>
+            </div>
+            
+            <h3>Description</h3>
+            <p>{{ webinar.description }}</p>
+        </div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Registrations ({{ registrations.count }})</h2>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search registrations..." id="registrationSearch">
+            </div>
+        </div>
+        <div class="card-body">
+            {% if registrations %}
+            <div class="registrations-list">
+                {% for registration in registrations %}
+                <div class="registration-card">
+                    <div class="registration-header">
+                        <h3>{{ registration.full_name }}</h3>
+                        <div class="registration-actions">
+                            <span class="status-badge status-{{ registration.status|lower }}">
+                                <i class="fas fa-circle"></i> {{ registration.status }}
+                            </span>
+                            <a href="{% url 'registration_edit' registration.id %}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-edit"></i> Review
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="registration-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value">{{ registration.email }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Phone</span>
+                            <span class="detail-value">{{ registration.phone|default:"Not provided" }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Registered On</span>
+                            <span class="detail-value">{{ registration.registration_date|date:"M j, Y g:i A" }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Position</span>
+                            <span class="detail-value">{{ registration.position|default:"Not provided" }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-users-slash"></i>
+                <h3>No Registrations Yet</h3>
+                <p>This webinar doesn't have any registrations at the moment.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Search functionality for registrations
+        const searchInput = document.getElementById('registrationSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const registrationCards = document.querySelectorAll('.registration-card');
+                
+                registrationCards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

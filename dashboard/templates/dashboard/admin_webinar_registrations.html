@@ -1,0 +1,1138 @@
+{% extends 'dashboard/admin_base.html' %}
+{% load static %}
+
+{% block title %}MindCraft ThinkSpace - Webinar Registration Approvals{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Registration approvals specific styles */
+    .filters-container {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+        border: var(--border);
+    }
+    
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .registration-card {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 1.5rem;
+        border: var(--border);
+        transition: var(--transition);
+    }
+    
+    .registration-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .registration-header {
+        padding: 1.25rem;
+        border-bottom: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        background: var(--lightest);
+    }
+    
+    .registration-title {
+        font-size: 1.25rem;
+        color: var(--primary);
+        margin: 0 0 0.5rem 0;
+    }
+    
+    .registration-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .registration-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-light);
+    }
+    
+    .registration-body {
+        padding: 1.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    
+    .registrant-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .info-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .info-label {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        font-weight: 600;
+    }
+    
+    .info-value {
+        font-size: 1rem;
+        color: var(--text);
+    }
+    
+    .webinar-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .payment-proof {
+        margin-top: 1rem;
+        border-top: var(--border);
+        padding-top: 1rem;
+    }
+    
+    .proof-image {
+        width: 100%;
+        max-width: 300px;
+        border-radius: var(--radius-sm);
+        border: var(--border);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .proof-image:hover {
+        transform: scale(1.02);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .registration-footer {
+        padding: 1.25rem;
+        border-top: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--lightest);
+    }
+    
+    .registration-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .registration-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    /* Status indicators */
+    .status-pending {
+        background: rgba(241, 196, 15, 0.1);
+        color: #f1c40f;
+        border: 1px solid rgba(241, 196, 15, 0.2);
+    }
+    
+    .status-confirmed {
+        background: rgba(46, 204, 113, 0.1);
+        color: #27ae60;
+        border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+    
+    .status-cancelled {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+        border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+    
+    /* Table view specific styles */
+    .registration-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .registration-table th,
+    .registration-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: var(--border);
+    }
+    
+    .registration-table th {
+        background: var(--lightest);
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .registration-table tr:hover {
+        background: rgba(13, 46, 20, 0.02);
+    }
+    
+    /* View toggle */
+    .view-toggle {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding: 0.5rem;
+        background: var(--lightest);
+        border-radius: var(--radius);
+        width: fit-content;
+    }
+    
+    .view-btn {
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: transparent;
+        color: var(--text-light);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .view-btn.active {
+        background: var(--primary);
+        color: var(--white);
+    }
+    
+    /* Bulk actions */
+    .bulk-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .select-all {
+        margin-right: 1rem;
+    }
+    
+    /* Modal styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .modal {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        width: 90%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-20px);
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active .modal {
+        transform: translateY(0);
+    }
+    
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-title {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--primary);
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-light);
+        transition: var(--transition);
+    }
+    
+    .modal-close:hover {
+        color: var(--danger);
+        transform: rotate(90deg);
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: var(--border);
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+    
+    /* Image preview modal */
+    .image-preview {
+        width: 100%;
+        max-height: 70vh;
+        object-fit: contain;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .registration-body {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .registration-header {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .registration-footer {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .registration-actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
+        
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .registration-table th:nth-child(4),
+        .registration-table td:nth-child(4),
+        .registration-table th:nth-child(5),
+        .registration-table td:nth-child(5) {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .registration-table th:nth-child(3),
+        .registration-table td:nth-child(3) {
+            display: none;
+        }
+        
+        .registration-table th:nth-child(6),
+        .registration-table td:nth-child(6) {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>Webinar Registration Approvals</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'dashboard' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="{% url 'webinar_management' %}">Webinars</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Registrations</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="{% url 'webinar_management' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Webinars
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-container">
+        <div class="filters-grid">
+            <div>
+                <label class="form-label">Status</label>
+                <select class="form-control form-select" id="statusFilter">
+                    <option value="">All Statuses</option>
+                    <option value="pending" selected>Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label">Webinar</label>
+                <select class="form-control form-select" id="webinarFilter">
+                    <option value="">All Webinars</option>
+                    {% for webinar in webinars %}
+                    <option value="{{ webinar.id }}">{{ webinar.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label">Date Range</label>
+                <select class="form-control form-select" id="dateFilter">
+                    <option value="">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label">Sort By</label>
+                <select class="form-control form-select" id="sortFilter">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="name_asc">Name (A-Z)</option>
+                    <option value="name_desc">Name (Z-A)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center;">
+            <div style="flex: 1;">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" placeholder="Search registrations..." id="registrationSearch">
+                </div>
+            </div>
+            <button class="btn btn-secondary" id="applyFilters">
+                <i class="fas fa-filter"></i> Apply Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- View Toggle -->
+    <div class="view-toggle">
+        <button class="view-btn active" data-view="card">
+            <i class="fas fa-th-large"></i> Card View
+        </button>
+        <button class="view-btn" data-view="table">
+            <i class="fas fa-table"></i> Table View
+        </button>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="bulk-actions">
+        <div class="form-check select-all">
+            <input type="checkbox" class="form-check-input" id="selectAll">
+            <label class="form-check-label" for="selectAll">Select All</label>
+        </div>
+        
+        <select class="form-control form-select" id="bulkAction" style="width: auto;">
+            <option value="">Bulk Actions</option>
+            <option value="approve">Approve Selected</option>
+            <option value="reject">Reject Selected</option>
+        </select>
+        
+        <button class="btn btn-secondary" id="applyBulkAction">Apply</button>
+    </div>
+
+    <!-- Card View -->
+    <div id="cardView" class="card-view">
+        {% for registration in registrations %}
+        <div class="registration-card" data-status="{{ registration.status }}" data-webinar="{{ registration.webinar.id }}" data-date="{{ registration.created_at|date:'Y-m-d' }}">
+            <div class="registration-header">
+                <div>
+                    <h3 class="registration-title">{{ registration.full_name }}</h3>
+                    <div class="registration-meta">
+                        <div class="registration-meta-item">
+                            <i class="fas fa-envelope"></i>
+                            {{ registration.email }}
+                        </div>
+                        <div class="registration-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            Registered {{ registration.created_at|date:"M d, Y" }}
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <span class="status-badge status-{{ registration.status }}">{{ registration.status|title }}</span>
+                </div>
+            </div>
+            
+            <div class="registration-body">
+                <div class="registrant-info">
+                    <div class="info-group">
+                        <span class="info-label">Full Name</span>
+                        <span class="info-value">{{ registration.full_name }}</span>
+                    </div>
+                    
+                    <div class="info-group">
+                        <span class="info-label">Email Address</span>
+                        <span class="info-value">{{ registration.email }}</span>
+                    </div>
+                    
+                    <div class="info-group">
+                        <span class="info-label">Question for Speaker</span>
+                        <span class="info-value">{% if registration.question %}{{ registration.question }}{% else %}No question provided{% endif %}</span>
+                    </div>
+                </div>
+                
+                <div class="webinar-info">
+                    <div class="info-group">
+                        <span class="info-label">Webinar</span>
+                        <span class="info-value">{{ registration.webinar.title }}</span>
+                    </div>
+                    
+                    <div class="info-group">
+                        <span class="info-label">Date & Time</span>
+                        <span class="info-value">{{ registration.webinar.start_datetime|date:"M d, Y • h:i A" }}</span>
+                    </div>
+                    
+                    <div class="info-group">
+                        <span class="info-label">Price</span>
+                        <span class="info-value">{% if registration.webinar.is_free %}Free{% else %}Ksh {{ registration.webinar.price }}{% endif %}</span>
+                    </div>
+                    
+                    {% if not registration.webinar.is_free and registration.payment_reference %}
+                    <div class="payment-proof">
+                        <span class="info-label">Proof of Payment</span>
+                        <div>
+                            <img src="{{ registration.payment_reference.url }}" alt="Proof of Payment" class="proof-image" data-registration-id="{{ registration.id }}">
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="registration-footer">
+                <div class="registration-status">
+                    <span class="info-label">Status:</span>
+                    <span class="status-badge status-{{ registration.status }}">{{ registration.status|title }}</span>
+                </div>
+                
+                <div class="registration-actions">
+                    {% if registration.status == 'pending' %}
+                    <button class="btn btn-sm btn-success approve-registration" data-id="{{ registration.id }}" data-name="{{ registration.full_name }}">
+                        <i class="fas fa-check"></i> Approve
+                    </button>
+                    <button class="btn btn-sm btn-danger reject-registration" data-id="{{ registration.id }}" data-name="{{ registration.full_name }}">
+                        <i class="fas fa-times"></i> Reject
+                    </button>
+                    {% endif %}
+                    <button class="btn btn-sm btn-secondary view-registration" data-id="{{ registration.id }}">
+                        <i class="fas fa-eye"></i> Details
+                    </button>
+                    <button class="btn btn-sm btn-danger delete-registration" data-id="{{ registration.id }}" data-name="{{ registration.full_name }}">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="content-card">
+            <div class="card-body text-center" style="padding: 3rem;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--success); margin-bottom: 1.5rem;"></i>
+                <h3>No Pending Registrations</h3>
+                <p class="text-muted">There are no registration requests awaiting approval.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Table View -->
+    <div id="tableView" class="content-card" style="display: none;">
+        <div class="card-header">
+            <h2 class="card-title">Registrations ({{ registrations|length }})</h2>
+            <div class="card-actions">
+                <button class="btn btn-sm btn-secondary">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="registration-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;"></th>
+                            <th>Registrant</th>
+                            <th>Email</th>
+                            <th>Webinar</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registration in registrations %}
+                        <tr data-status="{{ registration.status }}" data-webinar="{{ registration.webinar.id }}" data-date="{{ registration.created_at|date:'Y-m-d' }}">
+                            <td>
+                                <input type="checkbox" class="form-check-input registration-checkbox" data-id="{{ registration.id }}">
+                            </td>
+                            <td>
+                                <div style="font-weight: 600;">{{ registration.full_name }}</div>
+                                <div style="font-size: 0.85rem; color: var(--text-light);">Registered {{ registration.created_at|date:"M d, Y" }}</div>
+                            </td>
+                            <td>{{ registration.email }}</td>
+                            <td>{{ registration.webinar.title }}</td>
+                            <td>{{ registration.webinar.start_datetime|date:"M d, Y • h:i A" }}</td>
+                            <td>
+                                <span class="status-badge status-{{ registration.status }}">{{ registration.status|title }}</span>
+                            </td>
+                            <td>
+                                {% if registration.webinar.is_free %}
+                                Free
+                                {% else %}
+                                {% if registration.payment_reference %}
+                                <span class="status-badge status-confirmed">Provided</span>
+                                {% else %}
+                                <span class="status-badge status-pending">Pending</span>
+                                {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="table-actions">
+                                    {% if registration.status == 'pending' %}
+                                    <button class="btn btn-sm btn-success approve-registration" data-id="{{ registration.id }}" data-name="{{ registration.full_name }}" title="Approve">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger reject-registration" data-id="{{ registration.id }}" data-name="{{ registration.full_name }}" title="Reject">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    {% endif %}
+                                    <button class="btn btn-sm btn-secondary view-registration" data-id="{{ registration.id }}" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-registration" data-id="{{ registration.id }}" data-name="{{ registration.full_name }}" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Delete Registration</h3>
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete the registration for "<strong id="deleteRegistrationName"></strong>"? This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+            <button class="btn btn-danger" id="confirmDelete">Delete Registration</button>
+        </div>
+    </div>
+</div>
+
+<!-- Image Preview Modal -->
+<div class="modal-overlay" id="imageModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Proof of Payment</h3>
+            <button class="modal-close" id="closeImageModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <img src="" alt="Proof of Payment" class="image-preview" id="paymentImage">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="closeImage">Close</button>
+            <a href="#" class="btn btn-primary" id="downloadImage" download>
+                <i class="fas fa-download"></i> Download
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Approval Confirmation Modal -->
+<div class="modal-overlay" id="approvalModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="approvalModalTitle">Approve Registration</h3>
+            <button class="modal-close" id="closeApprovalModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="approvalModalText">Are you sure you want to approve the registration for <strong id="approvalRegistrationName"></strong>?</p>
+            <div class="form-group" id="approvalEmailSection" style="margin-top: 1rem;">
+                <label class="form-label">Send Confirmation Email</label>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="sendEmail" checked>
+                    <label class="form-check-label" for="sendEmail">Send confirmation email to registrant</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelApproval">Cancel</button>
+            <button class="btn btn-success" id="confirmApproval">Confirm</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // View toggle functionality
+        const viewButtons = document.querySelectorAll('.view-btn');
+        const cardView = document.getElementById('cardView');
+        const tableView = document.getElementById('tableView');
+        
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const view = this.getAttribute('data-view');
+                
+                // Update active button
+                viewButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show selected view
+                if (view === 'card') {
+                    cardView.style.display = 'block';
+                    tableView.style.display = 'none';
+                } else if (view === 'table') {
+                    cardView.style.display = 'none';
+                    tableView.style.display = 'block';
+                }
+            });
+        });
+        
+        // Filter functionality
+        const statusFilter = document.getElementById('statusFilter');
+        const webinarFilter = document.getElementById('webinarFilter');
+        const dateFilter = document.getElementById('dateFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const registrationSearch = document.getElementById('registrationSearch');
+        const applyFilters = document.getElementById('applyFilters');
+        
+        function filterRegistrations() {
+            const statusValue = statusFilter.value;
+            const webinarValue = webinarFilter.value;
+            const dateValue = dateFilter.value;
+            const searchValue = registrationSearch.value.toLowerCase();
+            
+            // Filter card view
+            const registrationCards = document.querySelectorAll('.registration-card');
+            registrationCards.forEach(card => {
+                const status = card.getAttribute('data-status');
+                const webinar = card.getAttribute('data-webinar');
+                const date = card.getAttribute('data-date');
+                const name = card.querySelector('.registration-title').textContent.toLowerCase();
+                const email = card.querySelector('.registration-meta-item:nth-child(1)').textContent.toLowerCase();
+                
+                const statusMatch = !statusValue || status === statusValue;
+                const webinarMatch = !webinarValue || webinar === webinarValue;
+                const dateMatch = !dateValue || checkDateMatch(date, dateValue);
+                const searchMatch = !searchValue || name.includes(searchValue) || email.includes(searchValue);
+                
+                if (statusMatch && webinarMatch && dateMatch && searchMatch) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Filter table view
+            const tableRows = document.querySelectorAll('.registration-table tbody tr');
+            tableRows.forEach(row => {
+                const status = row.getAttribute('data-status');
+                const webinar = row.getAttribute('data-webinar');
+                const date = row.getAttribute('data-date');
+                const name = row.querySelector('td:nth-child(2) div:first-child').textContent.toLowerCase();
+                const email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                const statusMatch = !statusValue || status === statusValue;
+                const webinarMatch = !webinarValue || webinar === webinarValue;
+                const dateMatch = !dateValue || checkDateMatch(date, dateValue);
+                const searchMatch = !searchValue || name.includes(searchValue) || email.includes(searchValue);
+                
+                if (statusMatch && webinarMatch && dateMatch && searchMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function checkDateMatch(dateString, filterType) {
+            const date = new Date(dateString);
+            const today = new Date();
+            
+            switch(filterType) {
+                case 'today':
+                    return date.toDateString() === today.toDateString();
+                case 'week':
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - today.getDay());
+                    const endOfWeek = new Date(today);
+                    endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
+                    return date >= startOfWeek && date <= endOfWeek;
+                case 'month':
+                    return date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+                default:
+                    return true;
+            }
+        }
+        
+        if (applyFilters) {
+            applyFilters.addEventListener('click', filterRegistrations);
+        }
+        
+        // Select all functionality
+        const selectAll = document.getElementById('selectAll');
+        const registrationCheckboxes = document.querySelectorAll('.registration-checkbox');
+        
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                registrationCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+        }
+        
+        // Bulk actions
+        const bulkAction = document.getElementById('bulkAction');
+        const applyBulkAction = document.getElementById('applyBulkAction');
+        
+        if (applyBulkAction) {
+            applyBulkAction.addEventListener('click', function() {
+                const action = bulkAction.value;
+                if (!action) return;
+                
+                const selectedIds = [];
+                registrationCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        selectedIds.push(checkbox.getAttribute('data-id'));
+                    }
+                });
+                
+                if (selectedIds.length === 0) {
+                    alert('Please select at least one registration to perform bulk action.');
+                    return;
+                }
+                
+                // In a real application, this would be an AJAX call to the server
+                console.log(`Performing ${action} on registrations:`, selectedIds);
+                
+                // Show success message
+                const messagesContainer = document.querySelector('.messages-container');
+                if (messagesContainer) {
+                    messagesContainer.innerHTML = `
+                        <div class="alert alert-success">
+                            ${selectedIds.length} registration(s) ${action}d successfully.
+                            <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                // Reset selection
+                selectAll.checked = false;
+                registrationCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            });
+        }
+        
+        // Image preview functionality
+        const proofImages = document.querySelectorAll('.proof-image');
+        const imageModal = document.getElementById('imageModal');
+        const paymentImage = document.getElementById('paymentImage');
+        const downloadImage = document.getElementById('downloadImage');
+        const closeImageModal = document.getElementById('closeImageModal');
+        const closeImage = document.getElementById('closeImage');
+        
+        proofImages.forEach(image => {
+            image.addEventListener('click', function() {
+                const imageUrl = this.getAttribute('src');
+                paymentImage.setAttribute('src', imageUrl);
+                downloadImage.setAttribute('href', imageUrl);
+                imageModal.classList.add('active');
+            });
+        });
+        
+        // Close image modal
+        function closeImageModalFunc() {
+            imageModal.classList.remove('active');
+        }
+        
+        if (closeImageModal) closeImageModal.addEventListener('click', closeImageModalFunc);
+        if (closeImage) closeImage.addEventListener('click', closeImageModalFunc);
+        
+        // Close modal when clicking outside
+        imageModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageModalFunc();
+            }
+        });
+        
+        // Approval functionality
+        const approveButtons = document.querySelectorAll('.approve-registration');
+        const rejectButtons = document.querySelectorAll('.reject-registration');
+        const approvalModal = document.getElementById('approvalModal');
+        const approvalModalTitle = document.getElementById('approvalModalTitle');
+        const approvalModalText = document.getElementById('approvalModalText');
+        const approvalRegistrationName = document.getElementById('approvalRegistrationName');
+        const closeApprovalModal = document.getElementById('closeApprovalModal');
+        const cancelApproval = document.getElementById('cancelApproval');
+        const confirmApproval = document.getElementById('confirmApproval');
+        
+        let currentAction = null;
+        let currentRegistrationId = null;
+        
+        approveButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const registrationId = this.getAttribute('data-id');
+                const registrationName = this.getAttribute('data-name');
+                
+                currentAction = 'approve';
+                currentRegistrationId = registrationId;
+                approvalModalTitle.textContent = 'Approve Registration';
+                approvalModalText.innerHTML = `Are you sure you want to approve the registration for <strong>${registrationName}</strong>?`;
+                approvalRegistrationName.textContent = registrationName;
+                
+                // Show email option only for approval
+                document.getElementById('approvalEmailSection').style.display = 'block';
+                
+                approvalModal.classList.add('active');
+            });
+        });
+        
+        rejectButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const registrationId = this.getAttribute('data-id');
+                const registrationName = this.getAttribute('data-name');
+                
+                currentAction = 'reject';
+                currentRegistrationId = registrationId;
+                approvalModalTitle.textContent = 'Reject Registration';
+                approvalModalText.innerHTML = `Are you sure you want to reject the registration for <strong>${registrationName}</strong>?`;
+                approvalRegistrationName.textContent = registrationName;
+                
+                // Hide email option for rejection
+                document.getElementById('approvalEmailSection').style.display = 'none';
+                
+                approvalModal.classList.add('active');
+            });
+        });
+        
+        // Close approval modal
+        function closeApprovalModalFunc() {
+            approvalModal.classList.remove('active');
+            currentAction = null;
+            currentRegistrationId = null;
+        }
+        
+        if (closeApprovalModal) closeApprovalModal.addEventListener('click', closeApprovalModalFunc);
+        if (cancelApproval) cancelApproval.addEventListener('click', closeApprovalModalFunc);
+        
+        // Confirm approval/rejection
+        if (confirmApproval) {
+            confirmApproval.addEventListener('click', function() {
+                if (currentAction && currentRegistrationId) {
+                    const sendEmail = document.getElementById('sendEmail').checked;
+                    
+                    // In a real application, this would be an AJAX call to the server
+                    console.log(`${currentAction} registration ${currentRegistrationId}, send email: ${sendEmail}`);
+                    
+                    // Simulate successful action
+                    const registrationCard = document.querySelector(`.${currentAction}-registration[data-id="${currentRegistrationId}"]`).closest('.registration-card');
+                    const registrationRow = document.querySelector(`.${currentAction}-registration[data-id="${currentRegistrationId}"]`).closest('tr');
+                    
+                    if (registrationCard) {
+                        // Update status badge
+                        const statusBadge = registrationCard.querySelector('.status-badge');
+                        statusBadge.className = `status-badge status-${currentAction === 'approve' ? 'confirmed' : 'cancelled'}`;
+                        statusBadge.textContent = currentAction === 'approve' ? 'Confirmed' : 'Cancelled';
+                        
+                        // Remove action buttons
+                        const actionButtons = registrationCard.querySelector('.registration-actions');
+                        actionButtons.innerHTML = `
+                            <button class="btn btn-sm btn-secondary view-registration" data-id="${currentRegistrationId}">
+                                <i class="fas fa-eye"></i> Details
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-registration" data-id="${currentRegistrationId}" data-name="${approvalRegistrationName.textContent}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        `;
+                    }
+                    
+                    if (registrationRow) {
+                        // Update status badge in table
+                        const statusBadge = registrationRow.querySelector('.status-badge');
+                        statusBadge.className = `status-badge status-${currentAction === 'approve' ? 'confirmed' : 'cancelled'}`;
+                        statusBadge.textContent = currentAction === 'approve' ? 'Confirmed' : 'Cancelled';
+                        
+                        // Remove action buttons
+                        const actionButtons = registrationRow.querySelector('.table-actions');
+                        actionButtons.innerHTML = `
+                            <button class="btn btn-sm btn-secondary view-registration" data-id="${currentRegistrationId}" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-registration" data-id="${currentRegistrationId}" data-name="${approvalRegistrationName.textContent}" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        `;
+                    }
+                    
+                    // Show success message
+                    const messagesContainer = document.querySelector('.messages-container');
+                    if (messagesContainer) {
+                        messagesContainer.innerHTML = `
+                            <div class="alert alert-success">
+                                Registration ${currentAction}d successfully.
+                                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                    
+                    // Close modal
+                    closeApprovalModalFunc();
+                }
+            });
+        }
+        
+        // Close modal when clicking outside
+        approvalModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeApprovalModalFunc();
+            }
+        });
+        
+        // Delete registration functionality
+        const deleteButtons = document.querySelectorAll('.delete-registration');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteRegistrationName = document.getElementById('deleteRegistrationName');
+        const closeModal = document.getElementById('closeModal');
+        const cancelDelete = document.getElementById('cancelDelete');
+        const confirmDelete = document.getElementById('confirmDelete');
+        
+        let registrationToDelete = null;
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const registrationId = this.getAttribute('data-id');
+                const registrationName = this.getAttribute('data-name');
+                
+                registrationToDelete = registrationId;
+                deleteRegistrationName.textContent = registrationName;
+                deleteModal.classList.add('active');
+            });
+        });
+        
+        // Close modal functions
+        function closeDeleteModal() {
+            deleteModal.classList.remove('active');
+            registrationToDelete = null;
+        }
+        
+        if (closeModal) closeModal.addEventListener('click', closeDeleteModal);
+        if (cancelDelete) cancelDelete.addEventListener('click', closeDeleteModal);
+        
+        // Confirm delete
+        if (confirmDelete) {
+            confirmDelete.addEventListener('click', function() {
+                if (registrationToDelete) {
+                    // In a real application, this would be an AJAX call to the server
+                    console.log('Deleting registration with ID:', registrationToDelete);
+                    
+                    // Simulate successful deletion
+                    const registrationCard = document.querySelector(`.delete-registration[data-id="${registrationToDelete}"]`).closest('.registration-card');
+                    const registrationRow = document.querySelector(`.delete-registration[data-id="${registrationToDelete}"]`).closest('tr');
+                    
+                    if (registrationCard) registrationCard.style.opacity = '0.5';
+                    if (registrationRow) registrationRow.style.opacity = '0.5';
+                    
+                    // Show success message
+                    const messagesContainer = document.querySelector('.messages-container');
+                    if (messagesContainer) {
+                        messagesContainer.innerHTML = `
+                            <div class="alert alert-success">
+                                Registration deleted successfully.
+                                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                    
+                    // Close modal
+                    closeDeleteModal();
+                    
+                    // Remove element after a delay
+                    setTimeout(() => {
+                        if (registrationCard) registrationCard.remove();
+                        if (registrationRow) registrationRow.remove();
+                        
+                        // Check if any registrations remain
+                        const remainingCards = document.querySelectorAll('.registration-card');
+                        const remainingRows = document.querySelectorAll('.registration-table tbody tr');
+                        
+                        if (remainingCards.length === 0 && remainingRows.length === 0) {
+                            cardView.innerHTML = `
+                                <div class="content-card">
+                                    <div class="card-body text-center" style="padding: 3rem;">
+                                        <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--success); margin-bottom: 1.5rem;"></i>
+                                        <h3>No Pending Registrations</h3>
+                                        <p class="text-muted">There are no registration requests awaiting approval.</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }, 1000);
+                }
+            });
+        }
+        
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+    });
+</script>
+{% endblock %}

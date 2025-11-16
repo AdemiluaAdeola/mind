@@ -1,0 +1,805 @@
+{% extends 'dashboard/admin_base.html' %}
+{% load static %}
+
+{% block title %}MindCraft ThinkSpace - User Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* User management specific styles */
+    .user-filters {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+        border: var(--border);
+    }
+    
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .user-card {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 1.5rem;
+        border: var(--border);
+        transition: var(--transition);
+    }
+    
+    .user-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .user-header {
+        padding: 1.25rem;
+        border-bottom: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        background: var(--lightest);
+    }
+    
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .user-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--light);
+    }
+    
+    .user-details h3 {
+        margin: 0 0 0.25rem 0;
+        color: var(--primary);
+    }
+    
+    .user-email {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    
+    .user-status {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.5rem;
+    }
+    
+    .user-body {
+        padding: 1.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    
+    .user-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .user-stat {
+        text-align: center;
+        padding: 1rem;
+        background: var(--lightest);
+        border-radius: var(--radius-sm);
+        border: var(--border);
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+        color: var(--text-light);
+    }
+    
+    .user-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .meta-item i {
+        width: 20px;
+        color: var(--text-light);
+    }
+    
+    .user-footer {
+        padding: 1.25rem;
+        border-top: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--lightest);
+    }
+    
+    .user-roles {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .user-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    /* Role badges */
+    .role-badge {
+        padding: 0.35rem 0.75rem;
+        border-radius: 100px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .role-admin {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+        border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+    
+    .role-staff {
+        background: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+        border: 1px solid rgba(52, 152, 219, 0.2);
+    }
+    
+    .role-user {
+        background: rgba(46, 204, 113, 0.1);
+        color: #27ae60;
+        border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+    
+    .role-inactive {
+        background: rgba(149, 165, 166, 0.1);
+        color: #95a5a6;
+        border: 1px solid rgba(149, 165, 166, 0.2);
+    }
+    
+    /* Status indicators */
+    .status-active {
+        background: rgba(46, 204, 113, 0.1);
+        color: #27ae60;
+        border: 1px solid rgba(46, 204, 113, 0.2);
+    }
+    
+    .status-inactive {
+        background: rgba(149, 165, 166, 0.1);
+        color: #95a5a6;
+        border: 1px solid rgba(149, 165, 166, 0.2);
+    }
+    
+    .status-pending {
+        background: rgba(241, 196, 15, 0.1);
+        color: #f1c40f;
+        border: 1px solid rgba(241, 196, 15, 0.2);
+    }
+    
+    .status-banned {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+        border: 1px solid rgba(231, 76, 60, 0.2);
+    }
+    
+    /* Table view specific styles */
+    .user-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .user-table th,
+    .user-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: var(--border);
+    }
+    
+    .user-table th {
+        background: var(--lightest);
+        font-weight: 600;
+        color: var(--primary);
+    }
+    
+    .user-table tr:hover {
+        background: rgba(13, 46, 20, 0.02);
+    }
+    
+    .table-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    /* View toggle */
+    .view-toggle {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding: 0.5rem;
+        background: var(--lightest);
+        border-radius: var(--radius);
+        width: fit-content;
+    }
+    
+    .view-btn {
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: transparent;
+        color: var(--text-light);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .view-btn.active {
+        background: var(--primary);
+        color: var(--white);
+    }
+    
+    /* Bulk actions */
+    .bulk-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .select-all {
+        margin-right: 1rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .user-body {
+            grid-template-columns: 1fr;
+        }
+        
+        .user-stats {
+            order: 2;
+        }
+        
+        .user-meta {
+            order: 1;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .user-header {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .user-status {
+            align-items: flex-start;
+        }
+        
+        .user-footer {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .user-actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
+        
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .user-table th:nth-child(4),
+        .user-table td:nth-child(4),
+        .user-table th:nth-child(5),
+        .user-table td:nth-child(5) {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .user-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .user-stats {
+            grid-template-columns: 1fr;
+        }
+        
+        .user-table th:nth-child(3),
+        .user-table td:nth-child(3) {
+            display: none;
+        }
+        
+        .user-table th:nth-child(6),
+        .user-table td:nth-child(6),
+        .user-table th:nth-child(7),
+        .user-table td:nth-child(7) {
+            display: none;
+        }
+    }
+    
+    /* Modal styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .modal {
+        background: var(--white);
+        border-radius: var(--radius-md);
+        width: 90%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-20px);
+        transition: var(--transition);
+    }
+    
+    .modal-overlay.active .modal {
+        transform: translateY(0);
+    }
+    
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-title {
+        margin: 0;
+        font-size: 1.5rem;
+        color: var(--primary);
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-light);
+        transition: var(--transition);
+    }
+    
+    .modal-close:hover {
+        color: var(--danger);
+        transform: rotate(90deg);
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: var(--border);
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+    
+    /* User detail modal */
+    .user-detail-grid {
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .detail-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--light);
+    }
+    
+    .detail-info h3 {
+        margin: 0 0 0.5rem 0;
+        color: var(--primary);
+    }
+    
+    .detail-email {
+        color: var(--text-light);
+        margin-bottom: 1rem;
+    }
+    
+    .detail-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .detail-stat {
+        text-align: center;
+        padding: 1rem;
+        background: var(--lightest);
+        border-radius: var(--radius-sm);
+        border: var(--border);
+    }
+    
+    .detail-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>User Management</h1>
+            <div class="breadcrumb">
+                <a href="{% url 'dashboard' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Users</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New User
+            </a>
+        </div>
+    </div>
+
+    <!-- Table View -->
+    <div id="tableView" class="content-card">
+        <div class="card-header">
+            <h2 class="card-title">Users ({{ users|length }})</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Joined</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr data-role="{% if user.is_staff %}staff{% else %}user{% endif %}" data-status="{% if user.is_active %}active{% else %}inactive{% endif %}" data-joined="{{ user.date_joined|date:'Y-m-d' }}">
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div>
+                                        <div style="font-weight: 600;">{{ user.first_name }} {{ user.last_name }}</div>
+                                        <div style="font-size: 0.85rem; color: var(--text-light);">ID: {{ user.username }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <span class="role-badge {% if user.is_superuser %}role-admin{% elif user.is_staff %}role-staff{% else %}role-user{% endif %}">
+                                    {% if user.is_superuser %}Admin{% elif user.is_staff %}Staff{% else %}User{% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-badge {% if user.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                    {% if user.is_active %}Active{% else %}Inactive{% endif %}
+                                </span>
+                            </td>
+                            <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                            <td>{% if user.last_login %}{{ user.last_login|timesince }} ago{% else %}Never{% endif %}</td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="{% url 'user_profile' user.id %}" class="btn btn-sm btn-secondary" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // View toggle functionality - FIXED
+        const viewButtons = document.querySelectorAll('.view-btn');
+        const cardView = document.getElementById('cardView');
+        const tableView = document.getElementById('tableView');
+        
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const view = this.getAttribute('data-view');
+                
+                // Update active button
+                viewButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show selected view
+                if (view === 'card') {
+                    cardView.style.display = 'block';
+                    tableView.style.display = 'none';
+                } else if (view === 'table') {
+                    cardView.style.display = 'none';
+                    tableView.style.display = 'block';
+                }
+            });
+        });
+        
+        // Filter functionality
+        const roleFilter = document.getElementById('roleFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        const dateFilter = document.getElementById('dateFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const userSearch = document.getElementById('userSearch');
+        const applyFilters = document.getElementById('applyFilters');
+        
+        function filterUsers() {
+            const roleValue = roleFilter.value;
+            const statusValue = statusFilter.value;
+            const dateValue = dateFilter.value;
+            const sortValue = sortFilter.value;
+            const searchValue = userSearch.value.toLowerCase();
+            
+            // Filter card view
+            const userCards = document.querySelectorAll('.user-card');
+            userCards.forEach(card => {
+                const role = card.getAttribute('data-role');
+                const status = card.getAttribute('data-status');
+                const joined = card.getAttribute('data-joined');
+                const name = card.querySelector('.user-details h3').textContent.toLowerCase();
+                const email = card.querySelector('.user-email').textContent.toLowerCase();
+                
+                const roleMatch = !roleValue || role === roleValue;
+                const statusMatch = !statusValue || status === statusValue;
+                const dateMatch = !dateValue || checkDateMatch(joined, dateValue);
+                const searchMatch = !searchValue || name.includes(searchValue) || email.includes(searchValue);
+                
+                if (roleMatch && statusMatch && dateMatch && searchMatch) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Filter table view
+            const tableRows = document.querySelectorAll('.user-table tbody tr');
+            tableRows.forEach(row => {
+                const role = row.getAttribute('data-role');
+                const status = row.getAttribute('data-status');
+                const joined = row.getAttribute('data-joined');
+                const name = row.querySelector('td:nth-child(2) div:first-child').textContent.toLowerCase();
+                const email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                const roleMatch = !roleValue || role === roleValue;
+                const statusMatch = !statusValue || status === statusValue;
+                const dateMatch = !dateValue || checkDateMatch(joined, dateValue);
+                const searchMatch = !searchValue || name.includes(searchValue) || email.includes(searchValue);
+                
+                if (roleMatch && statusMatch && dateMatch && searchMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Sort functionality would be implemented here
+        }
+        
+        function checkDateMatch(dateString, filterType) {
+            const date = new Date(dateString);
+            const today = new Date();
+            
+            switch(filterType) {
+                case 'today':
+                    return date.toDateString() === today.toDateString();
+                case 'week':
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - today.getDay());
+                    const endOfWeek = new Date(today);
+                    endOfWeek.setDate(today.getDate() + (6 - today.getDay()));
+                    return date >= startOfWeek && date <= endOfWeek;
+                case 'month':
+                    return date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+                default:
+                    return true;
+            }
+        }
+        
+        if (applyFilters) {
+            applyFilters.addEventListener('click', filterUsers);
+        }
+        
+        // Select all functionality
+        const selectAll = document.getElementById('selectAll');
+        const userCheckboxes = document.querySelectorAll('.user-checkbox');
+        
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                userCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+        }
+        
+        // Delete user functionality
+        const deleteButtons = document.querySelectorAll('.delete-user');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteUserName = document.getElementById('deleteUserName');
+        const closeModal = document.getElementById('closeModal');
+        const cancelDelete = document.getElementById('cancelDelete');
+        const confirmDelete = document.getElementById('confirmDelete');
+        
+        let userToDelete = null;
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-id');
+                const userName = this.getAttribute('data-name');
+                
+                userToDelete = userId;
+                deleteUserName.textContent = userName;
+                deleteModal.classList.add('active');
+            });
+        });
+        
+        // Close modal functions
+        function closeDeleteModal() {
+            deleteModal.classList.remove('active');
+            userToDelete = null;
+        }
+        
+        if (closeModal) closeModal.addEventListener('click', closeDeleteModal);
+        if (cancelDelete) cancelDelete.addEventListener('click', closeDeleteModal);
+        
+        // Confirm delete
+        if (confirmDelete) {
+            confirmDelete.addEventListener('click', function() {
+                if (userToDelete) {
+                    // In a real application, this would be an AJAX call to the server
+                    console.log('Deleting user with ID:', userToDelete);
+                    
+                    // Simulate successful deletion
+                    const userCard = document.querySelector(`.delete-user[data-id="${userToDelete}"]`).closest('.user-card');
+                    const userRow = document.querySelector(`.delete-user[data-id="${userToDelete}"]`).closest('tr');
+                    
+                    if (userCard) userCard.style.opacity = '0.5';
+                    if (userRow) userRow.style.opacity = '0.5';
+                    
+                    // Show success message
+                    const messagesContainer = document.querySelector('.messages-container');
+                    if (messagesContainer) {
+                        messagesContainer.innerHTML = `
+                            <div class="alert alert-success">
+                                User deleted successfully.
+                                <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                    
+                    // Close modal
+                    closeDeleteModal();
+                    
+                    // Remove element after a delay
+                    setTimeout(() => {
+                        if (userCard) userCard.remove();
+                        if (userRow) userRow.remove();
+                        
+                        // Check if any users remain
+                        const remainingCards = document.querySelectorAll('.user-card');
+                        const remainingRows = document.querySelectorAll('.user-table tbody tr');
+                        
+                        if (remainingCards.length === 0 && remainingRows.length === 0) {
+                            cardView.innerHTML = `
+                                <div class="content-card">
+                                    <div class="card-body text-center" style="padding: 3rem;">
+                                        <i class="fas fa-user-slash" style="font-size: 3rem; color: var(--text-lighter); margin-bottom: 1.5rem;"></i>
+                                        <h3>No Users Found</h3>
+                                        <p class="text-muted">There are no users matching your criteria.</p>
+                                        <a href="" class="btn btn-primary">Add New User</a>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }, 1000);
+                }
+            });
+        }
+        
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+        
+        // User detail view functionality
+        const viewButtons = document.querySelectorAll('.view-user');
+        const userDetailModal = document.getElementById('userDetailModal');
+        const closeDetailModal = document.getElementById('closeDetailModal');
+        const closeDetail = document.getElementById('closeDetail');
+        
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-id');
+                
+                // In a real application, this would fetch user details from the server
+                console.log('Viewing user with ID:', userId);
+                
+                // For demo purposes, we'll just show the modal
+                userDetailModal.classList.add('active');
+            });
+        });
+        
+        // Close detail modal
+        function closeUserDetailModal() {
+            userDetailModal.classList.remove('active');
+        }
+        
+        if (closeDetailModal) closeDetailModal.addEventListener('click', closeUserDetailModal);
+        if (closeDetail) closeDetail.addEventListener('click', closeUserDetailModal);
+        
+        // Close modal when clicking outside
+        userDetailModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeUserDetailModal();
+            }
+        });
+    });
+</script>
+{% endblock %}

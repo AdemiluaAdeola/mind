@@ -14,5 +14,6 @@ urlpatterns = [
     path('webinar/<int:pk>/delete/', webinar_delete.as_view(), name="webinar_delete"),
     path('webinar/<int:pk>/', webinar_detail, name="webinar_detail"),
     path('about/', about, name='about'),
-    path('webinar/<int:pk>/reg', webinar_register, name='webinar_register')
+    path('webinar/<int:pk>/reg', webinar_register, name='webinar_register'),
+    path('reload/', reload, name='reload'),
 ]

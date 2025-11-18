@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Reload Page - MindCraft ThinkSpace</title>
+    <style>
+        :root {
+            --primary: #0d2e14;
+            --primary-light: #1e4d2a;
+            --secondary: #d46a1a;
+            --accent: #e8b417;
+            --dark: #1e2b38;
+            --light: #e0e6eb;
+            --lighter: #f0f2f5;
+            --white: #fff;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --shadow-sm: 0 2px 12px rgba(0,0,0,.1);
+            --shadow-md: 0 4px 20px rgba(0,0,0,.15);
+            --radius: 12px;
+            --transition: all .3s cubic-bezier(.25,.8,.25,1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', system-ui, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--lighter);
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(135deg, rgba(240,242,245,.8), rgba(224,230,235,.9));
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+        
+        h1 {
+            font-family: 'Montserrat', system-ui, sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            font-family: 'Montserrat', system-ui, sans-serif;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+        }
+        
+        p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .countdown-box {
+            background: var(--primary);
+            color: var(--white);
+            padding: 1rem;
+            border-radius: var(--radius);
+            min-width: 80px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .countdown-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--light);
+            border-radius: 4px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            width: 0%;
+            transition: width 1s linear;
+            border-radius: 4px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            padding: .85rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(230,126,34,.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(230,126,34,.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(13, 46, 20, 0.05);
+            border-color: var(--primary-light);
+        }
+        
+        .info-box {
+            background: var(--lighter);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+        
+        .info-box h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .logo {
+            margin-bottom: 2rem;
+        }
+        
+        .logo-img {
+            height: 60px;
+            width: auto;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .status-active {
+            background: rgba(13, 46, 20, 0.1);
+            color: var(--primary);
+        }
+        
+        .status-inactive {
+            background: rgba(212, 106, 26, 0.1);
+            color: var(--secondary);
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-dot-active {
+            background: var(--primary);
+        }
+        
+        .status-dot-inactive {
+            background: var(--secondary);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .countdown-box {
+                min-width: 60px;
+                padding: 0.75rem;
+            }
+            
+            .countdown-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="https://via.placeholder.com/200x60/0d2e14/ffffff?text=MindCraft+ThinkSpace" alt="MindCraft ThinkSpace Logo" class="logo-img">
+    </div>
+    
+    <div class="container">
+        <h1>Auto-Reload Page</h1>
+        
+        <div id="status-indicator" class="status-indicator status-active">
+            <span class="status-dot status-dot-active"></span>
+            <span>Page is active - Auto-reload enabled</span>
+        </div>
+        
+        <h2>This page will automatically refresh in <span id="countdown">30</span> seconds</h2>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="countdown-container">
+            <div class="countdown-box">
+                <span class="countdown-value" id="seconds">30</span>
+                <span class="countdown-label">Seconds</span>
+            </div>
+        </div>
+        
+        <p>This page demonstrates automatic reload functionality that works even when the tab is inactive.</p>
+        
+        <div class="info-box">
+            <h3>About Background Tab Behavior</h3>
+            <p>Modern browsers throttle JavaScript timers in inactive tabs to save battery and improve performance. Our implementation:</p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li><strong>Detects when the tab becomes inactive</strong> and adjusts the countdown accordingly</li>
+                <li><strong>Uses precise timing</strong> to ensure the page reloads after exactly 30 seconds of active time</li>
+                <li><strong>Provides visual feedback</strong> about the tab's active/inactive status</li>
+                <li><strong>Compensates for browser throttling</strong> by calculating elapsed time when the tab becomes active again</li>
+            </ul>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-primary" id="reset-btn">
+                <i class="fas fa-redo-alt"></i> Reset Timer
+            </button>
+            <button class="btn btn-secondary" id="toggle-btn">
+                <i class="fas fa-pause"></i> Pause Auto-Reload
+            </button>
+            <button class="btn btn-primary" id="reload-now-btn">
+                <i class="fas fa-sync"></i> Reload Now
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuration
+            const reloadInterval = 30000; // 30 seconds in milliseconds
+            let countdownTime = 30; // seconds
+            let isAutoReloadEnabled = true;
+            let countdownInterval;
+            let progressInterval;
+            let lastActiveTime = Date.now();
+            let isTabActive = true;
+            
+            // DOM Elements
+            const countdownElement = document.getElementById('countdown');
+            const secondsElement = document.getElementById('seconds');
+            const progressBar = document.getElementById('progress-bar');
+            const resetBtn = document.getElementById('reset-btn');
+            const toggleBtn = document.getElementById('toggle-btn');
+            const reloadNowBtn = document.getElementById('reload-now-btn');
+            const statusIndicator = document.getElementById('status-indicator');
+            
+            // Initialize the countdown
+            function startCountdown() {
+                clearInterval(countdownInterval);
+                clearInterval(progressInterval);
+                
+                countdownTime = 30;
+                updateCountdownDisplay();
+                
+                // Update countdown every second
+                countdownInterval = setInterval(function() {
+                    if (isTabActive) {
+                        countdownTime--;
+                        updateCountdownDisplay();
+                        
+                        if (countdownTime <= 0 && isAutoReloadEnabled) {
+                            reloadPage();
+                        }
+                    }
+                }, 1000);
+                
+                // Update progress bar smoothly
+                let progress = 0;
+                const increment = 100 / (reloadInterval / 100);
+                
+                progressInterval = setInterval(function() {
+                    if (isTabActive) {
+                        progress += increment;
+                        progressBar.style.width = progress + '%';
+                        
+                        if (progress >= 100) {
+                            progress = 0;
+                        }
+                    }
+                }, 100);
+            }
+            
+            // Update the countdown display
+            function updateCountdownDisplay() {
+                countdownElement.textContent = countdownTime;
+                secondsElement.textContent = countdownTime;
+            }
+            
+            // Reload the page
+            function reloadPage() {
+                window.location.reload();
+            }
+            
+            // Toggle auto-reload
+            function toggleAutoReload() {
+                isAutoReloadEnabled = !isAutoReloadEnabled;
+                
+                if (isAutoReloadEnabled) {
+                    toggleBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Auto-Reload';
+                    lastActiveTime = Date.now();
+                    startCountdown();
+                } else {
+                    toggleBtn.innerHTML = '<i class="fas fa-play"></i> Resume Auto-Reload';
+                    clearInterval(countdownInterval);
+                    clearInterval(progressInterval);
+                }
+            }
+            
+            // Tab visibility change handler
+            function handleVisibilityChange() {
+                if (document.hidden) {
+                    // Tab became inactive
+                    isTabActive = false;
+                    statusIndicator.className = 'status-indicator status-inactive';
+                    statusIndicator.innerHTML = '<span class="status-dot status-dot-inactive"></span><span>Page is inactive - Auto-reload paused</span>';
+                } else {
+                    // Tab became active
+                    isTabActive = true;
+                    statusIndicator.className = 'status-indicator status-active';
+                    statusIndicator.innerHTML = '<span class="status-dot status-dot-active"></span><span>Page is active - Auto-reload enabled</span>';
+                    
+                    // Calculate how much time passed while the tab was inactive
+                    const currentTime = Date.now();
+                    const timePassed = currentTime - lastActiveTime;
+                    
+                    // Adjust countdown based on elapsed time
+                    if (isAutoReloadEnabled) {
+                        const secondsPassed = Math.floor(timePassed / 1000);
+                        countdownTime = Math.max(0, countdownTime - secondsPassed);
+                        
+                        if (countdownTime <= 0) {
+                            reloadPage();
+                        } else {
+                            updateCountdownDisplay();
+                        }
+                    }
+                    
+                    lastActiveTime = currentTime;
+                }
+            }
+            
+            // Event listeners
+            resetBtn.addEventListener('click', function() {
+                lastActiveTime = Date.now();
+                startCountdown();
+            });
+            
+            toggleBtn.addEventListener('click', toggleAutoReload);
+            reloadNowBtn.addEventListener('click', reloadPage);
+            
+            // Tab visibility event listener
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            
+            // Start the initial countdown
+            startCountdown();
+        });
+    </script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</body>
+</html>

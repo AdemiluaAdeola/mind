@@ -156,3 +156,6 @@ def webinar_register(response, pk):
     else:
         form = WebinarRegistrationForm()
         return render(response, 'webinar/register.html', {'webinar':webinar, 'form':form})
+
+def reload(response):
+    return render(response, 'core/reload.html')

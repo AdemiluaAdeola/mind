@@ -35,19 +35,6 @@ class Blog(TimestampModel):
         ('Archived', 'Archived'),
     ]
 
-    # Updated to CloudinaryField with optimizations
-    # cover = CloudinaryField(
-    #     'image',
-    #     folder='blog/covers/',
-    #     transformation={
-    #         'quality': 'auto:good',
-    #         'width': 1200,
-    #         'height': 675,
-    #         'crop': 'fill'
-    #     },
-    #     format='webp',
-    #     help_text="Recommended size: 1200x675 pixels"
-    # )
     cover = models.URLField()
     title = models.CharField(max_length=100000)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -73,19 +60,6 @@ class Blog(TimestampModel):
     def get_absolute_url(self):
         return reverse('blog_detail', kwargs={'pk': self.id})
     
-    @property
-    def cover_thumbnail(self):
-        """Generate thumbnail URL for the cover image"""
-        if self.cover:
-            return self.cover.build_url(width=300, height=200, crop='fill', quality='auto')
-        return None
-    
-    @property
-    def cover_optimized(self):
-        """Generate optimized URL for web display"""
-        if self.cover:
-            return self.cover.build_url(width=800, height=450, crop='fill', quality='auto', format='webp')
-        return None
     
     @property
     def is_published(self):
@@ -198,13 +172,6 @@ class Webinar(TimestampModel):
         return (self.status == 'live' or 
                 (self.status == 'upcoming' and 
                  self.start_datetime <= now <= self.end_datetime))
-    
-    @property
-    def featured_image_thumbnail(self):
-        """Generate thumbnail URL for featured image"""
-        if self.featured_image:
-            return self.featured_image.build_url(width=400, height=225, crop='fill', quality='auto')
-        return None
 
 class WebinarRegistration(TimestampModel):
     status_choices = (

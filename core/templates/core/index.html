@@ -1,779 +1,1951 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MindCraft ThinkSpace – African wisdom meets cognitive science. Join live webinars, read transformative blogs, and grow.">
-    <meta name="author" content="MindCraft ThinkSpace">
-    <meta name="theme-color" content="#0d2e14">
-    <meta name="keywords" content="African wisdom, cognitive science, webinars, personal growth, neuroscience">
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="MindCraft ThinkSpace – It All Begins in the Mind">
-    <meta property="og:description" content="Blending African philosophy with modern neuroscience for personal and collective growth.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mindcraftthinkspace.africa/">
-    <meta property="og:image" content="{% static 'images/og-home.jpg' %}">
-
-    <title>MindCraft ThinkSpace – It All Begins in the Mind</title>
-
-    <!-- Preload Critical Resources -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="{% static 'images/hero-mindcraft.jpg' %}" as="image">
-
+    <meta name="description" content="MindCraft ThinkSpace - Fostering African innovation through webinars, articles, and thought leadership">
+    <title>MindCraft ThinkSpace - Home</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" as="style">
+    <link rel="preload" href="https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80" as="image">
+    
     <!-- Favicon -->
-    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
     <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* ===== CSS Variables ===== */
         :root {
-            --primary: #0d2e14;
-            --primary-light: #1a4d2e;
+            --primary: #0d2e14; /* Darker green */
+            --primary-light: #1e4d2a;
             --primary-dark: #071d0c;
-            --secondary: #e67e22;
-            --secondary-light: #f39c12;
-            --secondary-dark: #d35400;
-            --accent: #f1c40f;
-            --gray: #95a5a6;
-            --light: #f8f9fa;
-            --white: #ffffff;
-            --text: #2c3e50;
-            --text-light: #7f8c8d;
+            --secondary: #d46a1a; /* Darker burnt orange */
+            --secondary-light: #e67e22;
+            --secondary-dark: #b35716;
+            --accent: #e8b417; /* Darker gold */
+            --dark: #1e2b38; /* Darker blue-gray */
+            --darker: #0f161e;
+            --light: #e0e6eb;
+            --lighter: #f0f2f5;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --white: #fff;
+            --black: #000;
+            --gray: #bdc3c7;
+            
+            /* African pattern colors */
+            --african-red: #9a1f1a;
+            --african-yellow: #d4a017;
+            --african-blue: #1a3a8f;
+            --african-brown: #5d3a1a;
+            
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             --radius: 16px;
             --radius-sm: 8px;
-            --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
-            --shadow-md: 0 8px 25px rgba(0,0,0,0.12);
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Reduced Motion Support */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
+        /* ===== Base Styles ===== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; font-size: 16px; }
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
             line-height: 1.7;
             color: var(--text);
-            background: var(--light);
+            background-color: var(--lighter);
             margin: 0;
             padding-top: 90px;
             overflow-x: hidden;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M20 20l60 60M80 20L20 80" stroke="%23e0e6eb" stroke-width="0.5" stroke-opacity="0.3"/></svg>');
+            background-size: 100px 100px;
         }
 
-        /* Focus styles for accessibility */
-        :focus {
-            outline: 2px solid var(--secondary);
-            outline-offset: 2px;
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
-        button:focus, a:focus {
-            outline: 2px solid var(--secondary);
-            outline-offset: 3px;
+        /* ===== Layout ===== */
+        .container {
+            width: min(92%, 1280px);
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
-        /* Skip to main content for screen readers */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 6px;
-            background: var(--secondary);
-            color: white;
-            padding: 8px 12px;
-            border-radius: var(--radius-sm);
+        section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        /* ===== Typography ===== */
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+            font-weight: 700;
+            line-height: 1.3;
+            margin: 0 0 1.2rem;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        }
+
+        h3 {
+            font-size: clamp(1.3rem, 2vw, 1.6rem);
+        }
+
+        p {
+            color: var(--text-light);
+            margin: 0 0 1.5rem;
+        }
+
+        a {
             text-decoration: none;
-            font-weight: 600;
-            z-index: 1001;
+            color: inherit;
             transition: var(--transition);
         }
 
-        .skip-link:focus {
-            top: 6px;
+        /* ===== Buttons ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            position: relative;
+            overflow: hidden;
         }
 
-        img { 
-            max-width: 100%; 
-            height: auto; 
-            display: block; 
-        }
-        
-        /* Lazy loading for images */
-        img[data-src] {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        img.lazy-loaded {
-            opacity: 1;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
         }
 
-        a { text-decoration: none; color: inherit; }
-        .container { width: min(92%, 1280px); margin: 0 auto; padding: 0 1rem; }
-
-        /* Loading animation */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: var(--radius-sm);
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
         }
 
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
         }
 
-        /* Header */
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--white);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        /* ===== Header ===== */
         header {
             position: fixed;
-            top: 0; left: 0; width: 100%;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(12px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
             z-index: 1000;
             transition: var(--transition);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-        header.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
-        .logo img { height: 60px; transition: var(--transition); }
-        header.scrolled .logo img { height: 50px; }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a {
-            font-weight: 500; color: var(--text); position: relative;
-            padding: 0.5rem 0;
-        }
-        .nav-links a::after {
-            content: ''; position: absolute; bottom: 0; left: 0;
-            width: 0; height: 2px; background: var(--secondary);
-            transition: var(--transition);
-        }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-        .nav-links a:hover, .nav-links a.active { color: var(--secondary); }
-
-        .mobile-menu {
-            display: none; background: none; border: none;
-            font-size: 1.5rem; color: var(--text); cursor: pointer;
-            padding: 0.5rem;
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
         }
 
-        .mobile-menu:hover, .mobile-menu:focus {
-            background: rgba(0,0,0,0.05);
+        header.scrolled {
+            box-shadow: var(--shadow-md);
         }
 
-        /* HERO */
-        .hero {
-            position: relative;
-            min-height: 100vh;
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+        }
+
+        .logo {
             display: flex;
             align-items: center;
-            color: white;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            color: var(--white);
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(13, 46, 20, 0.2);
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 0;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--secondary);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+            color: var(--dark);
+            font-size: 1.5rem;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            background: linear-gradient(135deg, rgba(26, 58, 31, 0.9), rgba(26, 58, 31, 0.8)), 
+                        url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80') no-repeat center/cover;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, rgba(13,46,20,0.96), rgba(7,29,12,0.94)),
-                        url('https://images.unsplash.com/photo-1519389950470-14a6a9a5e8c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
-            background-attachment: fixed;
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 15% 70%, rgba(230,126,34,0.35), transparent 60%),
-                        radial-gradient(circle at 85% 30%, rgba(241,196,15,0.25), transparent 60%);
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, var(--lighter), transparent);
             z-index: 1;
-            animation: float 25s infinite ease-in-out;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 200px;
-            background: linear-gradient(transparent, var(--light));
-            z-index: 2;
         }
 
         .hero-content {
             position: relative;
-            z-index: 3;
-            max-width: 900px;
-            padding: 2rem;
-            animation: fadeInUp 1.4s ease-out;
-            text-align: center;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            width: 100%;
         }
 
         .hero h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: 900;
-            margin-bottom: 1.2rem;
-            line-height: 1.1;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            letter-spacing: -0.5px;
-        }
-
-        .hero h1 span {
-            color: var(--secondary);
-            position: relative;
-            display: inline-block;
-        }
-
-        .hero h1 span::after {
-            content: '';
-            position: absolute;
-            bottom: -10px; left: 0;
-            width: 100%; height: 7px;
-            background: var(--secondary);
-            border-radius: 4px;
-            transform: scaleX(0);
-            transform-origin: left;
-            animation: underlineGrow 1.6s ease-out forwards 0.9s;
-        }
-
-        /* HERO IMAGE */
-        .hero-image-wrapper {
-            margin: 2.5rem auto;
-            max-width: 420px;
-            animation: fadeInUp 1.4s ease-out 0.5s backwards;
-        }
-
-        .hero-image {
-            width: 100%;
-            border-radius: var(--radius);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            border: 6px solid rgba(255,255,255,0.15);
-            transition: var(--transition);
-            transform: perspective(1000px) rotateX(5deg);
-        }
-
-        .hero-image:hover {
-            transform: perspective(1000px) rotateX(0deg) translateY(-8px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            color: var(--white);
+            animation: fadeInUp 0.8s ease;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .hero p {
-            font-size: 1.35rem;
-            margin-bottom: 2.5rem;
-            opacity: 0.95;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeInUp 1.4s ease-out 0.3s backwards;
-        }
-
-        .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            background: var(--secondary);
-            color: white;
-            padding: 1.2rem 2.8rem;
-            border-radius: 60px;
-            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 1.2rem;
-            box-shadow: 0 10px 30px rgba(230,126,34,0.5);
-            transition: var(--transition);
-            animation: fadeInUp 1.4s ease-out 0.7s backwards;
-            border: none;
-            cursor: pointer;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
         }
 
-        .hero-cta:hover, .hero-cta:focus {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 40px rgba(230,126,34,0.6);
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== Section Header ===== */
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-header h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 2px;
+        }
+
+        .section-header p {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-header span {
+            color: var(--secondary);
+        }
+
+        /* ===== Fixed Webinar Section - Text Below Image ===== */
+        .webinars {
+            background-color: var(--white);
+        }
+
+        .webinar-filters {
+            background: var(--white);
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 3rem;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .filter-group select {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray);
+            background: var(--white);
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            min-width: 150px;
+            transition: var(--transition);
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(212, 106, 26, 0.1);
+        }
+
+        .search-box {
+            display: flex;
+            margin-left: auto;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray);
+            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .search-box button {
+            background: var(--secondary);
+            color: var(--white);
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-box button:hover {
             background: var(--secondary-dark);
         }
 
-        .hero-stats {
-            display: flex; justify-content: center; gap: 2.5rem; margin-top: 3rem;
-            animation: fadeInUp 1.4s ease-out 1s backwards;
-        }
-
-        .stat {
-            text-align: center;
-            font-size: 1.1rem;
-        }
-
-        .stat-number {
-            display: block;
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--accent);
-            margin-bottom: 0.3rem;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes underlineGrow {
-            to { transform: scaleX(1); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-25px) rotate(1.5deg); }
-        }
-
-        /* Section */
-        section { padding: 6rem 0; }
-        .section-header { text-align: center; margin-bottom: 4rem; }
-        .section-header h2 {
-            font-size: 2.8rem; color: var(--primary);
-            position: relative; display: inline-block;
-            padding-bottom: 1rem;
-        }
-        .section-header h2::after {
-            content: ''; position: absolute; bottom: 0; left: 50%;
-            transform: translateX(-50%); width: 100px; height: 6px;
-            background: var(--secondary); border-radius: 3px;
-        }
-        .section-header p { max-width: 700px; margin: 1.5rem auto 0; color: var(--text-light); font-size: 1.1rem; }
-
-        /* Features */
-        .features {
-            background: white;
-        }
-        .feature-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        .webinar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
             gap: 2.5rem;
         }
-        .feature-card {
-            background: white; padding: 2.5rem; border-radius: var(--radius);
-            box-shadow: var(--shadow-sm); text-align: center;
-            transition: var(--transition); opacity: 0; transform: translateY(30px);
-        }
-        .feature-card.visible { opacity: 1; transform: translateY(0); }
-        .feature-card:hover, .feature-card:focus-within { transform: translateY(-10px); box-shadow: var(--shadow-md); }
-        .feature-icon {
-            width: 80px; height: 80px; margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 2rem;
-            box-shadow: 0 8px 20px rgba(230,126,34,0.3);
-        }
-        .feature-card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary); }
-        .feature-card p { color: var(--text-light); font-size: 1rem; }
 
-        /* Upcoming Webinars */
-        .upcoming-webinars {
-            background: linear-gradient(135deg, #f8f9fa, #eef2f3);
-        }
-        .webinar-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 2rem;
-        }
         .webinar-card {
-            background: white; border-radius: var(--radius);
-            overflow: hidden; box-shadow: var(--shadow-sm);
-            transition: var(--transition); opacity: 0; transform: translateY(20px);
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            position: relative;
         }
-        .webinar-card.visible { opacity: 1; transform: translateY(0); }
-        .webinar-card:hover, .webinar-card:focus-within { transform: translateY(-8px); box-shadow: var(--shadow-md); }
-        .webinar-image { height: 200px; overflow: hidden; position: relative; }
-        .webinar-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
-        .webinar-card:hover .webinar-image img, .webinar-card:focus-within .webinar-image img { transform: scale(1.08); }
-        .webinar-badge {
-            position: absolute; top: 1rem; right: 1rem;
-            padding: 0.35rem 1rem; border-radius: 50px;
-            font-size: 0.8rem; font-weight: 600; color: white;
-        }
-        .webinar-badge.free { background: var(--primary); }
-        .webinar-badge.live { background: #e74c3c; animation: pulse 2s infinite; }
-        .webinar-content { padding: 1.8rem; }
-        .webinar-status {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.35rem 0.9rem; border-radius: 50px;
-            font-size: 0.8rem; font-weight: 500; margin-bottom: 1rem;
-        }
-        .status-upcoming { background: rgba(52,152,219,0.1); color: #3498db; }
-        .status-live { background: rgba(231,76,60,0.1); color: #e74c3c; }
-        .webinar-meta { display: flex; gap: 1rem; margin-bottom: 1rem; color: var(--text-light); font-size: 0.9rem; }
-        .webinar-meta i { color: var(--secondary); }
-        .btn {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.8rem 1.8rem; border-radius: var(--radius-sm);
-            font-weight: 600; cursor: pointer; transition: var(--transition);
-            margin-top: 1rem;
-            border: none;
-            text-align: center;
-            justify-content: center;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-            color: white; box-shadow: 0 4px 15px rgba(230,126,34,0.3);
-        }
-        .btn-primary:hover, .btn-primary:focus { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(230,126,34,0.4); }
 
-        /* Blog Section */
-        .blog-section {
-            background: white;
+        .webinar-card.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
-        .blog-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 2rem;
+
+        .webinar-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
         }
-        .blog-card {
-            background: white; border-radius: var(--radius);
-            overflow: hidden; box-shadow: var(--shadow-sm);
-            transition: var(--transition); opacity: 0; transform: translateY(20px);
+
+        /* FIXED: Featured webinar layout - text below image */
+        .webinar-card.featured {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            max-height: none;
+            overflow: visible;
+            position: relative;
         }
-        .blog-card.visible { opacity: 1; transform: translateY(0); }
-        .blog-card:hover, .blog-card:focus-within { transform: translateY(-8px); box-shadow: var(--shadow-md); }
-        .blog-image { height: 200px; overflow: hidden; }
-        .blog-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
-        .blog-card:hover .blog-image img, .blog-card:focus-within .blog-image img { transform: scale(1.08); }
-        .blog-content { padding: 1.8rem; }
-        .blog-meta {
-            display: flex; gap: 1rem; margin-bottom: 1rem;
-            color: var(--text-light); font-size: 0.9rem;
+
+        .webinar-card.featured .webinar-card-img {
+            height: 400px;
+            position: relative;
+            overflow: hidden;
         }
-        .blog-meta i { color: var(--secondary); }
-        .blog-card h3 {
-            font-size: 1.35rem; margin-bottom: 0.8rem; color: var(--primary);
+
+        .webinar-card.featured .webinar-card-content {
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .webinar-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent);
+            color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 3;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .webinar-card-img {
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .webinar-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .webinar-card:hover .webinar-card-img img {
+            transform: scale(1.05);
+        }
+
+        .webinar-date {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--secondary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .webinar-card-content {
+            padding: 1.8rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .webinar-category {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .webinar-category.technology {
+            background: rgba(41, 128, 185, 0.1);
+            color: #2980b9;
+        }
+
+        .webinar-category.business {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+        }
+
+        .webinar-category.leadership {
+            background: rgba(155, 89, 182, 0.1);
+            color: #9b59b6;
+        }
+
+        .webinar-category.culture {
+            background: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+        }
+
+        .webinar-category.marketing {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .webinar-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .webinar-card-meta i {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .webinar-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
             line-height: 1.4;
         }
-        .blog-card p { color: var(--text-light); margin-bottom: 1.2rem; }
-        .btn-secondary {
-            color: var(--secondary); font-weight: 600;
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-        }
-        .btn-secondary:hover, .btn-secondary:focus { color: var(--secondary-dark); }
 
-        /* CTA */
-        .cta-section {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white; text-align: center;
+        .webinar-card p {
+            margin-bottom: 1.5rem;
         }
-        .cta-section h2 {
-            font-size: 2.8rem; margin-bottom: 1.5rem;
+
+        .webinar-speaker {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
         }
-        .cta-section h2::after {
-            content: ''; display: block; width: 80px; height: 5px;
-            background: var(--secondary); margin: 1rem auto 0; border-radius: 3px;
+
+        .webinar-speaker img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
         }
-        .cta-section p { max-width: 700px; margin: 0 auto 2.5rem; font-size: 1.2rem; opacity: 0.9; }
-        .cta-button {
-            background: white; color: var(--primary);
-            padding: 1.2rem 3rem; border-radius: 60px;
-            font-weight: 700; font-size: 1.2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            border: none;
-            cursor: pointer;
+
+        .webinar-speaker h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.1rem;
+            color: var(--dark);
+        }
+
+        .webinar-speaker p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0;
+        }
+
+        .webinar-features {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .webinar-features span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .webinar-features i {
+            color: var(--secondary);
+        }
+
+        .webinar-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+            flex-wrap: wrap;
+        }
+
+        .webinar-card .btn {
+            align-self: flex-start;
+        }
+
+        .webinar-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0 2rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--lighter), var(--white));
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .webinar-stats .stat-item {
+            text-align: center;
+        }
+
+        .webinar-stats .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.5s ease;
+        }
+
+        .webinar-stats .stat-label {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .view-all {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        /* ===== Features Section ===== */
+        .features {
+            background-color: var(--lighter);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--white);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(13, 46, 20, 0.2);
+        }
+
+        .feature-card:hover .feature-icon {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* ===== Blog Section ===== */
+        .blog {
+            background-color: var(--white);
+        }
+
+        .blog-filters {
+            background: var(--white);
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 3rem;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+            gap: 2.5rem;
+        }
+
+        .blog-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            position: relative;
+        }
+
+        .blog-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .blog-card.featured {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card.featured .blog-card-img {
+            height: 400px;
+        }
+
+        .blog-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent);
+            color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-card-img {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-card-img img {
+            transform: scale(1.05);
+        }
+
+        .blog-card-content {
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .blog-category {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .blog-category.mindset {
+            background: rgba(155, 89, 182, 0.1);
+            color: #9b59b6;
+        }
+
+        .blog-category.business {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+        }
+
+        .blog-category.technology {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .blog-category.wellness {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+
+        .blog-category.culture {
+            background: rgba(241, 196, 15, 0.1);
+            color: #f1c40f;
+        }
+
+        .blog-category.innovation {
+            background: rgba(142, 68, 173, 0.1);
+            color: #8e44ad;
+        }
+
+        .blog-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .blog-card h3 a {
+            color: var(--dark);
+            text-decoration: none;
             transition: var(--transition);
         }
-        .cta-button:hover, .cta-button:focus { background: var(--accent); color: var(--primary-dark); transform: translateY(-4px); }
 
-        /* Footer */
-        .site-footer {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white; padding: 5rem 0 2rem; margin-top: 0;
+        .blog-card h3 a:hover {
+            color: var(--secondary);
         }
-        .footer-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 3rem; margin-bottom: 3rem;
-        }
-        .footer-col h3 {
-            font-size: 1.2rem; margin-bottom: 1.2rem;
-            position: relative; padding-bottom: 0.6rem;
-        }
-        .footer-col h3::after {
-            content: ''; position: absolute; left: 0; bottom: 0;
-            width: 40px; height: 3px; background: var(--secondary);
-            border-radius: 2px;
-        }
-        .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 0.7rem; }
-        .footer-col a { color: rgba(255,255,255,0.85); transition: var(--transition); }
-        .footer-col a:hover, .footer-col a:focus { color: var(--secondary); }
-        .social-icons {
-            display: flex; gap: 0.8rem; margin-top: 1rem;
-        }
-        .social-icons a {
-            width: 40px; height: 40px; background: rgba(255,255,255,0.1);
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; transition: var(--transition);
-        }
-        .social-icons a:hover, .social-icons a:focus { background: var(--secondary); transform: translateY(-3px); }
-        .newsletter-form h4 { margin-bottom: 0.8rem; font-size: 1rem; }
-        .input-group { display: flex; border-radius: var(--radius-sm); overflow: hidden; }
-        .input-group input {
-            flex: 1; padding: 0.8rem 1rem; border: none;
-            font-size: 0.95rem; background: rgba(255,255,255,0.9);
-        }
-        .input-group button {
-            background: var(--secondary); color: white;
-            border: none; padding: 0 1.3rem; cursor: pointer;
-            transition: var(--transition);
-        }
-        .input-group button:hover, .input-group button:focus { background: var(--secondary-dark); }
 
-        .footer-bottom {
-            display: flex; flex-wrap: wrap; justify-content: space-between;
-            align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.15);
-            font-size: 0.9rem; color: rgba(255,255,255,0.7);
+        .blog-excerpt {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            flex: 1;
         }
-        .footer-bottom a { color: inherit; margin: 0 0.5rem; }
-        .footer-bottom a:hover, .footer-bottom a:focus { color: var(--secondary); }
 
-        /* Back to Top */
-        .back-top {
-            position: fixed; right: 2rem; bottom: 2rem;
-            width: 50px; height: 50px; border-radius: 50%;
-            background: var(--secondary); color: white;
-            border: none; font-size: 1.3rem; cursor: pointer;
-            box-shadow: var(--shadow-md); opacity: 0; visibility: hidden;
-            transition: var(--transition); z-index: 99;
+        .blog-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .blog-author img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .blog-author h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.1rem;
+            color: var(--dark);
+        }
+
+        .blog-author p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0;
+        }
+
+        .blog-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0 2rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--lighter), var(--white));
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ===== Testimonials ===== */
+        .testimonials {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+        }
+
+        .testimonials .section-header h2 {
+            color: var(--white);
+        }
+
+        .testimonials .section-header h2::after {
+            background: var(--accent);
+        }
+
+        .testimonials .section-header p {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            text-align: center;
+            margin: 0 1rem;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .testimonial.active {
+            display: block;
+        }
+
+        .testimonial-content {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .testimonial-author {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 1rem;
         }
-        .back-top.show { opacity: 1; visibility: visible; }
-        .back-top:hover, .back-top:focus { background: var(--secondary-dark); transform: translateY(-3px); }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links { 
-                position: fixed; 
-                top: 0; 
-                right: -100%; 
-                width: 80%; 
-                height: 100vh;
-                background: white; 
-                flex-direction: column; 
-                padding: 5rem 2rem;
-                transition: 0.3s; 
-                box-shadow: -10px 0 30px rgba(0,0,0,0.1); 
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+        }
+
+        .author-info h4 {
+            margin-bottom: 0.25rem;
+            color: var(--white);
+        }
+
+        .author-info p {
+            color: var(--accent);
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dot.active {
+            background: var(--accent);
+            transform: scale(1.2);
+        }
+
+        /* ===== Newsletter CTA ===== */
+        .newsletter-cta {
+            background: linear-gradient(135deg, var(--secondary-light), var(--secondary));
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            border-radius: var(--radius);
+            margin: 4rem auto;
+            max-width: calc(100% - 2rem);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>');
+        }
+
+        .newsletter-cta h2 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .newsletter-cta p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            gap: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-size: 1rem;
+            min-width: 0;
+        }
+
+        .privacy-note {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 1rem;
+        }
+
+        .success-message {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+        }
+
+        .success-message i {
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message p {
+            color: var(--white);
+            margin-bottom: 0;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            background: var(--darker);
+            color: var(--white);
+            padding: 5rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-logo h2 {
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo h2 span {
+            color: var(--secondary);
+        }
+
+        .footer-logo p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-links h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            transform: translateX(3px);
+        }
+
+        .footer-links i {
+            width: 20px;
+            color: var(--secondary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-legal a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+            font-size: 0.8rem;
+        }
+
+        .footer-legal a:hover {
+            color: var(--secondary);
+        }
+
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            .nav-links.active { right: 0; }
-            .mobile-menu { display: block; }
-            .hero h1 { font-size: 2.8rem; }
-            .hero-image { max-width: 300px; }
-            .hero-stats { flex-direction: column; gap: 1.5rem; }
-            .webinar-grid, .blog-grid { grid-template-columns: 1fr; }
-            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        @media (max-width: 480px) {
-            .hero-content { padding: 1rem; }
-            .hero h1 { font-size: 2.2rem; }
-            .hero p { font-size: 1.1rem; }
-            .section-header h2 { font-size: 2.2rem; }
-            .feature-grid { grid-template-columns: 1fr; }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(231,76,60,0.4); }
-            70% { box-shadow: 0 0 0 12px rgba(231,76,60,0); }
-            100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); }
+        /* ===== Responsive Design ===== */
+        @media (max-width: 992px) {
+            .webinar-card.featured .webinar-card-img,
+            .blog-card.featured .blog-card-img {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 80px;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 5rem 2rem;
+                transition: right 0.3s ease;
+                box-shadow: var(--shadow-lg);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                width: 100%;
+            }
+
+            .nav-links a::after {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero {
+                min-height: 70vh;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-box {
+                margin-left: 0;
+                max-width: none;
+            }
+            
+            .webinar-actions {
+                flex-direction: column;
+            }
+            
+            .webinar-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .webinar-stats,
+            .blog-stats {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 2rem 1rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            section {
+                padding: 3.5rem 0;
+            }
+
+            .hero {
+                min-height: 60vh;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .testimonial {
+                padding: 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2.5rem;
+            }
+
+            .footer-links h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+
+            .footer-legal {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .webinar-stats,
+            .blog-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .webinar-features {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .blog-card-img {
+                height: 180px;
+            }
+            
+            .blog-card-content {
+                padding: 1.5rem;
+            }
+            
+            .blog-meta {
+                font-size: 0.8rem;
+                gap: 0.75rem;
+            }
         }
     </style>
 </head>
 <body>
-
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
-    <!-- Header -->
+    <!-- Header/Navigation -->
     <header id="header">
         <div class="container">
             <nav>
-                <a href="{% url 'index' %}" class="logo">
-                    <img src="{% static 'images/logo.png' %}" alt="MindCraft ThinkSpace">
+                <a href="/" class="logo">
+                    <div class="logo-img">
+                        <img src="{% static 'images/mindcraft.png' %}" alt="">
+                    </div>
+                    <div class="logo-text">
+                        <h1>MindCraft ThinkSpace</h1>
+                        <p>...it all begins in the mind</p>
+                    </div>
                 </a>
                 <ul class="nav-links">
-                    <li><a href="{% url 'index' %}" class="active">Home</a></li>
-                    <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
-                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
-                    <li><a href="{% url 'about' %}">About</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'profile' %}">Profile</a></li>
-                        <li><a href="{% url 'logout' %}">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                    {% endif %}
+                    <li><a href="/" class="active">Home</a></li>
+                    <li><a href="#webinars">Webinars</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
-                <button class="mobile-menu" aria-label="Menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+                <button class="mobile-menu" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
             </nav>
         </div>
     </header>
 
-    <!-- HERO -->
-    <section class="hero" id="main-content">
-        <div class="container">
-            <div class="hero-content">
-                <h1>It All Begins in the <span>Mind</span></h1>
-
-                <!-- HERO IMAGE -->
-                <div class="hero-image-wrapper">
-                    <img src="{% static 'images/hero-mindcraft.jpg' %}" 
-                         alt="African wisdom meets cognitive science" 
-                         class="hero-image"
-                         loading="lazy">
-                </div>
-
-                <p>Blending African ancestral wisdom with modern cognitive science to unlock human potential.</p>
-                <a href="{% url 'webinar_list' %}" class="hero-cta">
-                    Start Learning <i class="fas fa-arrow-right"></i>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Empowering African Thought Leadership</h1>
+            <p>Join our community of innovators, thinkers, and change-makers shaping the future of Africa through knowledge sharing and collaboration</p>
+            <div class="hero-buttons">
+                <a href="/webinar/" class="btn btn-primary">
+                    View Upcoming Webinars <i class="fas fa-video"></i>
                 </a>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">500+</span>
-                        <span>Webinars Delivered</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">50K+</span>
-                        <span>Learners Reached</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">4.9</span>
-                        <span>Average Rating</span>
-                    </div>
-                </div>
+                <a href="/blog/" class="btn btn-secondary">
+                    Read Our Blog <i class="fas fa-book-open"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Features -->
-    <section class="features">
+    <!-- Fixed Webinars Section - Text Below Image -->
+    <section id="webinars" class="webinars">
         <div class="container">
             <div class="section-header">
-                <h2>Why Choose Us</h2>
-                <p>Interactive, culturally grounded learning experiences designed for real transformation.</p>
+                <h2>Upcoming <span>Webinars</span></h2>
+                <p>Join our live interactive sessions with Africa's leading innovators and thought leaders</p>
             </div>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
-                    <h3>Cognitive Science</h3>
-                    <p>Evidence-based methods to rewire thinking patterns and boost mental performance.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-globe-africa"></i></div>
-                    <h3>African Wisdom</h3>
-                    <p>Ancient philosophies from Ubuntu to Ifá, applied to modern leadership and growth.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-users"></i></div>
-                    <h3>Expert Facilitators</h3>
-                    <p>Learn from African thought leaders, neuroscientists, and global innovators.</p>
+            
+            <!-- Webinar Filters -->
+            <div class="webinar-filters">
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="category-filter">Category:</label>
+                        <select id="category-filter">
+                            <option value="all">All Categories</option>
+                            <option value="technology">Technology</option>
+                            <option value="business">Business</option>
+                            <option value="leadership">Leadership</option>
+                            <option value="culture">Culture</option>
+                            <option value="marketing">Marketing</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="date-filter">Date:</label>
+                        <select id="date-filter">
+                            <option value="all">All Dates</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="this-week">This Week</option>
+                            <option value="this-month">This Month</option>
+                        </select>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search webinars..." id="webinar-search">
+                        <button type="button"><i class="fas fa-search"></i></button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Upcoming Webinars -->
-    <section class="upcoming-webinars">
-        <div class="container">
-            <div class="section-header">
-                <h2>Upcoming <span style="color:var(--secondary)">Webinars</span></h2>
-                <p>Join live sessions with leading thinkers</p>
-            </div>
+            
             <div class="webinar-grid">
-                {% for webinar in upcoming_webinars %}
-                <article class="webinar-card">
-                    <div class="webinar-image">
-                        <img src="{{ webinar.featured_image.url }}" alt="{{ webinar.title }}" loading="lazy">
-                        {% if webinar.is_free %}<span class="webinar-badge free">Free</span>{% endif %}
-                        {% if webinar.status == 'live' %}<span class="webinar-badge live">Live</span>{% endif %}
-                    </div>
-                    <div class="webinar-content">
-                        <span class="webinar-status status-{{ webinar.status }}">
-                            <i class="fas fa-circle"></i> {{ webinar.get_status_display }}
-                        </span>
-                        <div class="webinar-meta">
-                            <span><i class="far fa-calendar-alt"></i> {{ webinar.start_datetime|date:"M d" }}</span>
-                            <span><i class="far fa-clock"></i> {{ webinar.start_datetime|time }}</span>
+                <!-- Featured Webinar - FIXED: Text below image -->
+                <div class="webinar-card featured">
+                    <div class="webinar-badge">Featured</div>
+                    <div class="webinar-card-img">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="AI in African Business" loading="lazy" width="600" height="338">
+                        <div class="webinar-date">
+                            <i class="far fa-calendar-alt"></i> June 28, 2024
                         </div>
-                        <h3>{{ webinar.title|truncatewords:8 }}</h3>
-                        <a href="{% url 'webinar_detail' webinar.id %}" class="btn btn-primary">
-                            {% if webinar.status == 'live' %}Join Live{% else %}Register{% endif %}
+                    </div>
+                    <div class="webinar-card-content">
+                        <span class="webinar-category technology">Technology</span>
+                        <div class="webinar-card-meta">
+                            <span><i class="far fa-clock"></i> 2:00 PM GMT</span>
+                            <span><i class="fas fa-users"></i> 250+ Registered</span>
+                            <span><i class="fas fa-star"></i> 4.9/5 Rating</span>
+                        </div>
+                        <h3>AI Revolution: Transforming African Businesses</h3>
+                        <p>Discover how artificial intelligence is reshaping industries across Africa and learn practical strategies for implementation in your organization.</p>
+                        
+                        <div class="webinar-speaker">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Dr. Kwame Mensah">
+                            <div>
+                                <h4>Dr. Kwame Mensah</h4>
+                                <p>AI Research Director, TechInnovate Africa</p>
+                            </div>
+                        </div>
+                        
+                        <div class="webinar-features">
+                            <span><i class="fas fa-certificate"></i> Certificate Included</span>
+                            <span><i class="fas fa-download"></i> Resources</span>
+                            <span><i class="fas fa-reply"></i> Q&A Session</span>
+                        </div>
+                        
+                        <div class="webinar-actions">
+                            <a href="webinar_reg.html" class="btn btn-primary">
+                                <i class="fas fa-ticket-alt"></i> Register Now
+                            </a>
+                            <button class="btn btn-outline" onclick="addToCalendar('webinar1')">
+                                <i class="far fa-calendar-plus"></i> Add to Calendar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Webinar 2 -->
+                <div class="webinar-card">
+                    <div class="webinar-card-img">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Sustainable Business Practices" loading="lazy" width="600" height="338">
+                        <div class="webinar-date">
+                            <i class="far fa-calendar-alt"></i> July 5, 2024
+                        </div>
+                    </div>
+                    <div class="webinar-card-content">
+                        <span class="webinar-category business">Business</span>
+                        <div class="webinar-card-meta">
+                            <span><i class="far fa-clock"></i> 3:00 PM GMT</span>
+                            <span><i class="fas fa-users"></i> 180+ Registered</span>
+                        </div>
+                        <h3>Sustainable Business Models for African Markets</h3>
+                        <p>Learn how to build businesses that thrive while positively impacting communities and the environment across African markets.</p>
+                        
+                        <div class="webinar-speaker">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=761&q=80" alt="Amina Jalloh">
+                            <div>
+                                <h4>Amina Jalloh</h4>
+                                <p>Sustainability Consultant, GreenGrowth Africa</p>
+                            </div>
+                        </div>
+                        
+                        <a href="webinar_reg.html" class="btn btn-primary">
+                            Register Now <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
-                </article>
-                {% empty %}
-                <p style="grid-column:1/-1; text-align:center; color:var(--text-light);">
-                    No upcoming webinars. <a href="{% url 'webinar_list' %}" style="color:var(--secondary);">View all →</a>
-                </p>
-                {% endfor %}
+                </div>
+                
+                <!-- Webinar 3 -->
+                <div class="webinar-card">
+                    <div class="webinar-card-img">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80" alt="Digital Marketing Strategies" loading="lazy" width="600" height="338">
+                        <div class="webinar-date">
+                            <i class="far fa-calendar-alt"></i> July 12, 2024
+                        </div>
+                    </div>
+                    <div class="webinar-card-content">
+                        <span class="webinar-category marketing">Marketing</span>
+                        <div class="webinar-card-meta">
+                            <span><i class="far fa-clock"></i> 1:00 PM GMT</span>
+                            <span><i class="fas fa-users"></i> 320+ Registered</span>
+                        </div>
+                        <h3>Digital Marketing Strategies for African Audiences</h3>
+                        <p>Master digital marketing techniques tailored specifically for African consumers and markets.</p>
+                        
+                        <div class="webinar-speaker">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Tunde Adebayo">
+                            <div>
+                                <h4>Tunde Adebayo</h4>
+                                <p>Digital Marketing Expert, BrandFlow Africa</p>
+                            </div>
+                        </div>
+                        
+                        <a href="webinar_reg.html" class="btn btn-primary">
+                            Register Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Webinar Stats -->
+            <div class="webinar-stats">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="156">0</div>
+                    <div class="stat-label">Webinars Hosted</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="25400">0</div>
+                    <div class="stat-label">Participants</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="48">0</div>
+                    <div class="stat-label">Expert Speakers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="96">0</div>
+                    <div class="stat-label">% Satisfaction</div>
+                </div>
+            </div>
+
+            <div class="view-all">
+                <a href="/webinar.html" class="btn btn-secondary">
+                    View All Webinars <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
 
     <!-- Blog Section -->
-    <section class="blog-section">
+    <section id="blog" class="blog">
         <div class="container">
             <div class="section-header">
-                <h2>Latest <span style="color:var(--secondary)">Insights</span></h2>
-                <p>Deep dives into mind, culture, and innovation</p>
+                <h2>Latest <span>Articles</span></h2>
+                <p>Insightful content on innovation, technology, business, and African development</p>
             </div>
+            
+            <!-- Blog Filters -->
+            <div class="blog-filters">
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="blog-category-filter">Category:</label>
+                        <select id="blog-category-filter">
+                            <option value="all">All Categories</option>
+                            <option value="mindset">Mindset</option>
+                            <option value="business">Business</option>
+                            <option value="technology">Technology</option>
+                            <option value="wellness">Wellness</option>
+                            <option value="culture">Culture</option>
+                            <option value="innovation">Innovation</option>
+                        </select>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search articles..." id="blog-search">
+                        <button type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            
             <div class="blog-grid">
-                {% for post in latest_posts %}
-                <article class="blog-card">
-                    <div class="blog-image">
-                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy">
+                <!-- Featured Blog Post -->
+                <div class="blog-card featured">
+                    <div class="blog-badge">Featured</div>
+                    <div class="blog-card-img">
+                        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="African Innovation Ecosystem" loading="lazy" width="600" height="400">
                     </div>
-                    <div class="blog-content">
+                    <div class="blog-card-content">
+                        <span class="blog-category innovation">Innovation</span>
                         <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> {{ post.published_date|date:"M d, Y" }}</span>
-                            <span><i class="far fa-clock"></i> {{ post.read_time }} min</span>
+                            <span><i class="far fa-calendar"></i> June 15, 2024</span>
+                            <span><i class="far fa-clock"></i> 8 min read</span>
+                            <span><i class="far fa-eye"></i> 2.4K views</span>
                         </div>
-                        <h3>{{ post.title|truncatewords:10 }}</h3>
-                        <p>{{ post.excerpt|truncatewords:20 }}</p>
-                        <a href="{% url 'blog_detail' post.slug %}" class="btn-secondary">
-                            Read More <i class="fas fa-arrow-right"></i>
-                        </a>
+                        <h3><a href="article.html">Building a Thriving Innovation Ecosystem in Africa</a></h3>
+                        <p class="blog-excerpt">Explore the key elements needed to foster sustainable innovation across the African continent, from education to infrastructure and investment.</p>
+                        
+                        <div class="blog-author">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="David Okafor">
+                            <div>
+                                <h4>David Okafor</h4>
+                                <p>Innovation Strategist</p>
+                            </div>
+                        </div>
                     </div>
-                </article>
-                {% empty %}
-                <p style="grid-column:1/-1; text-align:center; color:var(--text-light);">
-                    No posts yet. <a href="{% url 'blog_list' %}" style="color:var(--secondary);">Explore Blog →</a>
-                </p>
-                {% endfor %}
+                </div>
+                
+                <!-- Blog Post 2 -->
+                <div class="blog-card">
+                    <div class="blog-card-img">
+                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Tech Startups Africa" loading="lazy" width="600" height="400">
+                    </div>
+                    <div class="blog-card-content">
+                        <span class="blog-category technology">Technology</span>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> June 10, 2024</span>
+                            <span><i class="far fa-clock"></i> 6 min read</span>
+                            <span><i class="far fa-eye"></i> 1.8K views</span>
+                        </div>
+                        <h3><a href="article.html">The Rise of African Tech Startups: Opportunities and Challenges</a></h3>
+                        <p class="blog-excerpt">An in-depth look at the rapidly growing tech startup scene across Africa and what it takes to succeed in this dynamic landscape.</p>
+                        
+                        <div class="blog-author">
+                            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Amina Mohammed">
+                            <div>
+                                <h4>Amina Mohammed</h4>
+                                <p>Tech Entrepreneur</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Blog Post 3 -->
+                <div class="blog-card">
+                    <div class="blog-card-img">
+                        <img src="https://images.unsplash.com/photo-1551836026-d5c88ac5c842?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Leadership Development" loading="lazy" width="600" height="400">
+                    </div>
+                    <div class="blog-card-content">
+                        <span class="blog-category mindset">Mindset</span>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> June 5, 2024</span>
+                            <span><i class="far fa-clock"></i> 10 min read</span>
+                            <span><i class="far fa-eye"></i> 3.2K views</span>
+                        </div>
+                        <h3><a href="article.html">Cultivating Authentic Leadership in African Organizations</a></h3>
+                        <p class="blog-excerpt">Discover how traditional African leadership values can be integrated with modern management practices for more effective organizations.</p>
+                        
+                        <div class="blog-author">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=761&q=80" alt="Dr. Wanjiru Kariuki">
+                            <div>
+                                <h4>Dr. Wanjiru Kariuki</h4>
+                                <p>Leadership Consultant</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Blog Post 4 -->
+                <div class="blog-card">
+                    <div class="blog-card-img">
+                        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Sustainable Business" loading="lazy" width="600" height="400">
+                    </div>
+                    <div class="blog-card-content">
+                        <span class="blog-category business">Business</span>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> May 28, 2024</span>
+                            <span><i class="far fa-clock"></i> 7 min read</span>
+                            <span><i class="far fa-eye"></i> 2.1K views</span>
+                        </div>
+                        <h3><a href="article.html">Sustainable Business Practices: The African Advantage</a></h3>
+                        <p class="blog-excerpt">How African businesses can leverage traditional knowledge and modern innovation to create sustainable competitive advantages.</p>
+                        
+                        <div class="blog-author">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Tunde Adebayo">
+                            <div>
+                                <h4>Tunde Adebayo</h4>
+                                <p>Sustainability Expert</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Stats -->
+            <div class="webinar-stats">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="245">0</div>
+                    <div class="stat-label">Articles Published</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="18500">0</div>
+                    <div class="stat-label">Monthly Readers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="32">0</div>
+                    <div class="stat-label">Expert Writers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="94">0</div>
+                    <div class="stat-label">% Reader Satisfaction</div>
+                </div>
+            </div>
+
+            <div class="view-all">
+                <a href="/blog.html" class="btn btn-secondary">
+                    View All Articles <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-section">
+    <!-- Features Section -->
+    <section class="features">
         <div class="container">
-            <h2>Ready to Transform Your Mind?</h2>
-            <p>Join thousands of learners already growing with MindCraft ThinkSpace.</p>
-            <a href="{% url 'webinar_list' %}" class="btn cta-button">
-                Explore All Webinars <i class="fas fa-arrow-right"></i>
-            </a>
+            <div class="section-header">
+                <h2>Why Join <span>MindCraft ThinkSpace</span></h2>
+                <p>We provide unique value to our community members through various knowledge-sharing platforms</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Expert Webinars</h3>
+                    <p>Monthly live sessions with industry leaders, innovators, and subject matter experts across Africa.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Insightful Content</h3>
+                    <p>Weekly articles and research papers on innovation, technology, business, and African development.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Network</h3>
+                    <p>Connect with like-minded professionals, entrepreneurs, and thought leaders across the continent.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our <span>Community</span> Says</h2>
+                <p>Hear from professionals and entrepreneurs who have benefited from our platform</p>
+            </div>
+            
+            <div class="testimonial-slider">
+                <!-- Testimonial 1 -->
+                <div class="testimonial active">
+                    <div class="testimonial-content">
+                        "MindCraft ThinkSpace has been instrumental in connecting me with mentors and resources that helped scale my startup. The webinars provide practical insights you won't find elsewhere."
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Amina Mohammed" class="author-avatar" loading="lazy" width="60" height="60">
+                        <div class="author-info">
+                            <h4>Amina Mohammed</h4>
+                            <p>Founder, GreenTech Solutions</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "The quality of content and speakers on this platform is exceptional. I've implemented strategies from the business webinars that increased my revenue by 40% in 6 months."
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="David Okafor" class="author-avatar" loading="lazy" width="60" height="60">
+                        <div class="author-info">
+                            <h4>David Okafor</h4>
+                            <p>CEO, RetailPro Africa</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "As an academic, I appreciate the research-driven approach to African development topics. The platform bridges the gap between theory and practical implementation."
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=761&q=80" alt="Dr. Wanjiru Kariuki" class="author-avatar" loading="lazy" width="60" height="60">
+                        <div class="author-info">
+                            <h4>Dr. Wanjiru Kariuki</h4>
+                            <p>Professor, University of Nairobi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-dots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="site-footer">
+    <footer id="contact">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h2 style="font-size:1.8rem; margin-bottom:0.5rem;"><span style="color:var(--secondary)">MindCraft</span> ThinkSpace</h2>
-                    <p style="opacity:0.9;">…it all begins in the mind</p>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><span>MindCraft</span> ThinkSpace</h2>
+                    <p>...it all begins in the mind</p>
                     <div class="social-icons">
                         <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                         <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
@@ -781,122 +1953,294 @@
                         <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                <div class="footer-col">
+                <div class="footer-links">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="{% url 'index' %}">Home</a></li>
-                        <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
-                        <li><a href="{% url 'blog_list' %}">Blog</a></li>
-                        <li><a href="{% url 'about' %}">About Us</a></li>
-                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="#webinars">Webinars</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
-                <div class="footer-col">
-                    <h3>Topics</h3>
+                <div class="footer-links">
+                    <h3>Resources</h3>
                     <ul>
-                        <li><a href="{% url 'webinar_list' %}?topic=leadership">Leadership</a></li>
-                        <li><a href="{% url 'webinar_list' %}?topic=technology">Technology</a></li>
-                        <li><a href="{% url 'webinar_list' %}?topic=education">Education</a></li>
-                        <li><a href="{% url 'webinar_list' %}?topic=culture">Culture</a></li>
+                        <li><a href="#">Past Webinars</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                        <li><a href="#">FAQ</a></li>
                     </ul>
                 </div>
-                <div class="footer-col">
-                    <h3>Contact</h3>
-                    <ul style="margin-bottom:1.5rem;">
-                        <li><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria</li>
-                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.africa</li>
-                        <li><i class="fas fa-phone-alt"></i> +234 123 456 789</li>
+                <div class="footer-links">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.com</li>
+                        <li><i class="fas fa-phone"></i> +254 700 123456</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</li>
                     </ul>
-                    <form class="newsletter-form">
-                        <h4>Stay Updated</h4>
-                        <div class="input-group">
-                            <input type="email" placeholder="Your email" required aria-label="Your email for newsletter">
-                            <button type="submit" aria-label="Subscribe to newsletter"><i class="fas fa-paper-plane"></i></button>
-                        </div>
-                    </form>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© <span id="year"></span> MindCraft ThinkSpace. All Rights Reserved.</p>
-                <div>
-                    <a href="/privacy/">Privacy</a> |
-                    <a href="/terms/">Terms</a>
+                <p>&copy; <span id="current-year">2024</span> MindCraft ThinkSpace. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="/privacy/">Privacy Policy</a>
+                    <a href="/terms/">Terms of Service</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Back to Top -->
-    <button id="backTop" class="back-top" aria-label="Back to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- Scripts -->
+    <!-- JavaScript -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Year
-            document.getElementById('year').textContent = new Date().getFullYear();
-
-            // Mobile Menu
-            const mobileBtn = document.querySelector('.mobile-menu');
-            const nav = document.querySelector('.nav-links');
-            mobileBtn.addEventListener('click', () => {
-                const isExpanded = mobileBtn.getAttribute('aria-expanded') === 'true';
-                mobileBtn.setAttribute('aria-expanded', !isExpanded);
-                nav.classList.toggle('active');
-                mobileBtn.innerHTML = nav.classList.contains('active')
-                    ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                this.setAttribute('aria-expanded', navLinks.classList.contains('active'));
             });
-
-            // Close mobile menu when clicking on a link
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', () => {
-                    nav.classList.remove('active');
-                    mobileBtn.setAttribute('aria-expanded', 'false');
-                    mobileBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menu if open
+                        if (navLinks.classList.contains('active')) {
+                            navLinks.classList.remove('active');
+                            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                        }
+                    }
                 });
             });
-
-            // Header Scroll
-            window.addEventListener('scroll', () => {
-                document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+            
+            // Testimonial slider
+            const testimonials = document.querySelectorAll('.testimonial');
+            const dots = document.querySelectorAll('.dot');
+            let currentTestimonial = 0;
+            
+            function showTestimonial(index) {
+                testimonials.forEach(testimonial => testimonial.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                
+                testimonials[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentTestimonial = index;
+            }
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    showTestimonial(parseInt(this.dataset.index));
+                });
             });
-
-            // Back to Top
-            const backTop = document.getElementById('backTop');
-            window.addEventListener('scroll', () => {
-                backTop.classList.toggle('show', window.scrollY > 500);
-            });
-            backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-            // Animation on Scroll
-            const observer = new IntersectionObserver(entries => {
+            
+            // Auto-rotate testimonials
+            setInterval(() => {
+                let nextIndex = (currentTestimonial + 1) % testimonials.length;
+                showTestimonial(nextIndex);
+            }, 8000);
+            
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Newsletter form submission
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const emailInput = this.querySelector('input[type="email"]');
+                    
+                    // Simple validation
+                    if (emailInput.value && emailInput.value.includes('@')) {
+                        // In a real implementation, you would send this to your server
+                        this.innerHTML = `
+                            <div class="success-message">
+                                <i class="fas fa-check-circle"></i>
+                                <p>Thank you for subscribing!</p>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            
+            // Animate elements on scroll
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.webinar-card, .feature-card, .blog-card');
+                const windowHeight = window.innerHeight;
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const animationPoint = windowHeight - 100;
+                    
+                    if (elementPosition < animationPoint) {
+                        element.classList.add('animate');
+                    }
+                });
+            };
+            
+            // Run on load and scroll
+            window.addEventListener('load', animateOnScroll);
+            window.addEventListener('scroll', animateOnScroll);
+            
+            // Enhanced webinar functionality
+            const categoryFilter = document.getElementById('category-filter');
+            const dateFilter = document.getElementById('date-filter');
+            const searchInput = document.getElementById('webinar-search');
+            const webinarCards = document.querySelectorAll('.webinar-card');
+            
+            function filterWebinars() {
+                const categoryValue = categoryFilter.value;
+                const dateValue = dateFilter.value;
+                const searchValue = searchInput.value.toLowerCase();
+                
+                webinarCards.forEach(card => {
+                    const category = card.querySelector('.webinar-category');
+                    const categoryText = category ? category.textContent.toLowerCase() : '';
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    
+                    const matchesCategory = categoryValue === 'all' || categoryText.includes(categoryValue);
+                    const matchesSearch = searchValue === '' || 
+                                        title.includes(searchValue) || 
+                                        description.includes(searchValue);
+                    
+                    // Simple date matching (in real implementation, you'd use actual dates)
+                    const matchesDate = dateValue === 'all';
+                    
+                    if (matchesCategory && matchesSearch && matchesDate) {
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 50);
+                    } else {
+                        card.style.opacity = '0';
+                        setTimeout(() => card.style.display = 'none', 300);
+                    }
+                });
+            }
+            
+            if (categoryFilter) categoryFilter.addEventListener('change', filterWebinars);
+            if (dateFilter) dateFilter.addEventListener('change', filterWebinars);
+            if (searchInput) searchInput.addEventListener('input', filterWebinars);
+            
+            // Blog filtering functionality
+            const blogCategoryFilter = document.getElementById('blog-category-filter');
+            const blogSearchInput = document.getElementById('blog-search');
+            const blogCards = document.querySelectorAll('.blog-card');
+            
+            function filterBlogPosts() {
+                const categoryValue = blogCategoryFilter.value;
+                const searchValue = blogSearchInput.value.toLowerCase();
+                
+                blogCards.forEach(card => {
+                    const category = card.querySelector('.blog-category');
+                    const categoryText = category ? category.textContent.toLowerCase() : '';
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const excerpt = card.querySelector('.blog-excerpt').textContent.toLowerCase();
+                    
+                    const matchesCategory = categoryValue === 'all' || categoryText.includes(categoryValue);
+                    const matchesSearch = searchValue === '' || 
+                                        title.includes(searchValue) || 
+                                        excerpt.includes(searchValue);
+                    
+                    if (matchesCategory && matchesSearch) {
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 50);
+                    } else {
+                        card.style.opacity = '0';
+                        setTimeout(() => card.style.display = 'none', 300);
+                    }
+                });
+            }
+            
+            if (blogCategoryFilter) blogCategoryFilter.addEventListener('change', filterBlogPosts);
+            if (blogSearchInput) blogSearchInput.addEventListener('input', filterBlogPosts);
+            
+            // Animated counter for stats
+            function animateCounter(element, target, duration = 2000) {
+                let start = 0;
+                const increment = target / (duration / 16);
+                const timer = setInterval(() => {
+                    start += increment;
+                    if (start >= target) {
+                        element.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.floor(start).toLocaleString();
+                    }
+                }, 16);
+            }
+            
+            // Initialize counters when in viewport
+            function initCounters() {
+                const statsSections = document.querySelectorAll('.webinar-stats, .blog-stats');
+                
+                statsSections.forEach(section => {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const statNumbers = entry.target.querySelectorAll('.stat-number[data-count]');
+                                statNumbers.forEach(stat => {
+                                    const target = parseInt(stat.getAttribute('data-count'));
+                                    animateCounter(stat, target);
+                                });
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    });
+                    
+                    observer.observe(section);
+                });
+            }
+            
+            initCounters();
+            
+            // Enhanced scroll animations for cards
+            const cardObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
+                        entry.target.classList.add('animate');
+                        cardObserver.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.1 });
-
-            document.querySelectorAll('.feature-card, .webinar-card, .blog-card').forEach(el => observer.observe(el));
-
-            // Lazy loading for images
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src;
-                            img.classList.add('lazy-loaded');
-                            imageObserver.unobserve(img);
-                        }
-                    });
-                });
-
-                document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
-            }
+            
+            document.querySelectorAll('.webinar-card, .blog-card, .feature-card').forEach(card => {
+                cardObserver.observe(card);
+            });
         });
+        
+        // Add to calendar functionality
+        window.addToCalendar = function(webinarId) {
+            // In a real implementation, this would generate calendar files
+            alert('Calendar event added! You will receive a reminder before the webinar.');
+            
+            // Example of actual implementation would be:
+            // const event = {
+            //     title: 'Webinar: AI Revolution',
+            //     start: '2024-06-28T14:00:00',
+            //     end: '2024-06-28T15:30:00',
+            //     description: 'Join us for an insightful webinar...',
+            //     location: 'Online'
+            // };
+            // generateCalendarEvent(event);
+        };
     </script>
 </body>
 </html>

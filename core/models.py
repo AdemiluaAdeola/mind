@@ -36,18 +36,19 @@ class Blog(TimestampModel):
     ]
 
     # Updated to CloudinaryField with optimizations
-    cover = CloudinaryField(
-        'image',
-        folder='blog/covers/',
-        transformation={
-            'quality': 'auto:good',
-            'width': 1200,
-            'height': 675,
-            'crop': 'fill'
-        },
-        format='webp',
-        help_text="Recommended size: 1200x675 pixels"
-    )
+    # cover = CloudinaryField(
+    #     'image',
+    #     folder='blog/covers/',
+    #     transformation={
+    #         'quality': 'auto:good',
+    #         'width': 1200,
+    #         'height': 675,
+    #         'crop': 'fill'
+    #     },
+    #     format='webp',
+    #     help_text="Recommended size: 1200x675 pixels"
+    # )
+    cover = models.URLField()
     title = models.CharField(max_length=100000)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
@@ -103,15 +104,6 @@ class Comment(TimestampModel):
     name = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     body = models.TextField()
-    
-    # Add Cloudinary field for comment attachments
-    attachment = CloudinaryField(
-        'raw',
-        folder='blog/comments/attachments/',
-        blank=True,
-        null=True,
-        help_text="Optional file attachment for the comment"
-    )
 
     class Meta:
         ordering = ['-created_at']
@@ -124,23 +116,7 @@ class Comment(TimestampModel):
 class Speaker(TimestampModel):
     name = models.CharField(max_length=100)
     bio = models.TextField(help_text="Brief biography of the speaker")
-    
-    # Updated to CloudinaryField
-    photo = CloudinaryField(
-        'image',
-        folder='speakers/photos/',
-        transformation={
-            'quality': 'auto:good',
-            'width': 400,
-            'height': 400,
-            'crop': 'fill',
-            'gravity': 'face'
-        },
-        format='webp',
-        blank=True,
-        null=True,
-        help_text="Speaker profile photo - Recommended: 400x400 pixels"
-    )
+    photo = models.URLField()
     website = models.URLField(blank=True)
     twitter = models.CharField(max_length=100, blank=True)
     linkedin = models.URLField(blank=True)
@@ -172,20 +148,7 @@ class Webinar(TimestampModel):
 
     title = models.CharField(max_length=200)
     description = models.TextField()
-    
-    # Updated to CloudinaryField
-    featured_image = CloudinaryField(
-        'image',
-        folder='webinars/featured/',
-        transformation={
-            'quality': 'auto:good',
-            'width': 1200,
-            'height': 675,
-            'crop': 'fill'
-        },
-        format='webp',
-        help_text="Recommended size: 1200x675 pixels"
-    )
+    featured_image = models.URLField(blank=True)
     start_datetime = models.DateTimeField()
     duration = models.PositiveIntegerField(
         help_text="Duration in minutes",

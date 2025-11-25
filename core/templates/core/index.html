@@ -1477,10 +1477,10 @@
                 </a>
                 <ul class="nav-links">
                     <li><a href="/" class="active">Home</a></li>
-                    <li><a href="#webinars">Webinars</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="/webinar/">Webinars</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/about/">About</a></li>
+                    <li><a href="/profile/">Dashboard</a></li>
                 </ul>
                 <button class="mobile-menu" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
@@ -1500,341 +1500,6 @@
                 </a>
                 <a href="/blog/" class="btn btn-secondary">
                     Read Our Blog <i class="fas fa-book-open"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Fixed Webinars Section - Text Below Image -->
-    <section id="webinars" class="webinars">
-        <div class="container">
-            <div class="section-header">
-                <h2>Upcoming <span>Webinars</span></h2>
-                <p>Join our live interactive sessions with Africa's leading innovators and thought leaders</p>
-            </div>
-            
-            <!-- Webinar Filters -->
-            <div class="webinar-filters">
-                <div class="filter-controls">
-                    <div class="filter-group">
-                        <label for="category-filter">Category:</label>
-                        <select id="category-filter">
-                            <option value="all">All Categories</option>
-                            <option value="technology">Technology</option>
-                            <option value="business">Business</option>
-                            <option value="leadership">Leadership</option>
-                            <option value="culture">Culture</option>
-                            <option value="marketing">Marketing</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="date-filter">Date:</label>
-                        <select id="date-filter">
-                            <option value="all">All Dates</option>
-                            <option value="upcoming">Upcoming</option>
-                            <option value="this-week">This Week</option>
-                            <option value="this-month">This Month</option>
-                        </select>
-                    </div>
-                    <div class="search-box">
-                        <input type="text" placeholder="Search webinars..." id="webinar-search">
-                        <button type="button"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="webinar-grid">
-                <!-- Featured Webinar - FIXED: Text below image -->
-                <div class="webinar-card featured">
-                    <div class="webinar-badge">Featured</div>
-                    <div class="webinar-card-img">
-                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="AI in African Business" loading="lazy" width="600" height="338">
-                        <div class="webinar-date">
-                            <i class="far fa-calendar-alt"></i> June 28, 2024
-                        </div>
-                    </div>
-                    <div class="webinar-card-content">
-                        <span class="webinar-category technology">Technology</span>
-                        <div class="webinar-card-meta">
-                            <span><i class="far fa-clock"></i> 2:00 PM GMT</span>
-                            <span><i class="fas fa-users"></i> 250+ Registered</span>
-                            <span><i class="fas fa-star"></i> 4.9/5 Rating</span>
-                        </div>
-                        <h3>AI Revolution: Transforming African Businesses</h3>
-                        <p>Discover how artificial intelligence is reshaping industries across Africa and learn practical strategies for implementation in your organization.</p>
-                        
-                        <div class="webinar-speaker">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Dr. Kwame Mensah">
-                            <div>
-                                <h4>Dr. Kwame Mensah</h4>
-                                <p>AI Research Director, TechInnovate Africa</p>
-                            </div>
-                        </div>
-                        
-                        <div class="webinar-features">
-                            <span><i class="fas fa-certificate"></i> Certificate Included</span>
-                            <span><i class="fas fa-download"></i> Resources</span>
-                            <span><i class="fas fa-reply"></i> Q&A Session</span>
-                        </div>
-                        
-                        <div class="webinar-actions">
-                            <a href="webinar_reg.html" class="btn btn-primary">
-                                <i class="fas fa-ticket-alt"></i> Register Now
-                            </a>
-                            <button class="btn btn-outline" onclick="addToCalendar('webinar1')">
-                                <i class="far fa-calendar-plus"></i> Add to Calendar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Webinar 2 -->
-                <div class="webinar-card">
-                    <div class="webinar-card-img">
-                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Sustainable Business Practices" loading="lazy" width="600" height="338">
-                        <div class="webinar-date">
-                            <i class="far fa-calendar-alt"></i> July 5, 2024
-                        </div>
-                    </div>
-                    <div class="webinar-card-content">
-                        <span class="webinar-category business">Business</span>
-                        <div class="webinar-card-meta">
-                            <span><i class="far fa-clock"></i> 3:00 PM GMT</span>
-                            <span><i class="fas fa-users"></i> 180+ Registered</span>
-                        </div>
-                        <h3>Sustainable Business Models for African Markets</h3>
-                        <p>Learn how to build businesses that thrive while positively impacting communities and the environment across African markets.</p>
-                        
-                        <div class="webinar-speaker">
-                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=761&q=80" alt="Amina Jalloh">
-                            <div>
-                                <h4>Amina Jalloh</h4>
-                                <p>Sustainability Consultant, GreenGrowth Africa</p>
-                            </div>
-                        </div>
-                        
-                        <a href="webinar_reg.html" class="btn btn-primary">
-                            Register Now <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Webinar 3 -->
-                <div class="webinar-card">
-                    <div class="webinar-card-img">
-                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80" alt="Digital Marketing Strategies" loading="lazy" width="600" height="338">
-                        <div class="webinar-date">
-                            <i class="far fa-calendar-alt"></i> July 12, 2024
-                        </div>
-                    </div>
-                    <div class="webinar-card-content">
-                        <span class="webinar-category marketing">Marketing</span>
-                        <div class="webinar-card-meta">
-                            <span><i class="far fa-clock"></i> 1:00 PM GMT</span>
-                            <span><i class="fas fa-users"></i> 320+ Registered</span>
-                        </div>
-                        <h3>Digital Marketing Strategies for African Audiences</h3>
-                        <p>Master digital marketing techniques tailored specifically for African consumers and markets.</p>
-                        
-                        <div class="webinar-speaker">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Tunde Adebayo">
-                            <div>
-                                <h4>Tunde Adebayo</h4>
-                                <p>Digital Marketing Expert, BrandFlow Africa</p>
-                            </div>
-                        </div>
-                        
-                        <a href="webinar_reg.html" class="btn btn-primary">
-                            Register Now <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Webinar Stats -->
-            <div class="webinar-stats">
-                <div class="stat-item">
-                    <div class="stat-number" data-count="156">0</div>
-                    <div class="stat-label">Webinars Hosted</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="25400">0</div>
-                    <div class="stat-label">Participants</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="48">0</div>
-                    <div class="stat-label">Expert Speakers</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="96">0</div>
-                    <div class="stat-label">% Satisfaction</div>
-                </div>
-            </div>
-
-            <div class="view-all">
-                <a href="/webinar.html" class="btn btn-secondary">
-                    View All Webinars <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Blog Section -->
-    <section id="blog" class="blog">
-        <div class="container">
-            <div class="section-header">
-                <h2>Latest <span>Articles</span></h2>
-                <p>Insightful content on innovation, technology, business, and African development</p>
-            </div>
-            
-            <!-- Blog Filters -->
-            <div class="blog-filters">
-                <div class="filter-controls">
-                    <div class="filter-group">
-                        <label for="blog-category-filter">Category:</label>
-                        <select id="blog-category-filter">
-                            <option value="all">All Categories</option>
-                            <option value="mindset">Mindset</option>
-                            <option value="business">Business</option>
-                            <option value="technology">Technology</option>
-                            <option value="wellness">Wellness</option>
-                            <option value="culture">Culture</option>
-                            <option value="innovation">Innovation</option>
-                        </select>
-                    </div>
-                    <div class="search-box">
-                        <input type="text" placeholder="Search articles..." id="blog-search">
-                        <button type="button"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="blog-grid">
-                <!-- Featured Blog Post -->
-                <div class="blog-card featured">
-                    <div class="blog-badge">Featured</div>
-                    <div class="blog-card-img">
-                        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="African Innovation Ecosystem" loading="lazy" width="600" height="400">
-                    </div>
-                    <div class="blog-card-content">
-                        <span class="blog-category innovation">Innovation</span>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> June 15, 2024</span>
-                            <span><i class="far fa-clock"></i> 8 min read</span>
-                            <span><i class="far fa-eye"></i> 2.4K views</span>
-                        </div>
-                        <h3><a href="article.html">Building a Thriving Innovation Ecosystem in Africa</a></h3>
-                        <p class="blog-excerpt">Explore the key elements needed to foster sustainable innovation across the African continent, from education to infrastructure and investment.</p>
-                        
-                        <div class="blog-author">
-                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="David Okafor">
-                            <div>
-                                <h4>David Okafor</h4>
-                                <p>Innovation Strategist</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Blog Post 2 -->
-                <div class="blog-card">
-                    <div class="blog-card-img">
-                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Tech Startups Africa" loading="lazy" width="600" height="400">
-                    </div>
-                    <div class="blog-card-content">
-                        <span class="blog-category technology">Technology</span>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> June 10, 2024</span>
-                            <span><i class="far fa-clock"></i> 6 min read</span>
-                            <span><i class="far fa-eye"></i> 1.8K views</span>
-                        </div>
-                        <h3><a href="article.html">The Rise of African Tech Startups: Opportunities and Challenges</a></h3>
-                        <p class="blog-excerpt">An in-depth look at the rapidly growing tech startup scene across Africa and what it takes to succeed in this dynamic landscape.</p>
-                        
-                        <div class="blog-author">
-                            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Amina Mohammed">
-                            <div>
-                                <h4>Amina Mohammed</h4>
-                                <p>Tech Entrepreneur</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Blog Post 3 -->
-                <div class="blog-card">
-                    <div class="blog-card-img">
-                        <img src="https://images.unsplash.com/photo-1551836026-d5c88ac5c842?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Leadership Development" loading="lazy" width="600" height="400">
-                    </div>
-                    <div class="blog-card-content">
-                        <span class="blog-category mindset">Mindset</span>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> June 5, 2024</span>
-                            <span><i class="far fa-clock"></i> 10 min read</span>
-                            <span><i class="far fa-eye"></i> 3.2K views</span>
-                        </div>
-                        <h3><a href="article.html">Cultivating Authentic Leadership in African Organizations</a></h3>
-                        <p class="blog-excerpt">Discover how traditional African leadership values can be integrated with modern management practices for more effective organizations.</p>
-                        
-                        <div class="blog-author">
-                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=761&q=80" alt="Dr. Wanjiru Kariuki">
-                            <div>
-                                <h4>Dr. Wanjiru Kariuki</h4>
-                                <p>Leadership Consultant</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Blog Post 4 -->
-                <div class="blog-card">
-                    <div class="blog-card-img">
-                        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Sustainable Business" loading="lazy" width="600" height="400">
-                    </div>
-                    <div class="blog-card-content">
-                        <span class="blog-category business">Business</span>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> May 28, 2024</span>
-                            <span><i class="far fa-clock"></i> 7 min read</span>
-                            <span><i class="far fa-eye"></i> 2.1K views</span>
-                        </div>
-                        <h3><a href="article.html">Sustainable Business Practices: The African Advantage</a></h3>
-                        <p class="blog-excerpt">How African businesses can leverage traditional knowledge and modern innovation to create sustainable competitive advantages.</p>
-                        
-                        <div class="blog-author">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Tunde Adebayo">
-                            <div>
-                                <h4>Tunde Adebayo</h4>
-                                <p>Sustainability Expert</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Blog Stats -->
-            <div class="webinar-stats">
-                <div class="stat-item">
-                    <div class="stat-number" data-count="245">0</div>
-                    <div class="stat-label">Articles Published</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="18500">0</div>
-                    <div class="stat-label">Monthly Readers</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="32">0</div>
-                    <div class="stat-label">Expert Writers</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-count="94">0</div>
-                    <div class="stat-label">% Reader Satisfaction</div>
-                </div>
-            </div>
-
-            <div class="view-all">
-                <a href="/blog.html" class="btn btn-secondary">
-                    View All Articles <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -1876,6 +1541,148 @@
                     <p>Connect with like-minded professionals, entrepreneurs, and thought leaders across the continent.</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Fixed Webinars Section - Text Below Image -->
+    <section id="webinars" class="webinars">
+        <div class="container">
+            <div class="section-header">
+                <h2>Upcoming <span>Webinars</span></h2>
+                <p>Join our live interactive sessions with Africa's leading innovators and thought leaders</p>
+            </div>
+            
+            <!-- Webinar Filters -->
+            <div class="webinar-filters">
+                <div class="filter-controls">
+                    
+                    <div class="filter-group">
+                        <label for="date-filter">Date:</label>
+                        <select id="date-filter">
+                            <option value="all">All Dates</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="this-week">This Week</option>
+                            <option value="this-month">This Month</option>
+                        </select>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search webinars..." id="webinar-search">
+                        <button type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="webinar-grid">
+                {% for webinar in webinars %}
+                <div class="webinar-card">
+                    <div class="webinar-card-img">
+                        {% if webinar.featured_image %}
+                            <img src="{{ webinar.featured_image.url }}" alt="{{ webinar.title }}" loading="lazy" width="600" height="338">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="{{ webinar.title }}" loading="lazy" width="600" height="338">
+                        {% endif %}
+                        <div class="webinar-date">
+                            <i class="far fa-calendar-alt"></i> {{ webinar.start_datetime|date:"M d, Y" }}
+                        </div>
+                    </div>
+                    <div class="webinar-card-content">
+                        <div class="webinar-card-meta">
+                            <span><i class="far fa-clock"></i> {{ webinar.start_datetime|time }}</span>
+                            <span><i class="fas fa-users"></i> {{ webinar.registrations.count }}+ Registered</span>
+                        </div>
+                        <h3>{{ webinar.title }}</h3>
+                        <p>{{ webinar.description|truncatewords:20 }}</p>
+                        <a href="{% url 'webinar_register' webinar.id %}" class="btn btn-primary">
+                            Register Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="blog">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest <span>Articles</span></h2>
+                <p>Insightful content on innovation, technology, business, and African development</p>
+            </div>
+            
+            <!-- Blog Filters -->
+            <div class="blog-filters">
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label for="blog-category-filter">Category:</label>
+                        <select id="blog-category-filter">
+                            <option value="all">All Categories</option>
+                            <option value="mindset">Mindset</option>
+                            <option value="business">Business</option>
+                            <option value="technology">Technology</option>
+                            <option value="wellness">Wellness</option>
+                            <option value="culture">Culture</option>
+                            <option value="innovation">Innovation</option>
+                        </select>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search articles..." id="blog-search">
+                        <button type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="blog-grid">
+                {% for blog in posts %}
+                <article class="blog-card">
+                    <div class="blog-card-img">
+                        {% if blog.featured_image %}
+                        <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" loading="lazy">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="{{ blog.title }}" loading="lazy">
+                        {% endif %}
+                        <div class="blog-date">
+                            <i class="far fa-calendar-alt"></i> {{ blog.created_at|date:"M d, Y" }}
+                        </div>
+                    </div>
+                    <div class="blog-card-content">
+                        <div class="blog-card-meta">
+                            <span><i class="far fa-clock"></i> {{ blog.read_time }} min read</span>
+                            <span><i class="fas fa-tag"></i> {{ blog.category|default:"General" }}</span>
+                        </div>
+                        <h3>{{ blog.title }}</h3>
+                        <p>{{ blog.excerpt|truncatewords:20 }}</p>
+                        
+                        <div class="blog-author">
+                            {% if blog.author.profile.image %}
+                            <img src="{{ blog.author.image.url }}" alt="{{ blog.author.first_name }}">
+                            {% else %}
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="{{ blog.author.get_full_name }}">
+                            {% endif %}
+                            <div>
+                                <h4>{{ blog.author.username }}</h4>
+                                <p>Author</p>
+                            </div>
+                        </div>
+                        
+                        <a href="{% url 'blogpost' blog.id %}" class="btn btn-primary">
+                            Read Article <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            <div class="blog-empty">
+                    <a href="{% url 'blog_list' %}" class="btn btn-primary">Explore Blog</a>
+                </div>
+            
+            {% if posts %}
+            <div class="section-cta">
+                <a href="{% url 'blog_list' %}" class="btn btn-secondary">
+                    Read All Articles <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            {% endif %}
         </div>
     </section>
 
@@ -1977,7 +1784,7 @@
                     <ul>
                         <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.com</li>
                         <li><i class="fas fa-phone"></i> +254 700 123456</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Abuja, Nigeria</li>
                     </ul>
                 </div>
             </div>

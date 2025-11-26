@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in - MindCraft Thinkspace</title>
+    <meta name="description" content="Login to your MindCraft ThinkSpace account to access webinars, articles, and community features">
+    <title>MindCraft ThinkSpace - User Login</title>
+    
+    <!-- Preload resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" as="style">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
         /* ===== CSS Variables ===== */
         :root {
@@ -31,12 +45,12 @@
             --african-blue: #1a3a8f;
             --african-brown: #5d3a1a;
             
-            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
-            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --radius: 12px;
-            --radius-sm: 6px;
+            --radius: 16px;
+            --radius-sm: 8px;
         }
 
         /* ===== Base Styles ===== */
@@ -130,13 +144,13 @@
         }
 
         .btn-primary {
-            background: var(--secondary);
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
             color: var(--white);
             box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
         }
 
         .btn-primary:hover {
-            background: var(--secondary-dark);
+            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary));
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
         }
@@ -152,13 +166,26 @@
             border-color: var(--white);
         }
 
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
         /* ===== Header ===== */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             box-shadow: var(--shadow-sm);
             z-index: 1000;
             transition: var(--transition);
@@ -178,20 +205,21 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             text-decoration: none;
         }
 
         .logo-img {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: var(--white);
             display: grid;
             place-items: center;
-            border-radius: 50%;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(13, 46, 20, 0.2);
         }
 
         .logo-text h1 {
@@ -209,7 +237,7 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             list-style: none;
             margin: 0;
             padding: 0;
@@ -221,16 +249,17 @@
             font-weight: 500;
             transition: var(--transition);
             position: relative;
+            padding: 0.5rem 0;
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: 0;
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--secondary);
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
             transition: var(--transition);
         }
 
@@ -255,25 +284,132 @@
             font-size: 1.5rem;
         }
 
-        /* ===== Registration Section ===== */
-        .register-section {
-            padding: 3rem 0;
-            background-color: var(--lighter);
-            min-height: calc(100vh - 90px);
-        }
-        
-        .register-container {
-            width: min(92%, 800px);
-            margin: 0 auto;
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            padding: 2.5rem;
+        /* ===== Hero Section ===== */
+        .hero {
+            background: linear-gradient(135deg, rgba(26, 58, 31, 0.9), rgba(26, 58, 31, 0.8)), 
+                        url('https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80') no-repeat center/cover;
+            min-height: 40vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
             position: relative;
             overflow: hidden;
         }
-        
-        .register-container::before {
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, var(--lighter), transparent);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            width: 100%;
+        }
+
+        .hero h1 {
+            color: var(--white);
+            animation: fadeInUp 0.8s ease;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-breadcrumbs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .hero-breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        .hero-breadcrumbs a:hover {
+            color: var(--white);
+        }
+
+        .hero-breadcrumbs i {
+            font-size: 0.8rem;
+        }
+
+        /* ===== Section Header ===== */
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-header h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 2px;
+        }
+
+        .section-header p {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-header span {
+            color: var(--secondary);
+        }
+
+        /* ===== Login Section ===== */
+        .login-section {
+            background-color: var(--white);
+            padding: 4rem 0;
+        }
+
+        .login-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .login-form-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-form-container::before {
             content: '';
             position: absolute;
             top: 0;
@@ -282,186 +418,357 @@
             height: 5px;
             background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
         }
-        
-        .register-header {
+
+        .form-header {
+            margin-bottom: 2rem;
             text-align: center;
-            margin-bottom: 2.5rem;
         }
-        
-        .register-header h1 {
+
+        .form-header h2 {
             color: var(--primary);
             margin-bottom: 0.5rem;
         }
-        
-        .register-header p {
+
+        .form-header p {
             color: var(--text-light);
         }
-        
-        .register-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--primary);
-            color: var(--white);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-size: 2rem;
-            margin: 0 auto 1.5rem;
-            transition: var(--transition);
-        }
-        
-        .register-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
             gap: 1.5rem;
         }
-        
-        @media (max-width: 768px) {
-            .register-form {
-                grid-template-columns: 1fr;
-            }
-        }
-        
+
         .form-group {
-            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
-        
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-        
+
         .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark);
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .form-group label i {
             color: var(--secondary);
             width: 20px;
         }
-        
-        .form-control {
-            width: 100%;
+
+        .form-group input {
             padding: 0.85rem 1rem;
-            border: 1px solid var(--gray);
             border-radius: var(--radius-sm);
+            border: 1px solid var(--gray);
             font-family: 'Poppins', sans-serif;
             font-size: 1rem;
             transition: var(--transition);
+            background: var(--white);
         }
-        
-        .form-control:focus {
+
+        .form-group input:focus {
             outline: none;
             border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+            box-shadow: 0 0 0 3px rgba(212, 106, 26, 0.1);
         }
-        
-        select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23636e72' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
+
+        .password-input {
+            position: relative;
         }
-        
-        .form-help {
-            font-size: 0.85rem;
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
             color: var(--text-light);
-            margin-top: 0.25rem;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        
-        .form-check {
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            margin-bottom: 0.7rem;
-        }
-        
-        .form-check-input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--secondary);
-        }
-        
-        .form-check-label {
-            color: var(--text);
-            font-size: 0.9rem;
-        }
-        
-        .form-check-label a {
+
+        .password-toggle:hover {
             color: var(--secondary);
-            font-weight: 600;
         }
-        
-        .form-check-label a:hover {
-            text-decoration: underline;
-        }
-        
-        .form-actions {
-            grid-column: 1 / -1;
+
+        .form-options {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--gray);
+            margin: 1rem 0;
         }
-        
-        .btn-outline {
-            background: transparent;
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remember-me input {
+            margin: 0;
+        }
+
+        .remember-me label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .forgot-password {
+            font-size: 0.9rem;
             color: var(--secondary);
-            border: 2px solid var(--secondary);
+            text-decoration: none;
         }
-        
-        .btn-outline:hover {
-            background: var(--secondary);
-            color: var(--white);
+
+        .forgot-password:hover {
+            text-decoration: underline;
         }
-        
-        .login-redirect {
+
+        .form-submit {
+            margin-top: 1rem;
+        }
+
+        .form-submit .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .form-divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--text-light);
+        }
+
+        .form-divider::before,
+        .form-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--light);
+        }
+
+        .form-divider span {
+            padding: 0 1rem;
+            font-size: 0.9rem;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray);
+            background: var(--white);
+            color: var(--text);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .social-btn:hover {
+            background: var(--lighter);
+            transform: translateY(-2px);
+        }
+
+        .social-btn.google {
+            color: #DB4437;
+        }
+
+        .social-btn.linkedin {
+            color: #0077B5;
+        }
+
+        .register-link {
             text-align: center;
             margin-top: 2rem;
             color: var(--text-light);
+            font-size: 0.95rem;
         }
-        
-        .login-redirect a {
+
+        .register-link a {
             color: var(--secondary);
             font-weight: 600;
         }
-        
-        .login-redirect a:hover {
+
+        .register-link a:hover {
             text-decoration: underline;
         }
-        
-        /* Form Validation Styles */
-        .is-valid .form-control {
-            border-color: #27ae60;
+
+        .login-benefits {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: var(--radius);
+            padding: 3rem;
+            color: var(--white);
+            height: fit-content;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .is-invalid .form-control {
+
+        .login-benefits::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+
+        .benefits-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .benefits-header h2 {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .benefits-header p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .benefits-list li.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .benefits-list i {
+            background: var(--accent);
+            color: var(--dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .benefits-list li:hover i {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .benefits-list h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        .benefits-list p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .testimonial-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+
+        .testimonial-author h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            color: var(--white);
+        }
+
+        .testimonial-author p {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 0;
+        }
+
+        /* Form Validation Styles */
+        .form-group.error input {
             border-color: #e74c3c;
         }
-        
-        .valid-feedback,
-        .invalid-feedback {
-            display: block;
-            margin-top: 0.4rem;
-            font-size: 0.85rem;
-        }
-        
-        .valid-feedback {
-            color: #27ae60;
-        }
-        
-        .invalid-feedback {
+
+        .error-message {
             color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
         }
-        
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .success-message {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid #27ae60;
+            color: #27ae60;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
         /* Messages Styling */
         .messages-container {
             margin: 1.5rem 0;
@@ -504,7 +811,20 @@
         .alert i {
             font-size: 1.5rem;
         }
-        
+
+        /* Django Form Styling */
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0;
+            color: #e74c3c;
+            font-size: 0.85rem;
+        }
+
+        .errorlist li {
+            margin-bottom: 0.25rem;
+        }
+
         /* ===== Footer ===== */
         footer {
             background: var(--darker);
@@ -582,13 +902,13 @@
             color: var(--secondary);
         }
 
-        .footer-social {
+        .social-icons {
             display: flex;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
-        .footer-social a {
+        .social-icons a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -601,7 +921,7 @@
             transition: var(--transition);
         }
 
-        .footer-social a:hover {
+        .social-icons a:hover {
             background: var(--secondary);
             transform: translateY(-3px);
         }
@@ -631,7 +951,39 @@
             color: var(--secondary);
         }
 
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         /* ===== Responsive Design ===== */
+        @media (max-width: 992px) {
+            .login-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .login-benefits {
+                order: -1;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding-top: 80px;
@@ -648,6 +1000,7 @@
                 align-items: flex-start;
                 padding: 5rem 2rem;
                 transition: right 0.3s ease;
+                box-shadow: var(--shadow-lg);
             }
 
             .nav-links.active {
@@ -672,18 +1025,27 @@
             .mobile-menu {
                 display: block;
             }
-            
-            .register-container {
-                padding: 1.5rem;
+
+            .hero {
+                min-height: 35vh;
             }
-            
-            .form-actions {
+
+            .login-form-container {
+                padding: 2rem;
+            }
+
+            .login-benefits {
+                padding: 2rem;
+            }
+
+            .form-options {
                 flex-direction: column;
+                align-items: flex-start;
                 gap: 1rem;
             }
-            
-            .form-actions .btn {
-                width: 100%;
+
+            .social-login {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -691,7 +1053,27 @@
             section {
                 padding: 3.5rem 0;
             }
-            
+
+            .hero {
+                min-height: 30vh;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .login-section {
+                padding: 2.5rem 0;
+            }
+
+            .login-form-container {
+                padding: 1.5rem;
+            }
+
+            .login-benefits {
+                padding: 1.5rem;
+            }
+
             .footer-content {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -703,7 +1085,7 @@
                 transform: translateX(-50%);
             }
 
-            .footer-social {
+            .social-icons {
                 justify-content: center;
             }
 
@@ -712,121 +1094,286 @@
                 gap: 0.5rem;
             }
         }
-        
-        /* Animation for form elements */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .form-group {
-            animation: fadeIn 0.5s ease forwards;
-        }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
+    <!-- Header/Navigation -->
+    <header id="header">
         <div class="container">
             <nav>
                 <a href="/" class="logo">
                     <div class="logo-img">M</div>
                     <div class="logo-text">
-                        <h1>MindCraft Africa</h1>
-                        <p>Innovation & Leadership</p>
+                        <h1>MindCraft ThinkSpace</h1>
+                        <p>...it all begins in the mind</p>
                     </div>
                 </a>
                 <ul class="nav-links">
                     <li><a href="/">Home</a></li>
-                    <li><a href="/webinars/">Webinars</a></li>
-                    <li><a href="/blog/">Blog</a></li>
-                    <li><a href="/about/">About</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="/dashboard">Dashboard</a></li>
-                        <li><a href="/logout">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}" class="active">Login</a></li>
-                        <li><a href="{% url 'register' %}">Register</a></li>
-                    {% endif %}
+                    <li><a href="/webinar.html">Webinars</a></li>
+                    <li><a href="/blog.html">Blog</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/login.html" class="active">Login</a></li>
                 </ul>
-                <button class="mobile-menu">
+                <button class="mobile-menu" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
                 </button>
             </nav>
         </div>
     </header>
 
-    <!-- Registration Section -->
-    <section class="register-section">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome Back</h1>
+            <p>Sign in to your MindCraft ThinkSpace account to continue your journey</p>
+            <div class="hero-breadcrumbs">
+                <a href="/">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Login</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section class="login-section">
         <div class="container">
-            <div class="register-container">
-                <div class="register-header">
-                    <div class="register-icon">
-                        <i class="fas fa-user-plus"></i>
+            <div class="section-header">
+                <h2>Sign In to Your <span>Account</span></h2>
+                <p>Access your personalized dashboard and community features</p>
+            </div>
+            
+            <div class="login-container">
+                <!-- Login Form -->
+                <div class="login-form-container">
+                    <!-- Django Messages Display -->
+                    {% if messages %}
+                    <div class="messages-container">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                            <div>{{ message }}</div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    <h1>Log Into Your Account</h1>
-                    <p>Join the MindCraft Africa community to access exclusive content and resources</p>
-                </div>
-                
-                <!-- Messages -->
-                {% if messages %}
-                <div class="messages-container">
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
-                        <div>{{ message }}</div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
-                <form method="POST">
-                    {% csrf_token %}
-                    
-                    <div class="register-form">
+                    {% endif %}
+
+                    <form class="login-form" id="loginForm" method="post">
+                        {% csrf_token %}
+
                         <div class="form-group">
                             <label for="id_username"><i class="fas fa-at"></i> Username</label>
-                            <input type="text" id="id_username" name="username" class="form-control" placeholder="Choose a username" required>
+                            <input type="text" id="id_username" name="username" placeholder="Enter your email address" required>
                         </div>
-                        
+
                         <div class="form-group">
-                            <label for="id_password1"><i class="fas fa-lock"></i> Password</label>
-                            <input type="password" id="id_password" name="password" class="form-control" placeholder="Create a strong password" required>
+                            <label for="id_password"><i class="fas fa-lock"></i> Password</label>
+                            <div class="password-input">
+                                <input type="password" id="id_password" name="password" placeholder="Enter your password" required>
+                                <button type="button" class="password-toggle" id="passwordToggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-submit">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Sign In
+                            </button>
+                        </div>
+
+                        <div class="register-link">
+                            Don't have an account? <a href="{% url 'register' %}">Create one here</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Login Benefits -->
+                <div class="login-benefits">
+                    <div class="benefits-header">
+                        <h2>Your Member Benefits</h2>
+                        <p>Access exclusive features as a MindCraft ThinkSpace member</p>
+                    </div>
+
+                    <ul class="benefits-list">
+                        <li>
+                            <i class="fas fa-tachometer-alt"></i>
+                            <div>
+                                <h3>Personalized Dashboard</h3>
+                                <p>Track your progress, saved content, and upcoming events in one place</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-bookmark"></i>
+                            <div>
+                                <h3>Saved Content</h3>
+                                <p>Quickly access your bookmarked articles, webinars, and resources</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-certificate"></i>
+                                <div>
+                                <h3>Learning Progress</h3>
+                                <p>Track your completed webinars and earned certificates</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-comments"></i>
+                            <div>
+                                <h3>Community Access</h3>
+                                <p>Participate in discussions and connect with fellow members</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-bell"></i>
+                            <div>
+                                <h3>Personalized Notifications</h3>
+                                <p>Get updates on topics that match your interests</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            "The personalized dashboard has been a game-changer for my learning journey. I can easily track my progress and quickly access the resources I need most."
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="David Okafor">
+                            <div>
+                                <h4>David Okafor</h4>
+                                <p>Product Manager, Nairobi</p>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="form-actions">
-                        <a href="/" class="btn btn-outline">Cancel</a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-user-plus"></i> Login
-                        </button>
-                    </div>
-                </form>
-                
-                <div class="login-redirect">
-                    <p>Don't have an account yet? <a href="{% url 'register' %}">Sign up here</a></p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><span>MindCraft</span> ThinkSpace</h2>
+                    <p>...it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/webinar.html">Webinars</a></li>
+                        <li><a href="/blog.html">Blog</a></li>
+                        <li><a href="/about.html">About</a></li>
+                        <li><a href="/login.html" class="active">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Mindset Tools</a></li>
+                        <li><a href="#">Innovation Kits</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.com</li>
+                        <li><i class="fas fa-phone"></i> +254 700 123456</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya (HQ)</li>
+                        <li><i class="fas fa-globe"></i> Global Presence</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2024</span> MindCraft ThinkSpace. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="/privacy/">Privacy Policy</a>
+                    <a href="/terms/">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
     <script>
-        // Mobile menu toggle
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
-        
-        mobileMenu.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                this.setAttribute('aria-expanded', navLinks.classList.contains('active'));
+            });
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+            
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Password toggle functionality
+            const passwordToggle = document.getElementById('passwordToggle');
+            const passwordInput = document.getElementById('id_password');
+            
+            passwordToggle.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+            
+            // Animate benefits list items on scroll
+            const animateOnScroll = () => {
+                const benefitItems = document.querySelectorAll('.benefits-list li');
+                const testimonialCard = document.querySelector('.testimonial-card');
+                const windowHeight = window.innerHeight;
+                
+                benefitItems.forEach((item, index) => {
+                    const elementPosition = item.getBoundingClientRect().top;
+                    const animationPoint = windowHeight - 100;
+                    
+                    if (elementPosition < animationPoint) {
+                        setTimeout(() => {
+                            item.classList.add('animate');
+                        }, index * 200); // Stagger the animation
+                    }
+                });
+                
+                // Animate testimonial card
+                if (testimonialCard) {
+                    const testimonialPosition = testimonialCard.getBoundingClientRect().top;
+                    const testimonialAnimationPoint = windowHeight - 100;
+                    
+                    if (testimonialPosition < testimonialAnimationPoint) {
+                        setTimeout(() => {
+                            testimonialCard.classList.add('animate');
+                        }, 1000);
+                    }
+                }
+            };
+            
+            // Run on load and scroll
+            window.addEventListener('load', animateOnScroll);
+            window.addEventListener('scroll', animateOnScroll);
+
+            // Demo credentials for testing
+            console.log('Demo credentials for testing:');
+            console.log('Email: demo@mindcraftthinkspace.com');
+            console.log('Password: demo123');
         });
     </script>
 </body>

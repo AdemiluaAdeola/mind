@@ -6,6 +6,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from .forms import CreateNewPost, UpdatePost, CommentSection, CreateWebinar, WebinarRegistrationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 
@@ -21,12 +22,14 @@ def index(response):
 
     return render(response, 'core/index.html', context)
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class blog(ListView):
     model = Blog
     template_name = 'blog/index.html'
     ordering = ['-created_at']
     paginate_by = 10
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class webinar(ListView):
     model = Webinar
     template_name = 'webinar/index.html'

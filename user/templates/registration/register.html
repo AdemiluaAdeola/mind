@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - MindCraft Thinkspace</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
         /* ===== CSS Variables ===== */
         :root {
@@ -24,12 +25,7 @@
             --white: #fff;
             --black: #000;
             --gray: #bdc3c7;
-            
-            /* African pattern colors */
-            --african-red: #9a1f1a;
-            --african-yellow: #d4a017;
-            --african-blue: #1a3a8f;
-            --african-brown: #5d3a1a;
+            --gray-light: #e9ecef;
             
             --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.1);
             --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -59,8 +55,7 @@
             margin: 0;
             padding-top: 90px;
             overflow-x: hidden;
-            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M20 20l60 60M80 20L20 80" stroke="%23e0e6eb" stroke-width="0.5" stroke-opacity="0.3"/></svg>');
-            background-size: 100px 100px;
+            background-image: linear-gradient(135deg, rgba(13, 46, 20, 0.03) 0%, rgba(212, 106, 26, 0.03) 100%);
         }
 
         img {
@@ -185,7 +180,7 @@
         .logo-img {
             width: 40px;
             height: 40px;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: var(--white);
             display: grid;
             place-items: center;
@@ -260,6 +255,8 @@
             padding: 3rem 0;
             background-color: var(--lighter);
             min-height: calc(100vh - 90px);
+            display: flex;
+            align-items: center;
         }
         
         .register-container {
@@ -267,7 +264,7 @@
             margin: 0 auto;
             background: var(--white);
             border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             padding: 2.5rem;
             position: relative;
             overflow: hidden;
@@ -300,7 +297,7 @@
         .register-icon {
             width: 80px;
             height: 80px;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: var(--white);
             border-radius: 50%;
             display: grid;
@@ -308,6 +305,7 @@
             font-size: 2rem;
             margin: 0 auto 1.5rem;
             transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(13, 46, 20, 0.2);
         }
         
         .register-form {
@@ -324,6 +322,7 @@
         
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
         
         .form-group.full-width {
@@ -348,17 +347,19 @@
         .form-control {
             width: 100%;
             padding: 0.85rem 1rem;
-            border: 1px solid var(--gray);
+            border: 1px solid var(--gray-light);
             border-radius: var(--radius-sm);
             font-family: 'Poppins', sans-serif;
             font-size: 1rem;
             transition: var(--transition);
+            background-color: var(--lighter);
         }
         
         .form-control:focus {
             outline: none;
             border-color: var(--secondary);
             box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+            background-color: var(--white);
         }
         
         select.form-control {
@@ -409,7 +410,7 @@
             align-items: center;
             margin-top: 1.5rem;
             padding-top: 1.5rem;
-            border-top: 1px solid var(--gray);
+            border-top: 1px solid var(--gray-light);
         }
         
         .btn-outline {
@@ -503,6 +504,41 @@
         
         .alert i {
             font-size: 1.5rem;
+        }
+        
+        /* Password strength indicator */
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 4px;
+            border-radius: 2px;
+            background-color: var(--gray-light);
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .strength-weak {
+            background-color: #e74c3c;
+            width: 25%;
+        }
+        
+        .strength-fair {
+            background-color: #f39c12;
+            width: 50%;
+        }
+        
+        .strength-good {
+            background-color: #3498db;
+            width: 75%;
+        }
+        
+        .strength-strong {
+            background-color: #2ecc71;
+            width: 100%;
         }
         
         /* ===== Footer ===== */
@@ -648,6 +684,7 @@
                 align-items: flex-start;
                 padding: 5rem 2rem;
                 transition: right 0.3s ease;
+                box-shadow: var(--shadow-lg);
             }
 
             .nav-links.active {
@@ -780,40 +817,56 @@
                 </div>
                 {% endif %}
                 
-                <form method="POST">
+                <form method="POST" class="register-form">
                     {% csrf_token %}
                     
-                    <div class="register-form">
-                        <div class="form-group">
-                            <label for="id_first_name"><i class="fas fa-user"></i> First Name</label>
-                            <input type="text" id="id_first_name" name="first_name" class="form-control" placeholder="Enter your first name" required>
+                    <div class="form-group">
+                        <label for="id_first_name"><i class="fas fa-user"></i> First Name</label>
+                        <input type="text" id="id_first_name" name="first_name" class="form-control" placeholder="Enter your first name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_last_name"><i class="fas fa-user"></i> Last Name</label>
+                        <input type="text" id="id_last_name" name="last_name" class="form-control" placeholder="Enter your last name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_username"><i class="fas fa-at"></i> Username</label>
+                        <input type="text" id="id_username" name="username" class="form-control" placeholder="Choose a username" required>
+                        <div class="form-help">This will be your public display name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_email"><i class="fas fa-envelope"></i> Email Address</label>
+                        <input type="email" id="id_email" name="email" class="form-control" placeholder="your.email@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_password1"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="id_password1" name="password" class="form-control" placeholder="Create a strong password" required>
+                        <div class="password-strength">
+                            <div class="strength-meter" id="password-strength-meter"></div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="id_last_name"><i class="fas fa-user"></i> Last Name</label>
-                            <input type="text" id="id_last_name" name="last_name" class="form-control" placeholder="Enter your last name" required>
+                        <div class="form-help">Use at least 8 characters with a mix of letters, numbers & symbols</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_password2"><i class="fas fa-lock"></i> Confirm Password</label>
+                        <input type="password" id="id_password2" name="password2" class="form-control" placeholder="Confirm your password" required>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <div class="form-check">
+                            <input type="checkbox" id="id_terms" name="terms" class="form-check-input" required>
+                            <label for="id_terms" class="form-check-label">
+                                I agree to the <a href="/terms/">Terms of Service</a> and <a href="/privacy/">Privacy Policy</a>
+                            </label>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="id_username"><i class="fas fa-at"></i> Username</label>
-                            <input type="text" id="id_username" name="username" class="form-control" placeholder="Choose a username" required>
-                            <div class="form-help">This will be your public display name</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="id_email"><i class="fas fa-envelope"></i> Email Address</label>
-                            <input type="email" id="id_email" name="email" class="form-control" placeholder="your.email@example.com" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="id_password1"><i class="fas fa-lock"></i> Password</label>
-                            <input type="password" id="id_password1" name="password" class="form-control" placeholder="Create a strong password" required>
-                            <div class="form-help">Use at least 8 characters with a mix of letters, numbers & symbols</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="id_password2"><i class="fas fa-lock"></i> Confirm Password</label>
-                            <input type="password" id="id_password2" name="password2" class="form-control" placeholder="Confirm your password" required>
+                        <div class="form-check">
+                            <input type="checkbox" id="id_newsletter" name="newsletter" class="form-check-input">
+                            <label for="id_newsletter" class="form-check-label">
+                                Subscribe to our newsletter for updates and offers
+                            </label>
                         </div>
                     </div>
                     
@@ -831,6 +884,59 @@
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>MindCraft <span>Africa</span></h2>
+                    <p>Empowering African minds through innovation, leadership, and collaborative thinking.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><i class="fas fa-chevron-right"></i><a href="/">Home</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="/webinars/">Webinars</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="/blog/">Blog</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="/about/">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><i class="fas fa-chevron-right"></i><a href="/resources/">Learning Resources</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="/events/">Events</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="/community/">Community</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="/careers/">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><i class="fas fa-chevron-right"></i><a href="/contact/">Contact Us</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="/faq/">FAQ</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="/help/">Help Center</a></li>
+                        <li><i class="fas fa-chevron-right"></i><a href="/feedback/">Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 MindCraft Africa. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="/privacy/">Privacy Policy</a>
+                    <a href="/terms/">Terms of Service</a>
+                    <a href="/cookies/">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Mobile menu toggle
@@ -850,6 +956,44 @@
                 header.classList.remove('scrolled');
             }
         });
+        
+        // Password strength indicator
+        const passwordInput = document.getElementById('id_password1');
+        const strengthMeter = document.getElementById('password-strength-meter');
+        
+        if (passwordInput && strengthMeter) {
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                // Check password length
+                if (password.length >= 8) strength += 1;
+                
+                // Check for lowercase letters
+                if (/[a-z]/.test(password)) strength += 1;
+                
+                // Check for uppercase letters
+                if (/[A-Z]/.test(password)) strength += 1;
+                
+                // Check for numbers
+                if (/[0-9]/.test(password)) strength += 1;
+                
+                // Check for special characters
+                if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+                
+                // Update strength meter
+                strengthMeter.className = 'strength-meter';
+                if (strength <= 1) {
+                    strengthMeter.classList.add('strength-weak');
+                } else if (strength === 2) {
+                    strengthMeter.classList.add('strength-fair');
+                } else if (strength === 3) {
+                    strengthMeter.classList.add('strength-good');
+                } else {
+                    strengthMeter.classList.add('strength-strong');
+                }
+            });
+        }
     </script>
 </body>
 </html>

@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -206,7 +208,6 @@
         .logo-img {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: var(--white);
             display: grid;
             place-items: center;
@@ -988,18 +989,21 @@
         <div class="container">
             <nav>
                 <a href="/" class="logo">
-                    <div class="logo-img">M</div>
+                    <div class="logo-img">
+                        <img src="{% static 'images/mindcraft.png' %}" alt="">
+                    </div>
                     <div class="logo-text">
-                        <h1>MindCraft</h1>
-                        <p>THINKSPACE</p>
+                        <h1>MindCraft ThinkSpace</h1>
+                        <p>...it all begins in the mind</p>
                     </div>
                 </a>
                 <ul class="nav-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/webinar.html">Webinars</a></li>
-                    <li><a href="/blog.html">Blog</a></li>
-                    <li><a href="/about.html">About</a></li>
-                    <li><a href="/login.html">Login</a></li>
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <!-- <li><a href="{% url 'logout' %}">Logout</a></li> -->
                 </ul>
                 <button class="mobile-menu" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
@@ -1081,11 +1085,6 @@
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <div class="password-strength">
-                                <div class="strength-meter" id="password-strength-meter"></div>
-                            </div>
-                            <div class="form-help">Use at least 8 characters with a mix of letters, numbers & symbols</div>
-                            <div class="error-message" id="passwordError">Password must be at least 8 characters with letters and numbers</div>
                         </div>
 
                         <div class="form-group">

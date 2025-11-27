@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile - MindCraft Thinkspace</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
         /* ===== CSS Variables ===== */
         :root {
@@ -32,12 +33,12 @@
             --african-blue: #1a3a8f;
             --african-brown: #5d3a1a;
             
-            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
-            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --radius: 12px;
-            --radius-sm: 6px;
+            --radius: 16px;
+            --radius-sm: 8px;
         }
 
         /* ===== Base Styles ===== */
@@ -131,13 +132,13 @@
         }
 
         .btn-primary {
-            background: var(--secondary);
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
             color: var(--white);
             box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
         }
 
         .btn-primary:hover {
-            background: var(--secondary-dark);
+            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary));
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
         }
@@ -153,13 +154,26 @@
             border-color: var(--white);
         }
 
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
         /* ===== Header ===== */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             box-shadow: var(--shadow-sm);
             z-index: 1000;
             transition: var(--transition);
@@ -179,20 +193,20 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             text-decoration: none;
         }
 
         .logo-img {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
+            width: 50px;
+            height: 50px;
             color: var(--white);
             display: grid;
             place-items: center;
-            border-radius: 50%;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(13, 46, 20, 0.2);
         }
 
         .logo-text h1 {
@@ -210,7 +224,7 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             list-style: none;
             margin: 0;
             padding: 0;
@@ -222,16 +236,17 @@
             font-weight: 500;
             transition: var(--transition);
             position: relative;
+            padding: 0.5rem 0;
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: 0;
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--secondary);
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
             transition: var(--transition);
         }
 
@@ -281,16 +296,28 @@
             background: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
-            padding: 2rem;
+            padding: 2.5rem;
             text-align: center;
             height: fit-content;
+            transition: var(--transition);
+        }
+        
+        .profile-sidebar:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
         
         .profile-main {
             background: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
-            padding: 2rem;
+            padding: 2.5rem;
+            transition: var(--transition);
+        }
+        
+        .profile-main:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
         
         .profile-header {
@@ -301,6 +328,21 @@
         .profile-header h1 {
             color: var(--primary);
             margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 1rem;
+        }
+        
+        .profile-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 2px;
         }
         
         .profile-header p {
@@ -314,6 +356,7 @@
             object-fit: cover;
             margin: 0 auto 1.5rem;
             border: 4px solid var(--secondary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
         .profile-stats {
@@ -328,6 +371,12 @@
             padding: 1rem;
             background: var(--lighter);
             border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-sm);
         }
         
         .stat-number {
@@ -417,11 +466,19 @@
             overflow: hidden;
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .webinar-card.animate {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .webinar-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
         }
 
         .webinar-card-img {
@@ -455,6 +512,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .webinar-card-content {
@@ -568,13 +626,13 @@
             color: var(--secondary);
         }
 
-        .footer-social {
+        .social-icons {
             display: flex;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
-        .footer-social a {
+        .social-icons a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -587,7 +645,7 @@
             transition: var(--transition);
         }
 
-        .footer-social a:hover {
+        .social-icons a:hover {
             background: var(--secondary);
             transform: translateY(-3px);
         }
@@ -634,6 +692,7 @@
                 align-items: flex-start;
                 padding: 5rem 2rem;
                 transition: right 0.3s ease;
+                box-shadow: var(--shadow-lg);
             }
 
             .nav-links.active {
@@ -688,7 +747,7 @@
                 transform: translateX(-50%);
             }
 
-            .footer-social {
+            .social-icons {
                 justify-content: center;
             }
 
@@ -704,11 +763,13 @@
     <header id="header">
         <div class="container">
             <nav>
-                <a href="{% url 'index' %}" class="logo">
-                    <div class="logo-img">M</div>
+                <a href="/" class="logo">
+                    <div class="logo-img">
+                        <img src="{% static 'images/mindcraft.png' %}" alt="">
+                    </div>
                     <div class="logo-text">
-                        <h1>MindCraft</h1>
-                        <p>THINKSPACE</p>
+                        <h1>MindCraft ThinkSpace</h1>
+                        <p>...it all begins in the mind</p>
                     </div>
                 </a>
                 <ul class="nav-links">
@@ -885,6 +946,9 @@
         
         mobileMenu.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            mobileMenu.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            mobileMenu.setAttribute('aria-expanded', navLinks.classList.contains('active'));
         });
         
         // Header scroll effect
@@ -896,6 +960,25 @@
                 header.classList.remove('scrolled');
             }
         });
+
+        // Animate elements on scroll
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.webinar-card');
+            const windowHeight = window.innerHeight;
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const animationPoint = windowHeight - 100;
+                
+                if (elementPosition < animationPoint) {
+                    element.classList.add('animate');
+                }
+            });
+        };
+        
+        // Run on load and scroll
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
     </script>
 </body>
 </html>

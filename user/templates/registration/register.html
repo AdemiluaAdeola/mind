@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - MindCraft Thinkspace</title>
+    <meta name="description" content="Join MindCraft ThinkSpace - Register to access webinars, articles, and our community of innovators">
+    <title>MindCraft ThinkSpace - User Registration</title>
+    
+    <!-- Preload resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" as="style">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
         /* ===== CSS Variables ===== */
         :root {
@@ -25,14 +38,13 @@
             --white: #fff;
             --black: #000;
             --gray: #bdc3c7;
-            --gray-light: #e9ecef;
             
-            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
-            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --radius: 12px;
-            --radius-sm: 6px;
+            --radius: 16px;
+            --radius-sm: 8px;
         }
 
         /* ===== Base Styles ===== */
@@ -55,7 +67,8 @@
             margin: 0;
             padding-top: 90px;
             overflow-x: hidden;
-            background-image: linear-gradient(135deg, rgba(13, 46, 20, 0.03) 0%, rgba(212, 106, 26, 0.03) 100%);
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M20 20l60 60M80 20L20 80" stroke="%23e0e6eb" stroke-width="0.5" stroke-opacity="0.3"/></svg>');
+            background-size: 100px 100px;
         }
 
         img {
@@ -125,13 +138,13 @@
         }
 
         .btn-primary {
-            background: var(--secondary);
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
             color: var(--white);
             box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
         }
 
         .btn-primary:hover {
-            background: var(--secondary-dark);
+            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary));
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
         }
@@ -147,13 +160,26 @@
             border-color: var(--white);
         }
 
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
         /* ===== Header ===== */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             box-shadow: var(--shadow-sm);
             z-index: 1000;
             transition: var(--transition);
@@ -173,20 +199,21 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             text-decoration: none;
         }
 
         .logo-img {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: var(--white);
             display: grid;
             place-items: center;
-            border-radius: 50%;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(13, 46, 20, 0.2);
         }
 
         .logo-text h1 {
@@ -204,7 +231,7 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             list-style: none;
             margin: 0;
             padding: 0;
@@ -216,16 +243,17 @@
             font-weight: 500;
             transition: var(--transition);
             position: relative;
+            padding: 0.5rem 0;
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: 0;
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--secondary);
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
             transition: var(--transition);
         }
 
@@ -250,219 +278,406 @@
             font-size: 1.5rem;
         }
 
-        /* ===== Registration Section ===== */
-        .register-section {
-            padding: 3rem 0;
-            background-color: var(--lighter);
-            min-height: calc(100vh - 90px);
+        /* ===== Hero Section ===== */
+        .hero {
+            background: linear-gradient(135deg, rgba(26, 58, 31, 0.9), rgba(26, 58, 31, 0.8)), 
+                        url('https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80') no-repeat center/cover;
+            min-height: 40vh;
             display: flex;
             align-items: center;
-        }
-        
-        .register-container {
-            width: min(92%, 800px);
-            margin: 0 auto;
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            padding: 2.5rem;
+            text-align: center;
+            color: var(--white);
             position: relative;
             overflow: hidden;
         }
-        
-        .register-container::before {
+
+        .hero::before {
             content: '';
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            height: 100px;
+            background: linear-gradient(to top, var(--lighter), transparent);
+            z-index: 1;
         }
-        
-        .register-header {
-            text-align: center;
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            width: 100%;
+        }
+
+        .hero h1 {
+            color: var(--white);
+            animation: fadeInUp 0.8s ease;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
             margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
         }
-        
-        .register-header h1 {
+
+        .hero-breadcrumbs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .hero-breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        .hero-breadcrumbs a:hover {
+            color: var(--white);
+        }
+
+        .hero-breadcrumbs i {
+            font-size: 0.8rem;
+        }
+
+        /* ===== Registration Section ===== */
+        .registration-section {
+            background-color: var(--white);
+            padding: 4rem 0;
+        }
+
+        .registration-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .registration-form-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-header h2 {
             color: var(--primary);
             margin-bottom: 0.5rem;
         }
-        
-        .register-header p {
+
+        .form-header p {
             color: var(--text-light);
         }
-        
-        .register-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-size: 2rem;
-            margin: 0 auto 1.5rem;
-            transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(13, 46, 20, 0.2);
-        }
-        
-        .register-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+
+        .registration-form {
+            display: flex;
+            flex-direction: column;
             gap: 1.5rem;
         }
-        
-        @media (max-width: 768px) {
-            .register-form {
-                grid-template-columns: 1fr;
-            }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
         }
-        
+
         .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
-        
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-        
+
         .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark);
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .form-group label i {
             color: var(--secondary);
             width: 20px;
         }
-        
-        .form-control {
-            width: 100%;
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             padding: 0.85rem 1rem;
-            border: 1px solid var(--gray-light);
             border-radius: var(--radius-sm);
+            border: 1px solid var(--gray);
             font-family: 'Poppins', sans-serif;
             font-size: 1rem;
             transition: var(--transition);
-            background-color: var(--lighter);
+            background: var(--white);
         }
-        
-        .form-control:focus {
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
-            background-color: var(--white);
+            box-shadow: 0 0 0 3px rgba(212, 106, 26, 0.1);
         }
-        
-        select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23636e72' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
         }
-        
-        .form-help {
-            font-size: 0.85rem;
+
+        .password-input {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
             color: var(--text-light);
-            margin-top: 0.25rem;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        
-        .form-check {
+
+        .password-toggle:hover {
+            color: var(--secondary);
+        }
+
+        .form-checkbox {
             display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            margin-bottom: 0.7rem;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin: 1rem 0;
         }
-        
-        .form-check-input {
-            width: 18px;
-            height: 18px;
+
+        .form-checkbox input {
+            margin-top: 0.25rem;
+            flex-shrink: 0;
             accent-color: var(--secondary);
         }
-        
-        .form-check-label {
-            color: var(--text);
+
+        .form-checkbox label {
             font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
         }
-        
-        .form-check-label a {
+
+        .form-checkbox a {
             color: var(--secondary);
-            font-weight: 600;
-        }
-        
-        .form-check-label a:hover {
             text-decoration: underline;
         }
-        
-        .form-actions {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--gray-light);
+
+        .form-checkbox a:hover {
+            color: var(--secondary-dark);
         }
-        
-        .btn-outline {
-            background: transparent;
-            color: var(--secondary);
-            border: 2px solid var(--secondary);
+
+        .form-submit {
+            margin-top: 1rem;
         }
-        
-        .btn-outline:hover {
-            background: var(--secondary);
-            color: var(--white);
+
+        .form-submit .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
         }
-        
-        .login-redirect {
+
+        .login-link {
             text-align: center;
             margin-top: 2rem;
             color: var(--text-light);
+            font-size: 0.95rem;
         }
-        
-        .login-redirect a {
+
+        .login-link a {
             color: var(--secondary);
             font-weight: 600;
         }
-        
-        .login-redirect a:hover {
+
+        .login-link a:hover {
             text-decoration: underline;
         }
-        
-        /* Form Validation Styles */
-        .is-valid .form-control {
-            border-color: #27ae60;
+
+        .registration-benefits {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: var(--radius);
+            padding: 3rem;
+            color: var(--white);
+            height: fit-content;
         }
-        
-        .is-invalid .form-control {
+
+        .benefits-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .benefits-header h2 {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .benefits-header p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .benefits-list i {
+            background: var(--accent);
+            color: var(--dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+
+        .benefits-list h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        .benefits-list p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+        }
+
+        .testimonial-author h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            color: var(--white);
+        }
+
+        .testimonial-author p {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 0;
+        }
+
+        /* Form Validation Styles */
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
             border-color: #e74c3c;
         }
-        
-        .valid-feedback,
-        .invalid-feedback {
-            display: block;
-            margin-top: 0.4rem;
-            font-size: 0.85rem;
-        }
-        
-        .valid-feedback {
-            color: #27ae60;
-        }
-        
-        .invalid-feedback {
+
+        .error-message {
             color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .success-message {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid #27ae60;
+            color: #27ae60;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        /* Password strength indicator */
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 4px;
+            border-radius: 2px;
+            background-color: var(--gray);
+            overflow: hidden;
         }
         
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .strength-weak {
+            background-color: #e74c3c;
+            width: 25%;
+        }
+        
+        .strength-fair {
+            background-color: #f39c12;
+            width: 50%;
+        }
+        
+        .strength-good {
+            background-color: #3498db;
+            width: 75%;
+        }
+        
+        .strength-strong {
+            background-color: #2ecc71;
+            width: 100%;
+        }
+
         /* Messages Styling */
         .messages-container {
             margin: 1.5rem 0;
@@ -505,42 +720,7 @@
         .alert i {
             font-size: 1.5rem;
         }
-        
-        /* Password strength indicator */
-        .password-strength {
-            margin-top: 0.5rem;
-            height: 4px;
-            border-radius: 2px;
-            background-color: var(--gray-light);
-            overflow: hidden;
-        }
-        
-        .strength-meter {
-            height: 100%;
-            width: 0;
-            transition: width 0.3s ease;
-        }
-        
-        .strength-weak {
-            background-color: #e74c3c;
-            width: 25%;
-        }
-        
-        .strength-fair {
-            background-color: #f39c12;
-            width: 50%;
-        }
-        
-        .strength-good {
-            background-color: #3498db;
-            width: 75%;
-        }
-        
-        .strength-strong {
-            background-color: #2ecc71;
-            width: 100%;
-        }
-        
+
         /* ===== Footer ===== */
         footer {
             background: var(--darker);
@@ -618,13 +798,13 @@
             color: var(--secondary);
         }
 
-        .footer-social {
+        .social-icons {
             display: flex;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
-        .footer-social a {
+        .social-icons a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -637,7 +817,7 @@
             transition: var(--transition);
         }
 
-        .footer-social a:hover {
+        .social-icons a:hover {
             background: var(--secondary);
             transform: translateY(-3px);
         }
@@ -667,7 +847,39 @@
             color: var(--secondary);
         }
 
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         /* ===== Responsive Design ===== */
+        @media (max-width: 992px) {
+            .registration-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .registration-benefits {
+                order: -1;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding-top: 80px;
@@ -709,18 +921,17 @@
             .mobile-menu {
                 display: block;
             }
-            
-            .register-container {
-                padding: 1.5rem;
+
+            .hero {
+                min-height: 35vh;
             }
-            
-            .form-actions {
-                flex-direction: column;
-                gap: 1rem;
+
+            .registration-form-container {
+                padding: 2rem;
             }
-            
-            .form-actions .btn {
-                width: 100%;
+
+            .form-row {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -728,7 +939,27 @@
             section {
                 padding: 3.5rem 0;
             }
-            
+
+            .hero {
+                min-height: 30vh;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .registration-section {
+                padding: 2.5rem 0;
+            }
+
+            .registration-form-container {
+                padding: 1.5rem;
+            }
+
+            .registration-benefits {
+                padding: 2rem;
+            }
+
             .footer-content {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -740,7 +971,7 @@
                 transform: translateX(-50%);
             }
 
-            .footer-social {
+            .social-icons {
                 justify-content: center;
             }
 
@@ -749,251 +980,286 @@
                 gap: 0.5rem;
             }
         }
-        
-        /* Animation for form elements */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .form-group {
-            animation: fadeIn 0.5s ease forwards;
-        }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
+    <!-- Header/Navigation -->
+    <header id="header">
         <div class="container">
             <nav>
                 <a href="/" class="logo">
                     <div class="logo-img">M</div>
                     <div class="logo-text">
-                        <h1>MindCraft Africa</h1>
-                        <p>Innovation & Leadership</p>
+                        <h1>MindCraft</h1>
+                        <p>THINKSPACE</p>
                     </div>
                 </a>
                 <ul class="nav-links">
                     <li><a href="/">Home</a></li>
-                    <li><a href="/webinars/">Webinars</a></li>
-                    <li><a href="/blog/">Blog</a></li>
-                    <li><a href="/about/">About</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="/dashboard">Dashboard</a></li>
-                        <li><a href="/logout">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                        <li><a href="{% url 'register' %}" class="active">Register</a></li>
-                    {% endif %}
+                    <li><a href="/webinar.html">Webinars</a></li>
+                    <li><a href="/blog.html">Blog</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/login.html">Login</a></li>
                 </ul>
-                <button class="mobile-menu">
+                <button class="mobile-menu" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
                 </button>
             </nav>
         </div>
     </header>
 
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Join Our Community</h1>
+            <p>Create your account and start your journey with MindCraft ThinkSpace</p>
+            <div class="hero-breadcrumbs">
+                <a href="/">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Register</span>
+            </div>
+        </div>
+    </section>
+
     <!-- Registration Section -->
-    <section class="register-section">
+    <section class="registration-section">
         <div class="container">
-            <div class="register-container">
-                <div class="register-header">
-                    <div class="register-icon">
-                        <i class="fas fa-user-plus"></i>
+            <div class="registration-container">
+                <!-- Registration Form -->
+                <div class="registration-form-container">
+                    <div class="form-header">
+                        <h2>Create Your Account</h2>
+                        <p>Join thousands of innovators and thought leaders</p>
                     </div>
-                    <h1>Create Your Account</h1>
-                    <p>Join the MindCraft Africa community to access exclusive content and resources</p>
+
+                    <!-- Django Messages -->
+                    {% if messages %}
+                    <div class="messages-container">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                            <div>{{ message }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST" class="registration-form" id="registrationForm">
+                        {% csrf_token %}
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id_first_name"><i class="fas fa-user"></i> First Name</label>
+                                <input type="text" id="id_first_name" name="first_name" class="form-control" placeholder="Enter your first name" required>
+                                <div class="error-message" id="firstNameError">Please enter your first name</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="id_last_name"><i class="fas fa-user"></i> Last Name</label>
+                                <input type="text" id="id_last_name" name="last_name" class="form-control" placeholder="Enter your last name" required>
+                                <div class="error-message" id="lastNameError">Please enter your last name</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_username"><i class="fas fa-at"></i> Username</label>
+                            <input type="text" id="id_username" name="username" class="form-control" placeholder="Choose a username" required>
+                            <div class="form-help">This will be your public display name</div>
+                            <div class="error-message" id="usernameError">Please enter a username</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_email"><i class="fas fa-envelope"></i> Email Address</label>
+                            <input type="email" id="id_email" name="email" class="form-control" placeholder="your.email@example.com" required>
+                            <div class="error-message" id="emailError">Please enter a valid email address</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_password1"><i class="fas fa-lock"></i> Password</label>
+                            <div class="password-input">
+                                <input type="password" id="id_password1" name="password" class="form-control" placeholder="Create a strong password" required>
+                                <button type="button" class="password-toggle" id="passwordToggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength">
+                                <div class="strength-meter" id="password-strength-meter"></div>
+                            </div>
+                            <div class="form-help">Use at least 8 characters with a mix of letters, numbers & symbols</div>
+                            <div class="error-message" id="passwordError">Password must be at least 8 characters with letters and numbers</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_password2"><i class="fas fa-lock"></i> Confirm Password</label>
+                            <div class="password-input">
+                                <input type="password" id="id_password2" name="password2" class="form-control" placeholder="Confirm your password" required>
+                                <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
+                        </div>
+
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="id_terms" name="terms" required>
+                            <label for="id_terms">I agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a></label>
+                            <div class="error-message" id="termsError">You must agree to the terms and conditions</div>
+                        </div>
+
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="id_newsletter" name="newsletter" checked>
+                            <label for="id_newsletter">Subscribe to our newsletter for updates and offers</label>
+                        </div>
+
+                        <div class="form-submit">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i> Create Account
+                            </button>
+                        </div>
+
+                        <div class="login-link">
+                            Already have an account? <a href="{% url 'login' %}">Sign in here</a>
+                        </div>
+                    </form>
                 </div>
-                
-                <!-- Messages -->
-                {% if messages %}
-                <div class="messages-container">
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
-                        <div>{{ message }}</div>
+
+                <!-- Registration Benefits -->
+                <div class="registration-benefits">
+                    <div class="benefits-header">
+                        <h2>Why Join MindCraft ThinkSpace?</h2>
+                        <p>Unlock exclusive benefits as a community member</p>
                     </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
-                <form method="POST" class="register-form">
-                    {% csrf_token %}
-                    
-                    <div class="form-group">
-                        <label for="id_first_name"><i class="fas fa-user"></i> First Name</label>
-                        <input type="text" id="id_first_name" name="first_name" class="form-control" placeholder="Enter your first name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="id_last_name"><i class="fas fa-user"></i> Last Name</label>
-                        <input type="text" id="id_last_name" name="last_name" class="form-control" placeholder="Enter your last name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="id_username"><i class="fas fa-at"></i> Username</label>
-                        <input type="text" id="id_username" name="username" class="form-control" placeholder="Choose a username" required>
-                        <div class="form-help">This will be your public display name</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="id_email"><i class="fas fa-envelope"></i> Email Address</label>
-                        <input type="email" id="id_email" name="email" class="form-control" placeholder="your.email@example.com" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="id_password1"><i class="fas fa-lock"></i> Password</label>
-                        <input type="password" id="id_password1" name="password" class="form-control" placeholder="Create a strong password" required>
-                        <div class="password-strength">
-                            <div class="strength-meter" id="password-strength-meter"></div>
+
+                    <ul class="benefits-list">
+                        <li>
+                            <i class="fas fa-video"></i>
+                            <div>
+                                <h3>Access to Expert Webinars</h3>
+                                <p>Join live sessions with industry leaders and access recordings of past events</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-book-open"></i>
+                            <div>
+                                <h3>Exclusive Content</h3>
+                                <p>Get early access to articles, research papers, and innovation resources</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h3>Community Network</h3>
+                                <p>Connect with like-minded professionals, entrepreneurs, and thought leaders</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-tools"></i>
+                            <div>
+                                <h3>Innovation Tools</h3>
+                                <p>Access mindset tools, innovation kits, and practical resources for personal growth</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-certificate"></i>
+                            <div>
+                                <h3>Certificates & Recognition</h3>
+                                <p>Earn certificates for completed webinars and showcase your learning journey</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            "Joining MindCraft ThinkSpace transformed my approach to innovation. The community support and expert insights helped me launch my social enterprise successfully."
                         </div>
-                        <div class="form-help">Use at least 8 characters with a mix of letters, numbers & symbols</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="id_password2"><i class="fas fa-lock"></i> Confirm Password</label>
-                        <input type="password" id="id_password2" name="password2" class="form-control" placeholder="Confirm your password" required>
-                    </div>
-                    
-                    <div class="form-group full-width">
-                        <div class="form-check">
-                            <input type="checkbox" id="id_terms" name="terms" class="form-check-input" required>
-                            <label for="id_terms" class="form-check-label">
-                                I agree to the <a href="/terms/">Terms of Service</a> and <a href="/privacy/">Privacy Policy</a>
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" id="id_newsletter" name="newsletter" class="form-check-input">
-                            <label for="id_newsletter" class="form-check-label">
-                                Subscribe to our newsletter for updates and offers
-                            </label>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="Amina Mohammed">
+                            <div>
+                                <h4>Amina Mohammed</h4>
+                                <p>Social Entrepreneur, Lagos</p>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="form-actions">
-                        <a href="/" class="btn btn-outline">Cancel</a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-user-plus"></i> Create Account
-                        </button>
-                    </div>
-                </form>
-                
-                <div class="login-redirect">
-                    <p>Already have an account? <a href="{% url 'login' %}">Sign in here</a></p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <h2>MindCraft <span>Africa</span></h2>
-                    <p>Empowering African minds through innovation, leadership, and collaborative thinking.</p>
-                    <div class="footer-social">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    <h2><span>MindCraft</span> ThinkSpace</h2>
+                    <p>...it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><i class="fas fa-chevron-right"></i><a href="/">Home</a></li>
-                        <li><i class="fas fa-chevron-right"></i><a href="/webinars/">Webinars</a></li>
-                        <li><i class="fas fa-chevron-right"></i><a href="/blog/">Blog</a></li>
-                        <li><i class="fas fa-chevron-right"></i><a href="/about/">About Us</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/webinar.html">Webinars</a></li>
+                        <li><a href="/blog.html">Blog</a></li>
+                        <li><a href="/about.html">About</a></li>
+                        <li><a href="/login.html">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
                     <h3>Resources</h3>
                     <ul>
-                        <li><i class="fas fa-chevron-right"></i><a href="/resources/">Learning Resources</a></li>
-                        <li><i class="fas fa-chevron-right"></i><a href="/events/">Events</a></li>
-                        <li><i class="fas fa-chevron-right"></i><a href="/community/">Community</a></li>
-                        <li><i class="fas fa-chevron-right"></i><a href="/careers/">Careers</a></li>
+                        <li><a href="#">Mindset Tools</a></li>
+                        <li><a href="#">Innovation Kits</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">Community Forum</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
-                    <h3>Support</h3>
+                    <h3>Contact Us</h3>
                     <ul>
-                        <li><i class="fas fa-chevron-right"></i><a href="/contact/">Contact Us</a></li>
-                        <li><i class="fas fa-chevron-right"></i><a href="/faq/">FAQ</a></li>
-                        <li><i class="fas fa-chevron-right"></i><a href="/help/">Help Center</a></li>
-                        <li><i class="fas fa-chevron-right"></i><a href="/feedback/">Feedback</a></li>
+                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.com</li>
+                        <li><i class="fas fa-phone"></i> +254 700 123456</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya (HQ)</li>
+                        <li><i class="fas fa-globe"></i> Global Presence</li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 MindCraft Africa. All rights reserved.</p>
+                <p>&copy; <span id="current-year">2024</span> MindCraft ThinkSpace. All rights reserved.</p>
                 <div class="footer-legal">
                     <a href="/privacy/">Privacy Policy</a>
                     <a href="/terms/">Terms of Service</a>
-                    <a href="/cookies/">Cookie Policy</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- JavaScript -->
     <script>
-        // Mobile menu toggle
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
-        
-        mobileMenu.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-        
-        // Password strength indicator
-        const passwordInput = document.getElementById('id_password1');
-        const strengthMeter = document.getElementById('password-strength-meter');
-        
-        if (passwordInput && strengthMeter) {
-            passwordInput.addEventListener('input', function() {
-                const password = this.value;
-                let strength = 0;
-                
-                // Check password length
-                if (password.length >= 8) strength += 1;
-                
-                // Check for lowercase letters
-                if (/[a-z]/.test(password)) strength += 1;
-                
-                // Check for uppercase letters
-                if (/[A-Z]/.test(password)) strength += 1;
-                
-                // Check for numbers
-                if (/[0-9]/.test(password)) strength += 1;
-                
-                // Check for special characters
-                if (/[^A-Za-z0-9]/.test(password)) strength += 1;
-                
-                // Update strength meter
-                strengthMeter.className = 'strength-meter';
-                if (strength <= 1) {
-                    strengthMeter.classList.add('strength-weak');
-                } else if (strength === 2) {
-                    strengthMeter.classList.add('strength-fair');
-                } else if (strength === 3) {
-                    strengthMeter.classList.add('strength-good');
-                } else {
-                    strengthMeter.classList.add('strength-strong');
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                this.setAttribute('aria-expanded', navLinks.classList.contains('active'));
             });
-        }
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+            
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
     </script>
 </body>
 </html>

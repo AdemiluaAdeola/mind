@@ -1315,11 +1315,12 @@
                     </div>
                 </a>
                 <ul class="nav-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/webinar/" class="active">Webinars</a></li>
-                    <li><a href="/blog/">Blog</a></li>
-                    <li><a href="/about/">About</a></li>
-                    <li><a href="/admin/">Dashboard</a></li>
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'webinar_list' %}" class="active">Webinars</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
                 </ul>
                 <button class="mobile-menu" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>

@@ -7,7 +7,6 @@ import uuid
 from django.core.exceptions import ValidationError
 from datetime import timedelta
 from django.utils import timezone
-from cloudinary.models import CloudinaryField
 
 # Create your models here.
 

@@ -36,31 +36,37 @@ class webinar(ListView):
     ordering = ['-created_at']
     paginate_by = 10
     
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class create(CreateView):
     model = Blog
     template_name = 'blog/create.html'
     form_class = CreateNewPost
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class webinar_create(CreateView):
     model = Webinar
     template_name = 'webinar/create.html'
     form_class = CreateWebinar
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class update(UpdateView):
     model = Blog
     template_name = 'blog/update.html'
     form_class = UpdatePost
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class webinar_update(UpdateView):
     model = Webinar
     template_name = 'webinar/create.html'
     form_class = CreateWebinar
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class delete(DeleteView):
     model = Blog
     template_name = 'blog/delete.html'
     success_url = reverse_lazy('index')
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class webinar_delete(DeleteView):
     model = Blog
     template_name = 'blog/delete.html'
@@ -93,29 +99,24 @@ def about(response):
 def webinar_detail(response, pk):
     webinar = get_object_or_404(Webinar, pk=pk)
     
-    # Check if user is already registered
     is_registered = False
     if response.user.is_authenticated:
         is_registered = WebinarRegistration.objects.filter(
             webinar=webinar, 
             email=response.user.email
         ).exists()
-    
-    # Handle registration form submission
+
     if response.method == 'POST':
         form = WebinarRegistrationForm(response.POST, response.FILES)
         if form.is_valid():
-            # Check if user is already registered (prevent duplicate registrations)
             if is_registered:
                 messages.error(response, 'You are already registered for this webinar!')
                 return redirect('webinar_detail', pk=webinar.pk)
             
-            # Create registration
             registration = form.save(commit=False)
             registration.webinar = webinar
             registration.status = "pending"
             
-            # Set user information if authenticated
             if response.user.is_authenticated:
                 registration.full_name = f"{response.user.first_name} {response.user.last_name}"
                 registration.email = response.user.email
@@ -135,7 +136,8 @@ def webinar_detail(response, pk):
             'now': timezone.now(),
         }
         return render(response, 'webinar/details.html', context)
-    
+
+@login_required(login_url='login')
 def webinar_register(response, pk):
     webinar = Webinar.objects.get(id=pk)
     if response.method == "POST":

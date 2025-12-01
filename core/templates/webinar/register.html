@@ -1,13 +1,22 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Register for {{webinar.title}} at MindCraft ThinkSpace">
     <title>Register for {{webinar.title}} | MindCraft ThinkSpace</title>
     
     <!-- Preload resources -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" as="style">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -293,7 +302,6 @@
             color: var(--white);
             position: relative;
             overflow: hidden;
-            margin-top: 80px;
         }
 
         .hero::before {
@@ -386,124 +394,39 @@
             color: var(--secondary);
         }
 
-        /* ===== Webinar Details Section ===== */
-        .webinar-details-section {
+        /* ===== Form Section ===== */
+        .register-section {
             background-color: var(--white);
         }
 
-        .webinar-details-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .webinar-image {
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-        }
-
-        .webinar-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .webinar-info {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .webinar-meta {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .webinar-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .webinar-meta-item i {
-            color: var(--secondary);
-        }
-
-        .webinar-category {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
-        .webinar-category.technology {
-            background: rgba(41, 128, 185, 0.1);
-            color: #2980b9;
-        }
-
-        .webinar-category.business {
-            background: rgba(39, 174, 96, 0.1);
-            color: #27ae60;
-        }
-
-        .webinar-category.leadership {
-            background: rgba(155, 89, 182, 0.1);
-            color: #9b59b6;
-        }
-
-        .webinar-category.culture {
-            background: rgba(243, 156, 18, 0.1);
-            color: #f39c12;
-        }
-
-        .webinar-category.marketing {
-            background: rgba(231, 76, 60, 0.1);
-            color: #e74c3c;
-        }
-
-        .webinar-description {
-            color: var(--text);
-            line-height: 1.8;
-        }
-
-        .webinar-price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-
-        .webinar-price.free {
-            color: #27ae60;
-        }
-
-        /* ===== Registration Form Section ===== */
-        .registration-section {
-            background-color: var(--lighter);
-        }
-
-        .registration-card {
+        .register-card {
             background: var(--white);
             border-radius: var(--radius);
-            padding: 3rem;
-            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
             max-width: 800px;
             margin: 0 auto;
+            padding: 3rem;
         }
 
-        .registration-card h2 {
+        .register-card h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 1rem;
             color: var(--primary);
             margin-bottom: 2rem;
-            text-align: center;
-            font-family: 'Montserrat', sans-serif;
+        }
+
+        .register-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 2px;
         }
 
         .form-group {
@@ -549,20 +472,6 @@
             margin-top: 0.5rem;
             list-style: none;
             font-size: 0.9rem;
-        }
-
-        .payment-note {
-            background: rgba(39, 174, 96, 0.1);
-            border-left: 4px solid #27ae60;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border-radius: var(--radius-sm);
-        }
-
-        .payment-note p {
-            margin-bottom: 0;
-            color: #27ae60;
-            font-weight: 500;
         }
 
         /* ===== Footer ===== */
@@ -756,20 +665,15 @@
             }
 
             .hero {
-                min-height: 30vh;
+                min-height: 35vh;
             }
 
-            .webinar-details-container {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+            .register-card {
+                padding: 2rem;
             }
 
             .form-row {
                 grid-template-columns: 1fr;
-            }
-            
-            .registration-card {
-                padding: 2rem;
             }
         }
 
@@ -779,7 +683,7 @@
             }
 
             .hero {
-                min-height: 25vh;
+                min-height: 30vh;
             }
 
             .hero h1 {
@@ -847,82 +751,15 @@
                 <i class="fas fa-chevron-right"></i>
                 <a href="{% url 'webinar_list' %}">Webinars</a>
                 <i class="fas fa-chevron-right"></i>
-                <a href="{% url 'webinar_detail' webinar.id %}">{{webinar.title|truncatewords:3}}</a>
-                <i class="fas fa-chevron-right"></i>
                 <span>Register</span>
             </div>
         </div>
     </section>
 
-    <!-- Webinar Details Section -->
-    <section class="webinar-details-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Webinar <span>Details</span></h2>
-                <p>Review the webinar information before completing your registration</p>
-            </div>
-            
-            <div class="webinar-details-container">
-                <div class="webinar-image">
-                    <img src="{% if webinar.featured_image %}{{ webinar.featured_image.url }}{% else %}https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80{% endif %}" alt="{{ webinar.title }}" loading="lazy">
-                </div>
-                
-                <div class="webinar-info">
-                    <div class="webinar-meta">
-                        <div class="webinar-meta-item">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>{{ webinar.start_datetime|date:"M d, Y" }}</span>
-                        </div>
-                        <div class="webinar-meta-item">
-                            <i class="far fa-clock"></i>
-                            <span>{{ webinar.start_datetime|time }}</span>
-                        </div>
-                        <div class="webinar-meta-item">
-                            <i class="fas fa-users"></i>
-                            <span>{{ webinar.registered_count }} registered</span>
-                        </div>
-                    </div>
-                    
-                    <div class="webinar-category {{ webinar.category|lower }}">
-                        {{ webinar.category }}
-                    </div>
-                    
-                    <h3>{{ webinar.title }}</h3>
-                    
-                    <div class="webinar-description">
-                        {{ webinar.description }}
-                    </div>
-                    
-                    <div class="webinar-speaker">
-                        <div class="webinar-speaker-avatar">
-                            {% if webinar.speaker.avatar %}
-                                <img src="{{ webinar.speaker.avatar.url }}" alt="{{ webinar.speaker.name }}">
-                            {% else %}
-                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="{{ webinar.speaker.name }}">
-                            {% endif %}
-                        </div>
-                        <div class="webinar-speaker-info">
-                            <h4>{{ webinar.speaker.name }}</h4>
-                            <p>{{ webinar.speaker.title }}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="webinar-price {% if webinar.is_free %}free{% endif %}">
-                        {% if webinar.is_free %}
-                            Free
-                        {% else %}
-                            ₦{{ webinar.price }}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Registration Form Section -->
-    <section class="registration-section">
+    <section class="register-section">
         <div class="container">
-            <div class="registration-card">
+            <div class="register-card">
                 <h2>Registration Form</h2>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -947,10 +784,6 @@
                     </div>
                     
                     {% if not webinar.is_free %}
-                    <div class="payment-note">
-                        <p><i class="fas fa-info-circle"></i> Please complete your payment before registration and upload proof below</p>
-                    </div>
-                    
                     <div class="form-group">
                         <label class="form-label" for="id_payment_reference">Proof of Payment</label>
                         {{ form.payment_reference }}
@@ -988,16 +821,16 @@
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="/">Home</a></li>
-                        <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                        <li><a href="{% url 'webinar_list' %}" class="active">Webinars</a></li>
                         <li><a href="{% url 'blog_list' %}">Blog</a></li>
                         <li><a href="{% url 'about' %}">About</a></li>
-                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'profile' %}">Dashboard</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
                     <h3>Resources</h3>
                     <ul>
-                        <li><a href="#">Past Webinars</a></li>
+                        <li><a href="{% url 'webinar_list' %}?tab=past">Past Webinars</a></li>
                         <li><a href="#">Speaker Profiles</a></li>
                         <li><a href="#">Webinar Calendar</a></li>
                         <li><a href="#">Community Forum</a></li>

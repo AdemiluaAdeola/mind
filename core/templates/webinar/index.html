@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Join our expert-led webinars on innovation, mindset, technology, and African development at MindCraft ThinkSpace">
+    <meta name="description" content="Browse all expert-led webinars on innovation, mindset, technology, and African development at MindCraft ThinkSpace">
     <title>Webinars | MindCraft ThinkSpace</title>
     
     <!-- Preload resources -->
@@ -295,7 +295,7 @@
         .hero {
             background: linear-gradient(135deg, rgba(26, 58, 31, 0.9), rgba(26, 58, 31, 0.8)), 
                         url('https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80') no-repeat center/cover;
-            min-height: 50vh;
+            min-height: 40vh;
             display: flex;
             align-items: center;
             text-align: center;
@@ -439,7 +439,7 @@
         }
 
         .webinar-container {
-            display: block; /* Changed from grid-template-columns: 1fr 300px */
+            display: block;
         }
 
         /* Webinar Filters */
@@ -554,19 +554,22 @@
         .webinar-card.featured {
             grid-column: 1 / -1;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             max-height: none;
             overflow: visible;
             position: relative;
         }
 
         .webinar-card.featured .webinar-card-img {
-            height: 400px;
+            flex: 1;
+            height: auto;
             position: relative;
             overflow: hidden;
+            min-height: 300px;
         }
 
         .webinar-card.featured .webinar-card-content {
+            flex: 1;
             padding: 2.5rem;
             display: flex;
             flex-direction: column;
@@ -580,8 +583,7 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-            background: var(--accent);
-            color: var(--dark);
+            color: var(--white);
             padding: 0.5rem 1rem;
             border-radius: var(--radius-sm);
             font-size: 0.8rem;
@@ -590,9 +592,21 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
+        .free-badge {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        .live-badge {
+            background: #e74c3c;
+        }
+
+        .featured-badge {
+            background: var(--secondary);
+        }
+
         .recording-badge {
             background: #27ae60;
-            color: var(--white);
         }
 
         .webinar-card-img {
@@ -640,39 +654,32 @@
             flex-direction: column;
         }
 
-        .webinar-category {
-            display: inline-block;
+        .webinar-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             padding: 0.4rem 1rem;
             border-radius: var(--radius-sm);
             font-size: 0.75rem;
             font-weight: 600;
             margin-bottom: 1rem;
             text-transform: uppercase;
+            width: fit-content;
         }
 
-        .webinar-category.technology {
-            background: rgba(41, 128, 185, 0.1);
-            color: #2980b9;
+        .status-upcoming {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
         }
 
-        .webinar-category.business {
-            background: rgba(39, 174, 96, 0.1);
-            color: #27ae60;
-        }
-
-        .webinar-category.leadership {
-            background: rgba(155, 89, 182, 0.1);
-            color: #9b59b6;
-        }
-
-        .webinar-category.culture {
-            background: rgba(243, 156, 18, 0.1);
-            color: #f39c12;
-        }
-
-        .webinar-category.marketing {
+        .status-live {
             background: rgba(231, 76, 60, 0.1);
             color: #e74c3c;
+        }
+
+        .status-completed {
+            background: rgba(149, 165, 166, 0.1);
+            color: #95a5a6;
         }
 
         .webinar-card-meta {
@@ -754,6 +761,24 @@
 
         .webinar-card .btn {
             align-self: flex-start;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+        }
+
+        .empty-state h3 {
+            color: var(--text-light);
+            margin-bottom: 1rem;
         }
 
         /* Pagination */
@@ -1193,7 +1218,7 @@
             }
 
             .hero {
-                min-height: 40vh;
+                min-height: 35vh;
             }
 
             .filter-controls {
@@ -1232,6 +1257,14 @@
             .tabs {
                 justify-content: center;
             }
+            
+            .webinar-card.featured {
+                flex-direction: column;
+            }
+            
+            .webinar-card.featured .webinar-card-img {
+                min-height: 200px;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1240,7 +1273,7 @@
             }
 
             .hero {
-                min-height: 35vh;
+                min-height: 30vh;
             }
 
             .hero h1 {
@@ -1362,6 +1395,17 @@
                     <div class="webinar-filters">
                         <div class="filter-controls">
                             <div class="filter-group">
+                                <label for="category-filter">Category:</label>
+                                <select id="category-filter">
+                                    <option value="all">All Categories</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="business">Business</option>
+                                    <option value="leadership">Leadership</option>
+                                    <option value="culture">Culture</option>
+                                    <option value="marketing">Marketing</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
                                 <label for="date-filter">Date:</label>
                                 <select id="date-filter">
                                     <option value="all">All Dates</option>
@@ -1382,45 +1426,66 @@
                         <!-- Webinar Grid -->
                         <div class="webinar-grid" id="webinarView">
                             {% for webinar in object_list %}
-                            <article class="webinar-card" data-free="{{ webinar.is_free|yesno:'true,false' }}" data-featured="{{ webinar.is_featured|yesno:'true,false' }}" data-status="{{ webinar.status }}">
-                                <div class="webinar-image">
-                                    <img src="https://www.pinterest.com/pin/6122149488352716/" alt="{{ webinar.title }}" loading="lazy">
+                            <article class="webinar-card {% if webinar.is_featured %}featured{% endif %}" data-free="{{ webinar.is_free|yesno:'true,false' }}" data-featured="{{ webinar.is_featured|yesno:'true,false' }}" data-status="{{ webinar.status }}">
+                                <div class="webinar-card-img">
+                                    <img src="{{ webinar.featured_image|default:'https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80' }}" alt="{{ webinar.title }}" loading="lazy">
+                                    <div class="webinar-date">
+                                        <i class="far fa-calendar-alt"></i> {{ webinar.start_datetime|date:"M d, Y" }}
+                                    </div>
                                     {% if webinar.is_free %}
-                                    <span class="webinar-badge free">Free</span>
+                                    <span class="webinar-badge free-badge">Free</span>
                                     {% endif %}
                                     {% if webinar.status == 'live' %}
-                                    <span class="webinar-badge live">Live Now</span>
+                                    <span class="webinar-badge live-badge">Live Now</span>
+                                    {% endif %}
+                                    {% if webinar.is_featured %}
+                                    <span class="webinar-badge featured-badge">Featured</span>
                                     {% endif %}
                                 </div>
-                                <div class="webinar-content">
+                                <div class="webinar-card-content">
                                     <span class="webinar-status status-{{ webinar.status }}">
                                         <i class="fas fa-circle"></i>
                                         {{ webinar.status|title }}
                                     </span>
-                                    <div class="webinar-meta">
-                                        <span><i class="far fa-calendar-alt"></i> {{ webinar.start_datetime|date:"M d, Y" }}</span>
-                                        <span><i class="far fa-clock"></i> {{ webinar.start_datetime|time }}</span>
+                                    <div class="webinar-card-meta">
+                                        <span><i class="far fa-clock"></i> {{ webinar.duration }} min</span>
+                                        <span><i class="fas fa-users"></i> {{ webinar.registrations.count }} registered</span>
                                     </div>
                                     <h3>{{ webinar.title }}</h3>
                                     <p>{{ webinar.description|truncatewords:20 }}</p>
                                     
-                                    <div class="webinar-footer">
-                                        <div class="webinar-price {% if webinar.is_free %}free{% endif %}">
-                                            {% if webinar.is_free %}
-                                                Free
-                                            {% else %}
-                                                ₦{{ webinar.price }}
-                                            {% endif %}
+                                    {% if webinar.speakers.all %}
+                                    <div class="webinar-speaker">
+                                        <img src="{{ webinar.speakers.first.photo|default:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=688&q=80' }}" alt="{{ webinar.speakers.first.name }}">
+                                        <div>
+                                            <h4>{{ webinar.speakers.first.name }}</h4>
+                                            <p>{{ webinar.speakers.first.bio|truncatewords:5 }}</p>
                                         </div>
                                     </div>
+                                    {% endif %}
                                     
-                                    <a href="{% url 'webinar_detail' webinar.id %}" class="btn btn-primary">
-                                        {% if webinar.status == 'live' %}
-                                            Join Now <i class="fas fa-video"></i>
-                                        {% else %}
-                                            Register Now <i class="fas fa-arrow-right"></i>
+                                    <div class="webinar-features">
+                                        <span><i class="fas fa-globe"></i> Online</span>
+                                        <span><i class="fas fa-certificate"></i> Certificate</span>
+                                        {% if webinar.recording_url %}
+                                        <span><i class="fas fa-video"></i> Recording Available</span>
                                         {% endif %}
-                                    </a>
+                                    </div>
+                                    
+                                    <div class="webinar-actions">
+                                        <a href="{% url 'webinar_detail' webinar.id %}" class="btn btn-primary">
+                                            {% if webinar.status == 'live' %}
+                                                Join Now <i class="fas fa-video"></i>
+                                            {% else %}
+                                                Register Now <i class="fas fa-arrow-right"></i>
+                                            {% endif %}
+                                        </a>
+                                        {% if webinar.is_free %}
+                                        <span class="webinar-price free">Free</span>
+                                        {% else %}
+                                        <span class="webinar-price">₦{{ webinar.price }}</span>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </article>
                             {% empty %}
@@ -1433,25 +1498,25 @@
                         </div>
 
                         <!-- Pagination -->
-                        {% if is_paginated %}
+                        {% if upcoming_webinars.has_other_pages %}
                         <div class="pagination">
-                            {% if page_obj.has_previous %}
-                            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link">
-                                <i class="fas fa-chevron-left"></i>
+                            {% if upcoming_webinars.has_previous %}
+                            <a href="?upcoming_page={{ upcoming_webinars.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link prev">
+                                <i class="fas fa-chevron-left"></i> Previous
                             </a>
                             {% endif %}
                             
-                            {% for num in page_obj.paginator.page_range %}
-                                {% if page_obj.number == num %}
-                                <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link active">{{ num }}</a>
-                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link">{{ num }}</a>
+                            {% for num in upcoming_webinars.paginator.page_range %}
+                                {% if upcoming_webinars.number == num %}
+                                <a href="?upcoming_page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link active">{{ num }}</a>
+                                {% elif num > upcoming_webinars.number|add:'-3' and num < upcoming_webinars.number|add:'3' %}
+                                <a href="?upcoming_page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link">{{ num }}</a>
                                 {% endif %}
                             {% endfor %}
                             
-                            {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link">
-                                <i class="fas fa-chevron-right"></i>
+                            {% if upcoming_webinars.has_next %}
+                            <a href="?upcoming_page={{ upcoming_webinars.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link next">
+                                Next <i class="fas fa-chevron-right"></i>
                             </a>
                             {% endif %}
                         </div>
@@ -1462,56 +1527,87 @@
                     <div class="tab-content" id="past-tab">
                         <!-- Webinar Grid for Past Webinars -->
                         <div class="webinar-grid">
-                            
-                            <!-- Past Webinar 2 -->
-                            <!-- <div class="webinar-card">
+                            {% for webinar in past_webinars %}
+                            <article class="webinar-card" data-free="{{ webinar.is_free|yesno:'true,false' }}" data-featured="{{ webinar.is_featured|yesno:'true,false' }}" data-status="{{ webinar.status }}">
                                 <div class="webinar-card-img">
-                                    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" alt="Fintech Innovation" loading="lazy" width="600" height="338">
+                                    <img src="{{ webinar.featured_image|default:'https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80' }}" alt="{{ webinar.title }}" loading="lazy">
                                     <div class="webinar-date past-date">
-                                        <i class="far fa-calendar-alt"></i> April 28, 2024
+                                        <i class="far fa-calendar-alt"></i> {{ webinar.start_datetime|date:"M d, Y" }}
                                     </div>
+                                    {% if webinar.recording_url %}
+                                    <span class="webinar-badge recording-badge">Recording Available</span>
+                                    {% endif %}
                                 </div>
                                 <div class="webinar-card-content">
-                                    <span class="webinar-category technology">Technology</span>
+                                    <span class="webinar-status status-completed">
+                                        <i class="fas fa-circle"></i>
+                                        Completed
+                                    </span>
                                     <div class="webinar-card-meta">
-                                        <span><i class="far fa-clock"></i> 75 min</span>
-                                        <span><i class="fas fa-eye"></i> 980 Views</span>
+                                        <span><i class="far fa-clock"></i> {{ webinar.duration }} min</span>
+                                        <span><i class="fas fa-eye"></i> {{ webinar.views|default:"0" }} Views</span>
                                     </div>
-                                    <h3>Fintech Innovation: Banking the Unbanked in Africa</h3>
-                                    <p>Explore how financial technology is revolutionizing access to banking services across Africa. This recording covers mobile money, digital lending, blockchain applications, and regulatory considerations in the rapidly evolving fintech landscape.</p>
+                                    <h3>{{ webinar.title }}</h3>
+                                    <p>{{ webinar.description|truncatewords:20 }}</p>
                                     
+                                    {% if webinar.speakers.all %}
                                     <div class="webinar-speaker">
-                                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" alt="David Okafor">
+                                        <img src="{{ webinar.speakers.first.photo|default:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=688&q=80' }}" alt="{{ webinar.speakers.first.name }}">
                                         <div>
-                                            <h4>David Okafor</h4>
-                                            <p>Fintech Entrepreneur & Advisor</p>
+                                            <h4>{{ webinar.speakers.first.name }}</h4>
+                                            <p>{{ webinar.speakers.first.bio|truncatewords:5 }}</p>
                                         </div>
                                     </div>
+                                    {% endif %}
                                     
                                     <div class="webinar-actions">
-                                        <a href="watch.html" class="btn btn-success">
-                                            Watch Recording <i class="fas fa-arrow-right"></i>
+                                        {% if webinar.recording_url %}
+                                        <a href="{{ webinar.recording_url }}" class="btn btn-success" target="_blank">
+                                            Watch Recording <i class="fas fa-play-circle"></i>
                                         </a>
+                                        {% else %}
+                                        <a href="{% url 'webinar_detail' webinar.id %}" class="btn btn-outline">
+                                            View Details <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                        {% endif %}
                                     </div>
                                 </div>
-                            </div> -->
-                            <h3>Coming Soon !!!</h3>
+                            </article>
+                            {% empty %}
+                            <div class="empty-state">
+                                <i class="fas fa-video-slash"></i>
+                                <h3>No past webinars available</h3>
+                                <p>Recordings will be available after webinars are completed</p>
+                            </div>
+                            {% endfor %}
                         </div>
 
                         <!-- Pagination for Past Webinars -->
-                        <!-- <div class="pagination">
-                            <a href="#" class="prev"><i class="fas fa-chevron-left"></i> Previous</a>
-                            <a href="#" class="active">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <span>...</span>
-                            <a href="#">5</a>
-                            <a href="#" class="next">Next <i class="fas fa-chevron-right"></i></a>
-                        </div> -->
+                        {% if past_webinars.has_other_pages %}
+                        <div class="pagination">
+                            {% if past_webinars.has_previous %}
+                            <a href="?past_page={{ past_webinars.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link prev">
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </a>
+                            {% endif %}
+                            
+                            {% for num in past_webinars.paginator.page_range %}
+                                {% if past_webinars.number == num %}
+                                <a href="?past_page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link active">{{ num }}</a>
+                                {% elif num > past_webinars.number|add:'-3' and num < past_webinars.number|add:'3' %}
+                                <a href="?past_page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link">{{ num }}</a>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if past_webinars.has_next %}
+                            <a href="?past_page={{ past_webinars.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="page-link next">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
-                
-                <!-- Sidebar has been removed -->
             </div>
         </div>
     </section>
@@ -1526,15 +1622,15 @@
             
             <div class="webinar-stats">
                 <div class="stat-item">
-                    <div class="stat-number" data-count="156">0</div>
+                    <div class="stat-number" data-count="{{ total_webinars }}">0</div>
                     <div class="stat-label">Webinars Hosted</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" data-count="25400">0</div>
+                    <div class="stat-number" data-count="{{ total_participants }}">0</div>
                     <div class="stat-label">Participants</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" data-count="48">0</div>
+                    <div class="stat-number" data-count="{{ total_speakers }}">0</div>
                     <div class="stat-label">Expert Speakers</div>
                 </div>
                 <div class="stat-item">
@@ -1605,19 +1701,6 @@
         </div>
     </section>
 
-    <!-- Newsletter CTA -->
-    <div class="container">
-        <div class="newsletter-cta">
-            <h2>Never Miss a Webinar</h2>
-            <p>Subscribe to our newsletter to get notified about upcoming webinars, exclusive content, and early registration opportunities</p>
-            <form class="newsletter-form">
-                <input type="email" placeholder="Your email address" required aria-label="Email address">
-                <button type="submit" class="btn btn-primary">Subscribe</button>
-            </form>
-            <p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
-        </div>
-    </div>
-
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -1636,16 +1719,16 @@
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="/">Home</a></li>
-                        <li><a href="/webinar.html" class="active">Webinars</a></li>
-                        <li><a href="/blog.html">Blog</a></li>
-                        <li><a href="/about.html">About</a></li>
-                        <li><a href="/admin.html">Dashboard</a></li>
+                        <li><a href="{% url 'webinar_list' %}" class="active">Webinars</a></li>
+                        <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="{% url 'profile' %}">Dashboard</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
                     <h3>Resources</h3>
                     <ul>
-                        <li><a href="#">Past Webinars</a></li>
+                        <li><a href="{% url 'webinar_list' %}?tab=past">Past Webinars</a></li>
                         <li><a href="#">Speaker Profiles</a></li>
                         <li><a href="#">Webinar Calendar</a></li>
                         <li><a href="#">Community Forum</a></li>
@@ -1709,8 +1792,23 @@
                     // Add active class to current button and content
                     btn.classList.add('active');
                     document.getElementById(`${tabId}-tab`).classList.add('active');
+                    
+                    // Update URL without page reload
+                    const url = new URL(window.location);
+                    url.searchParams.set('tab', tabId);
+                    window.history.replaceState({}, '', url);
                 });
             });
+            
+            // Check for tab parameter in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTab = urlParams.get('tab');
+            if (activeTab) {
+                const tabBtn = document.querySelector(`.tab-btn[data-tab="${activeTab}"]`);
+                if (tabBtn) {
+                    tabBtn.click();
+                }
+            }
             
             // Testimonial slider
             const testimonials = document.querySelectorAll('.testimonial');
@@ -1773,18 +1871,18 @@
                 const webinarCards = activeTab.querySelectorAll('.webinar-card');
                 
                 webinarCards.forEach(card => {
-                    const category = card.querySelector('.webinar-category');
-                    const categoryText = category ? category.textContent.toLowerCase() : '';
                     const title = card.querySelector('h3').textContent.toLowerCase();
                     const description = card.querySelector('p').textContent.toLowerCase();
                     
-                    const matchesCategory = categoryValue === 'all' || categoryText.includes(categoryValue);
                     const matchesSearch = searchValue === '' || 
                                         title.includes(searchValue) || 
                                         description.includes(searchValue);
                     
                     // Simple date matching (in real implementation, you'd use actual dates)
                     const matchesDate = dateValue === 'all';
+                    
+                    // Simple category matching (in real implementation, you'd use actual categories)
+                    const matchesCategory = categoryValue === 'all';
                     
                     if (matchesCategory && matchesSearch && matchesDate) {
                         card.style.display = 'block';
@@ -1856,22 +1954,6 @@
             
             initCounters();
         });
-        
-        // Add to calendar functionality
-        window.addToCalendar = function(webinarId) {
-            // In a real implementation, this would generate calendar files
-            alert('Calendar event added! You will receive a reminder before the webinar.');
-            
-            // Example of actual implementation would be:
-            // const event = {
-            //     title: 'Webinar: AI Revolution',
-            //     start: '2024-06-28T14:00:00',
-            //     end: '2024-06-28T15:30:00',
-            //     description: 'Join us for an insightful webinar...',
-            //     location: 'Online'
-            // };
-            // generateCalendarEvent(event);
-        };
     </script>
 </body>
 </html>

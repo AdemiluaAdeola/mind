@@ -963,8 +963,8 @@
                 <ul class="nav-links">
                     <li><a href="{% url 'index' %}">Home</a></li>
                     <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
-                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
-                    <li><a href="{% url 'about' %}" class="active">About</a></li>
+                    <li><a href="{% url 'blog_list' %}" class="active">Blog</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'profile' %}">Profile</a></li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 </ul>
@@ -1010,7 +1010,7 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <br><br>
                     <div class="blog-grid">
                         {% for blog in object_list %}
                         <article class="blog-card" data-category="{{ blog.category.id|default:'uncategorized' }}">

@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -185,7 +187,6 @@
         .logo-img {
             width: 40px;
             height: 40px;
-            background: var(--primary);
             color: var(--white);
             display: grid;
             place-items: center;
@@ -594,14 +595,17 @@
 </head>
 <body>
     <!-- Header -->
-    <header>
+    <!-- Header/Navigation -->
+    <header id="header">
         <div class="container">
             <nav>
                 <a href="{% url 'index' %}" class="logo">
-                    <div class="logo-img">M</div>
+                    <div class="logo-img">
+                        <img src="{% static 'images/mindcraft.png' %}" alt="MindCraft ThinkSpace Logo">
+                    </div>
                     <div class="logo-text">
-                        <h1>MindCraft</h1>
-                        <p>THINKSPACE</p>
+                        <h1>MindCraft ThinkSpace</h1>
+                        <p>...it all begins in the mind</p>
                     </div>
                 </a>
                 <ul class="nav-links">
@@ -616,9 +620,9 @@
                         <li><a href="{% url 'login' %}">Login</a></li>
                     {% endif %}
                 </ul>
-                <div class="mobile-menu">
+                <button class="mobile-menu" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
-                </div>
+                </button>
             </nav>
         </div>
     </header>

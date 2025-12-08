@@ -41,18 +41,32 @@ class create(CreateView):
     model = Blog
     template_name = 'blog/create.html'
     form_class = CreateNewPost
+    
+    def form_valid(self, form):
+        # Set the author to the current user
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        # Redirect to the newly created blog post
+        return reverse_lazy('blogpost', kwargs={'pk': self.object.pk})
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class webinar_create(CreateView):
     model = Webinar
     template_name = 'webinar/create.html'
     form_class = CreateWebinar
+    success_url = reverse_lazy('webinar_list')
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class update(UpdateView):
     model = Blog
     template_name = 'blog/update.html'
     form_class = UpdatePost
+    
+    def get_success_url(self):
+        # Return to the updated blog post
+        return reverse_lazy('blogpost', args=[self.object.pk])
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class webinar_update(UpdateView):

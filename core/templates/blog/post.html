@@ -5,35 +5,334 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{blog.title}} | MindCraft ThinkSpace</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="{{ blog.excerpt|default:'Read this insightful article on MindCraft ThinkSpace' }}">
+    <title>{{ blog.title }} | MindCraft ThinkSpace</title>
+    
+    <!-- Preload resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" as="style">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* ===== CSS Variables ===== */
         :root {
-            --mindcraft-primary: #1a472a;
-            --mindcraft-secondary: #e67e22;
-            --mindcraft-accent: #f1c40f;
-            --mindcraft-light: #f9f9f9;
+            --primary: #0d2e14;
+            --primary-light: #1e4d2a;
+            --primary-dark: #071d0c;
+            --secondary: #d46a1a;
+            --secondary-light: #e67e22;
+            --secondary-dark: #b35716;
+            --accent: #e8b417;
+            --dark: #1e2b38;
+            --darker: #0f161e;
+            --light: #e0e6eb;
+            --lighter: #f0f2f5;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --white: #fff;
+            --black: #000;
+            --gray: #bdc3c7;
+            
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --radius: 16px;
+            --radius-sm: 8px;
         }
-        
+
+        /* ===== Base Styles ===== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--lighter);
+            margin: 0;
+            padding-top: 90px;
+            overflow-x: hidden;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M20 20l60 60M80 20L20 80" stroke="%23e0e6eb" stroke-width="0.5" stroke-opacity="0.3"/></svg>');
+            background-size: 100px 100px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ===== Layout ===== */
+        .container {
+            width: min(92%, 1280px);
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        /* ===== Typography ===== */
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+            font-weight: 700;
+            line-height: 1.3;
+            margin: 0 0 1.2rem;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        }
+
+        h3 {
+            font-size: clamp(1.3rem, 2vw, 1.6rem);
+        }
+
+        p {
+            color: var(--text-light);
+            margin: 0 0 1.5rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        /* ===== Buttons ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--white);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        /* ===== Header ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            color: var(--white);
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(13, 46, 20, 0.2);
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 0;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--secondary);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+            color: var(--dark);
+            font-size: 1.5rem;
+        }
+
+        /* ===== Blog Post Hero ===== */
         .blog-post-hero {
-            background: linear-gradient(135deg, rgba(26, 71, 42, 0.9), rgba(26, 71, 42, 0.85)), 
+            background: linear-gradient(135deg, rgba(26, 58, 31, 0.9), rgba(26, 58, 31, 0.8)), 
                         url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') no-repeat center/cover;
-            color: white;
-            padding: 7rem 0 4rem;
+            min-height: 40vh;
+            display: flex;
+            align-items: center;
             text-align: center;
-            margin-bottom: 3rem;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 0 4rem;
         }
-        
+
+        .blog-post-hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, var(--lighter), transparent);
+            z-index: 1;
+        }
+
+        .blog-post-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            width: 100%;
+        }
+
+        .blog-post-hero h1 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .blog-post-hero p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        /* ===== Blog Post Content ===== */
         .blog-post-container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 1rem;
         }
-        
+
         .blog-post-content {
             background: var(--white);
             border-radius: var(--radius);
@@ -41,18 +340,18 @@
             box-shadow: var(--shadow-md);
             margin-bottom: 3rem;
         }
-        
+
         .blog-header {
             margin-bottom: 2.5rem;
             text-align: center;
         }
-        
+
         .blog-title {
-            color: var(--mindcraft-primary);
+            color: var(--primary);
             margin-bottom: 1rem;
             line-height: 1.3;
         }
-        
+
         .blog-meta {
             display: flex;
             justify-content: center;
@@ -62,17 +361,17 @@
             margin-bottom: 1.5rem;
             color: var(--text-light);
         }
-        
+
         .blog-meta-item {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .blog-meta-item i {
-            color: var(--mindcraft-secondary);
+            color: var(--secondary);
         }
-        
+
         .blog-author {
             display: flex;
             align-items: center;
@@ -80,84 +379,84 @@
             margin-bottom: 2rem;
             justify-content: center;
         }
-        
+
         .author-avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--mindcraft-secondary);
+            border: 2px solid var(--secondary);
         }
-        
+
         .author-info h4 {
             margin-bottom: 0.2rem;
             color: var(--dark);
         }
-        
+
         .author-info p {
             margin-bottom: 0;
             font-size: 0.9rem;
             color: var(--text-light);
         }
-        
+
         .blog-image {
             border-radius: var(--radius);
             overflow: hidden;
             margin: 2.5rem 0;
             max-height: 500px;
         }
-        
+
         .blog-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         .blog-body {
             line-height: 1.9;
             font-size: 1.1rem;
             color: var(--text);
         }
-        
+
         .blog-body h2 {
-            color: var(--mindcraft-primary);
+            color: var(--primary);
             margin: 2.5rem 0 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--mindcraft-accent);
+            border-bottom: 2px solid var(--accent);
         }
-        
+
         .blog-body h3 {
-            color: var(--mindcraft-primary);
+            color: var(--primary);
             margin: 2rem 0 1rem;
         }
-        
+
         .blog-body p {
             margin-bottom: 1.5rem;
         }
-        
+
         .blog-body blockquote {
-            border-left: 4px solid var(--mindcraft-secondary);
+            border-left: 4px solid var(--secondary);
             padding-left: 1.5rem;
             margin: 2rem 0;
             font-style: italic;
             color: var(--text-light);
             font-size: 1.2rem;
         }
-        
+
         .blog-actions {
             display: flex;
             justify-content: center;
             gap: 1rem;
             margin: 2rem 0;
         }
-        
+
         .blog-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
             margin: 2rem 0;
         }
-        
+
         .tag {
             background: var(--lighter);
             padding: 0.4rem 1rem;
@@ -166,28 +465,29 @@
             color: var(--text-light);
             transition: var(--transition);
         }
-        
+
         .tag:hover {
-            background: var(--mindcraft-secondary);
+            background: var(--secondary);
             color: white;
         }
-        
+
+        /* ===== Comments Section ===== */
         .comments-section {
             background: var(--white);
             border-radius: var(--radius);
             padding: 2.5rem;
             box-shadow: var(--shadow-md);
         }
-        
+
         .comments-header {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 2rem;
         }
-        
+
         .comments-count {
-            background: var(--mindcraft-primary);
+            background: var(--primary);
             color: white;
             width: 40px;
             height: 40px;
@@ -197,26 +497,43 @@
             justify-content: center;
             font-weight: 600;
         }
-        
+
         .comment-form {
             background: var(--lighter);
             padding: 2rem;
             border-radius: var(--radius);
             margin-bottom: 2.5rem;
         }
-        
+
+        .comment-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--gray);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+        }
+
         .comment-form h3 {
             margin-bottom: 1.5rem;
-            color: var(--mindcraft-primary);
+            color: var(--primary);
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .comment-form h3 i {
-            color: var(--mindcraft-secondary);
+            color: var(--secondary);
         }
-        
+
         .comment {
             padding: 1.5rem;
             border-radius: var(--radius);
@@ -224,7 +541,7 @@
             margin-bottom: 1.5rem;
             animation: fadeIn 0.5s ease;
         }
-        
+
         .comment-header {
             display: flex;
             justify-content: space-between;
@@ -232,39 +549,34 @@
             margin-bottom: 1rem;
         }
 
-        label{
-            display: block;
-            font-weight: bold;
-        }
-        
         .comment-author {
             display: flex;
             align-items: center;
             gap: 0.8rem;
         }
-        
+
         .comment-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
         }
-        
+
         .comment-author-info h4 {
             margin-bottom: 0.2rem;
             color: var(--dark);
         }
-        
+
         .comment-date {
             font-size: 0.85rem;
             color: var(--text-light);
         }
-        
+
         .comment-body {
             line-height: 1.7;
             color: var(--text);
         }
-        
+
         .no-comments {
             text-align: center;
             padding: 2rem;
@@ -272,17 +584,18 @@
             border-radius: var(--radius);
             color: var(--text-light);
         }
-        
+
         .no-comments i {
             font-size: 2rem;
             margin-bottom: 1rem;
-            color: var(--mindcraft-secondary);
+            color: var(--secondary);
         }
-        
+
+        /* ===== Messages ===== */
         .messages-container {
             margin: 1.5rem 0;
         }
-        
+
         .alert {
             padding: 1rem 1.5rem;
             border-radius: var(--radius);
@@ -292,36 +605,227 @@
             gap: 1rem;
             animation: fadeIn 0.5s ease;
         }
-        
+
         .alert-success {
             background-color: rgba(46, 204, 113, 0.15);
             border-left: 4px solid #2ecc71;
             color: #27ae60;
         }
-        
+
         .alert-error {
             background-color: rgba(231, 76, 60, 0.15);
             border-left: 4px solid #e74c3c;
             color: #c0392b;
         }
-        
+
         .alert-warning {
             background-color: rgba(241, 196, 15, 0.15);
             border-left: 4px solid #f1c40f;
             color: #d35400;
         }
-        
+
         .alert-info {
             background-color: rgba(52, 152, 219, 0.15);
             border-left: 4px solid #3498db;
             color: #2980b9;
         }
-        
+
         .alert i {
             font-size: 1.5rem;
         }
-        
+
+        /* ===== Footer ===== */
+        footer {
+            background: var(--darker);
+            color: var(--white);
+            padding: 5rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-logo h2 {
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo h2 span {
+            color: var(--secondary);
+        }
+
+        .footer-logo p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-links h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            transform: translateX(3px);
+        }
+
+        .footer-links i {
+            width: 20px;
+            color: var(--secondary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-legal a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+            font-size: 0.8rem;
+        }
+
+        .footer-legal a:hover {
+            color: var(--secondary);
+        }
+
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Responsive Design ===== */
         @media (max-width: 768px) {
+            body {
+                padding-top: 80px;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--white);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 5rem 2rem;
+                transition: right 0.3s ease;
+                box-shadow: var(--shadow-lg);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                width: 100%;
+            }
+
+            .nav-links a::after {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
             .blog-post-content {
                 padding: 2rem;
             }
@@ -338,47 +842,64 @@
             .comments-section {
                 padding: 1.5rem;
             }
-        }
-        
-        @media (max-width: 576px) {
-            .blog-post-hero {
-                padding: 6rem 0 3rem;
-            }
-            
-            .blog-post-content {
-                padding: 1.5rem;
-            }
-            
-            .blog-title {
-                font-size: 1.8rem;
-            }
             
             .comment-form {
                 padding: 1.5rem;
             }
         }
-        
-        /* Animation for comments */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .comment {
-            animation: fadeIn 0.5s ease forwards;
+
+        @media (max-width: 576px) {
+            section {
+                padding: 3.5rem 0;
+            }
+
+            .blog-post-hero {
+                padding: 5rem 0 3rem;
+                min-height: 30vh;
+            }
+
+            .blog-post-content {
+                padding: 1.5rem;
+            }
+
+            .blog-title {
+                font-size: 1.8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2.5rem;
+            }
+
+            .footer-links h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+
+            .footer-legal {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header/Navigation -->
     <header id="header">
         <div class="container">
             <nav>
                 <a href="{% url 'index' %}" class="logo">
-                    <div class="logo-img">M</div>
+                    <div class="logo-img">
+                        <img src="{% static 'images/mindcraft.png' %}" alt="MindCraft ThinkSpace Logo">
+                    </div>
                     <div class="logo-text">
-                        <h1>MindCraft</h1>
-                        <p>THINKSPACE</p>
+                        <h1>MindCraft ThinkSpace</h1>
+                        <p>...it all begins in the mind</p>
                     </div>
                 </a>
                 <ul class="nav-links">
@@ -393,66 +914,73 @@
                         <li><a href="{% url 'login' %}">Login</a></li>
                     {% endif %}
                 </ul>
-                <div class="mobile-menu">
+                <button class="mobile-menu" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
-                </div>
+                </button>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Blog Post Hero Section -->
     <section class="blog-post-hero">
-        <div class="container">
-            <div class="blog-category" style="background: rgba(241, 196, 15, 0.2); color: #f1c40f; padding: 0.5rem 1.5rem; border-radius: 50px; display: inline-block; margin-bottom: 1rem;">
+        <div class="blog-post-hero-content">
+            <div class="blog-category" style="background: rgba(232, 180, 23, 0.2); color: var(--accent); padding: 0.5rem 1.5rem; border-radius: 50px; display: inline-block; margin-bottom: 1rem;">
                 Mindset & Innovation
             </div>
-            <h1>{{blog.title}}</h1>
+            <h1>{{ blog.title }}</h1>
             <p>Exploring new ideas and perspectives</p>
+            <div class="hero-breadcrumbs">
+                <a href="{% url 'index' %}">Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="{% url 'blog_list' %}">Blog</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>{{ blog.title|truncatechars:30 }}</span>
+            </div>
         </div>
     </section>
 
     <!-- Main Content -->
-    <main class="blog-post-container">
-        <article class="blog-post-content">
-            <div class="blog-header">
-                <h1 class="blog-title">{{blog.title}}</h1>
-                
-                <div class="blog-meta">
-                    <div class="blog-meta-item">
-                        <i class="far fa-calendar"></i>
-                        <span>{{blog.created_at}}</span>
+    <div class="container">
+        <main class="blog-post-container">
+            <article class="blog-post-content">
+                <div class="blog-header">
+                    <h1 class="blog-title">{{ blog.title }}</h1>
+                    
+                    <div class="blog-meta">
+                        <div class="blog-meta-item">
+                            <i class="far fa-calendar"></i>
+                            <span>{{ blog.created_at|date:"F d, Y" }}</span>
+                        </div>
+                        <div class="blog-meta-item">
+                            <i class="far fa-clock"></i>
+                            <span>{{ blog.read_time }} min read</span>
+                        </div>
+                        <div class="blog-meta-item">
+                            <i class="far fa-eye"></i>
+                            <span>{{ blog.views }} views</span>
+                        </div>
                     </div>
-                    <div class="blog-meta-item">
-                        <i class="far fa-clock"></i>
-                        <span>10 min read</span>
-                    </div>
-                    <div class="blog-meta-item">
-                        <i class="far fa-eye"></i>
-                        <span>1,245 views</span>
+                    
+                    <div class="blog-author">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="{{ blog.author.get_full_name }}" class="author-avatar">
+                        <div class="author-info">
+                            <h4>{{ blog.author.get_full_name }}</h4>
+                            <p>Content Creator at MindCraft ThinkSpace</p>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="blog-author">
-                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="author-avatar">
-                    <div class="author-info">
-                        <h4>{{blog.author.first_name}} {{blog.author.last_name}}</h4>
-                        <p>Content Creator at MindCraft ThinkSpace</p>
-                    </div>
+                {% if blog.cover or blog.image %}
+                <div class="blog-image">
+                    <img src="{{ blog.cover }}" alt="{{ blog.title }}">
                 </div>
-            </div>
-            
-            {% if blog.image %}
-            <div class="blog-image">
-                <img src="{{blog.image.url}}" alt="{{blog.title}}">
-            </div>
-            {% endif %}
-            
-            <div class="blog-body">
-                {{blog.body|safe}}
-            </div>
-            
-            {% if user.is_authenticated %}
-                {% if user.id == blog.author.id %}
+                {% endif %}
+                
+                <div class="blog-body">
+                    {{ blog.body|safe }}
+                </div>
+                
+                {% if user.is_authenticated and user.id == blog.author.id %}
                 <div class="blog-actions">
                     <a href="{% url 'update' blog.id %}" class="btn btn-primary">
                         <i class="fas fa-edit"></i> Edit Post
@@ -462,107 +990,179 @@
                     </a>
                 </div>
                 {% endif %}
-            {% endif %}
-        </article>
-        
-        <!-- Comments Section -->
-        <section class="comments-section">
-            <div class="comments-header">
-                <div class="comments-count">{{ blog.comments.count }}</div>
-                <h2>Comments</h2>
-            </div>
+            </article>
             
-            <!-- Messages -->
-            <div class="messages-container">
-                {% for message in messages %}
-                    {% if message.tags == 'success' %}
-                        <div class="alert alert-success">
-                            <i class="fas fa-check-circle"></i>
-                            <div>{{ message }}</div>
-                        </div>
-                    {% elif message.tags == 'error' %}
-                        <div class="alert alert-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <div>{{ message }}</div>
-                        </div>
-                    {% elif message.tags == 'warning' %}
-                        <div class="alert alert-warning">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <div>{{ message }}</div>
-                        </div>
-                    {% else %}
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i>
-                            <div>{{ message }}</div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            
-            <!-- Comment Form -->
-            <div class="comment-form">
-                <h3><i class="fas fa-comment"></i> Add Your Comment</h3>
-                <form action="#" method="post">
-                    {% csrf_token %}
-                    {{form|crispy}} <br>
-                    <button type="submit" name="submit" value="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i> Post Comment
-                    </button>
-                </form>
-            </div>
-            
-            <!-- Comments List -->
-            {% if not blog.comments.all %}
-                <div class="no-comments">
-                    <i class="far fa-comments"></i>
-                    <h3>No comments yet</h3>
-                    <p>Be the first to share your thoughts!</p>
+            <!-- Comments Section -->
+            <section class="comments-section">
+                <div class="comments-header">
+                    <div class="comments-count">{{ blog.comments.count }}</div>
+                    <h2>Comments</h2>
                 </div>
-            {% else %}
-                {% for comment_post in blog.comments.all %}
-                <div class="comment">
-                    <div class="comment-header">
-                        <div class="comment-author">
-                            <div class="comment-author-info">
-                                <h4>{{comment_post.name}}</h4>
-                                <span class="comment-date">{{comment_post.created_at}}</span>
+                
+                <!-- Messages -->
+                <div class="messages-container">
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle"></i>
+                                <div>{{ message }}</div>
+                            </div>
+                        {% elif message.tags == 'error' %}
+                            <div class="alert alert-error">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <div>{{ message }}</div>
+                            </div>
+                        {% elif message.tags == 'warning' %}
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div>{{ message }}</div>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                <div>{{ message }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <!-- Comment Form -->
+                <div class="comment-form">
+                    <h3><i class="fas fa-comment"></i> Add Your Comment</h3>
+                    <form action="#" method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <br>
+                        <button type="submit" name="submit" value="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Post Comment
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Comments List -->
+                {% if not blog.comments.all %}
+                    <div class="no-comments">
+                        <i class="far fa-comments"></i>
+                        <h3>No comments yet</h3>
+                        <p>Be the first to share your thoughts!</p>
+                    </div>
+                {% else %}
+                    {% for comment_post in blog.comments.all %}
+                    <div class="comment">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <div class="comment-author-info">
+                                    <h4>{{ comment_post.name }}</h4>
+                                    <span class="comment-date">{{ comment_post.created_at|date:"F d, Y" }}</span>
+                                </div>
                             </div>
                         </div>
+                        <div class="comment-body">
+                            <p>{{ comment_post.body }}</p>
+                        </div>
                     </div>
-                    <div class="comment-body">
-                        <p>{{comment_post.body}}</p>
+                    {% endfor %}
+                {% endif %}
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2><span>MindCraft</span> ThinkSpace</h2>
+                    <p>...it all begins in the mind</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                {% endfor %}
-            {% endif %}
-        </section>
-    </main>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'webinar_list' %}">Webinars</a></li>
+                        <li><a href="{% url 'blog_list' %}">Blog</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="{% url 'admin:index' %}">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Mindset Tools</a></li>
+                        <li><a href="#">Innovation Kits</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">Community Forum</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hello@mindcraftthinkspace.com</li>
+                        <li><i class="fas fa-phone"></i> +254 700 123456</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya (HQ)</li>
+                        <li><i class="fas fa-globe"></i> Global Presence</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2024</span> MindCraft ThinkSpace. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="/privacy/">Privacy Policy</a>
+                    <a href="/terms/">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
+    <!-- JavaScript -->
     <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-                document.querySelector('header').classList.add('scrolled');
-            } else {
-                document.querySelector('header').classList.remove('scrolled');
-            }
-        });
-        
-        // Auto-hide messages after 5 seconds
-        setTimeout(function() {
-            const messages = document.querySelectorAll('.alert');
-            messages.forEach(function(message) {
-                message.style.opacity = '0';
-                setTimeout(function() {
-                    message.style.display = 'none';
-                }, 500);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                this.setAttribute('aria-expanded', navLinks.classList.contains('active'));
             });
-        }, 5000);
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('header');
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+            
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Auto-hide messages after 5 seconds
+            setTimeout(function() {
+                const messages = document.querySelectorAll('.alert');
+                messages.forEach(function(message) {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.style.display = 'none';
+                    }, 500);
+                });
+            }, 5000);
+            
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                });
+            });
+        });
     </script>
 </body>
 </html>

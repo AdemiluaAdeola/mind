@@ -1204,6 +1204,117 @@
             window.addEventListener('load', animateOnScroll);
             window.addEventListener('scroll', animateOnScroll);
         });
+        // Auto-reload based on activity
+        let userActive = true;
+        let reloadTimer;
+        const ACTIVE_RELOAD_TIME = 30000; // 30 seconds
+        const INACTIVE_RELOAD_TIME = 40000; // 40 seconds
+
+        function setReloadTimer() {
+            // Clear existing timer
+            if (reloadTimer) {
+                clearTimeout(reloadTimer);
+            }
+            
+            // Set new timer based on activity state
+            const reloadTime = userActive ? ACTIVE_RELOAD_TIME : INACTIVE_RELOAD_TIME;
+            
+            reloadTimer = setTimeout(() => {
+                // Reload the page
+                window.location.reload();
+            }, reloadTime);
+        }
+
+        // Function to update activity state
+        function updateActivityState(active) {
+            if (userActive !== active) {
+                userActive = active;
+                console.log(`User is now ${active ? 'active' : 'inactive'}. Reloading every ${active ? '30' : '40'} seconds.`);
+                setReloadTimer();
+            }
+        }
+
+        // Activity detection
+        let activityTimer;
+        const INACTIVITY_THRESHOLD = 60000; // 60 seconds of no activity = inactive
+
+        function resetActivityTimer() {
+            // User is active
+            updateActivityState(true);
+            
+            // Clear existing inactivity timer
+            if (activityTimer) {
+                clearTimeout(activityTimer);
+            }
+            
+            // Set new inactivity timer
+            activityTimer = setTimeout(() => {
+                updateActivityState(false);
+            }, INACTIVITY_THRESHOLD);
+        }
+
+        // Event listeners for user activity
+        const activityEvents = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+
+        activityEvents.forEach(eventType => {
+            document.addEventListener(eventType, resetActivityTimer, { passive: true });
+        });
+
+        // Initialize
+        resetActivityTimer(); // Start as active
+        setReloadTimer(); // Start the initial reload timer
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            if (reloadTimer) {
+                clearTimeout(reloadTimer);
+            }
+            if (activityTimer) {
+                clearTimeout(activityTimer);
+            }
+            
+            // Remove event listeners
+            activityEvents.forEach(eventType => {
+                document.removeEventListener(eventType, resetActivityTimer);
+            });
+        });
+
+        // Visual indicator (optional - can be removed)
+        function createReloadIndicator() {
+            const indicator = document.createElement('div');
+            indicator.id = 'reload-indicator';
+            indicator.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: #27ae60;
+                z-index: 9999;
+                transition: background 0.3s;
+                cursor: pointer;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            `;
+            indicator.title = 'Page auto-reload active (green=active, orange=inactive)';
+            
+            indicator.addEventListener('click', () => {
+                const confirmed = confirm('Auto-reload is enabled.\n\nActive: Reload every 30 seconds\nInactive: Reload every 40 seconds\n\nClick OK to reload now, or Cancel to continue.');
+                if (confirmed) {
+                    window.location.reload();
+                }
+            });
+            
+            document.body.appendChild(indicator);
+            
+            // Update indicator color based on activity
+            setInterval(() => {
+                indicator.style.background = userActive ? '#27ae60' : '#e67e22';
+            }, 1000);
+        }
+
+        // Add indicator (optional - comment out if not needed)
+        createReloadIndicator();
     </script>
 </body>
 </html>

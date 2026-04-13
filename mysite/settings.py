@@ -155,8 +155,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.onrender.com',
-    'https://*.yourdomain.com',
+    'https://thinkspace-sgv3.onrender.com/',
+    'https://localhost:8000/',
 ]
 
 LOGGING = {
